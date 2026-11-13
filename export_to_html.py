@@ -1138,8 +1138,8 @@ const PHASES = {{
     4.5: {{
         name: "Phase 4.5",
         title: "AST System Model",
-        subtitle: "MBSE & Enterprise Data Architecture Framework",
-        description: "Formalizes the enterprise data foundation and systems engineering architecture for the Autonomous / Advanced Ship Technology (AST) Digital Twin. Connects the semantic ontology, hierarchical taxonomy, and relational schema through SysML 2.0 digital thread execution and algedonic closed-loop feedback directly into operational twin telemetry."
+        subtitle: "",
+        description: ""
     }}
 }};
 
@@ -1572,10 +1572,10 @@ function renderNotes() {{
         const visibleIds = Object.keys(SVG_LAYOUT[currentPhase] || {{}});
         box.innerHTML = `
             <div>
-                <div class="notes-tag">${{P.name.toUpperCase()}} &middot; ARCHITECTURE OVERVIEW</div>
-                <h2 class="notes-title">${{P.subtitle}}</h2>
+                <div class="notes-tag">${{P.name.toUpperCase()}}</div>
+                <h2 class="notes-title">${{P.title}}${{P.subtitle ? ' &middot; ' + P.subtitle : ''}}</h2>
             </div>
-            <p class="notes-desc">${{P.description}}</p>
+            ${{P.description ? `<p class="notes-desc">${{P.description}}</p>` : ''}}
             <div>
                 <div style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; color:#64748b; letter-spacing:1px; margin-bottom:6px;">ACTIVE NODES IN THIS PHASE (${{visibleIds.length}})</div>
                 <div class="pill-group">
@@ -1886,15 +1886,15 @@ function openModal(nodeId) {{
         return;
     }}
     if (nodeId === "ast_system_model" || nodeId === "ast_slide") {{
-        superTitle.textContent = "MBSE & DATA STACK ARCHITECTURE";
+        superTitle.textContent = "PHASE 4.5";
         superTitle.style.color = "#2563eb";
-        titleText.textContent = "AST System Model: Formal Systems Engineering & Enterprise Data Stack";
-        subtitle.textContent = "Ontological Semantics · Taxonomic Classification · Relational Schema · SysML 2.0 Digital Thread · Algedonic Closed-Loop";
+        titleText.textContent = "AST System Model";
+        subtitle.textContent = "";
         badge.style.display = "inline-block";
         badge.style.backgroundColor = "#eff6ff";
         badge.style.color = "#2563eb";
         badge.style.border = "1.5px solid #bfdbfe";
-        badge.textContent = "📐 MBSE ARCHITECTURE SPECIFICATION";
+        badge.textContent = "SYSTEM MODEL";
 
         body.innerHTML = `
             <div style="display:flex; flex-direction:column; width:100%; gap:14px; max-height:calc(88vh - 80px); overflow-y:auto; padding:8px;">

@@ -71,11 +71,8 @@ CONTENT: Dict[str, Any] = {
         4.5: {
         "name": "Phase 4.5",
         "title": "AST System Model",
-        "subtitle": "MBSE & Enterprise Data Architecture Framework",
-        "description": (
-            "Formalizes the enterprise data foundation and systems engineering architecture for the Autonomous / Advanced Ship Technology (AST) Digital Twin. "
-            "Connects the semantic ontology, hierarchical taxonomy, and relational schema through SysML 2.0 digital thread execution and algedonic closed-loop feedback directly into operational twin telemetry."
-        ),
+        "subtitle": "",
+        "description": "",
     },
     },
 
@@ -2359,7 +2356,7 @@ app.index_string = """
         <!-- Top Canvas Title Bar -->
         <g id="p45-header">
             <text x="32" y="38" font-family="'Barlow Semi Condensed', sans-serif" font-size="24" font-weight="800" fill="#0f172a" letter-spacing="0.5">AST System Model</text>
-            <text x="210" y="38" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#64748b">Model-Based Systems Engineering &amp; Enterprise Data Stack</text>
+            
             <rect x="745" y="16" width="225" height="26" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.2"/>
             <text x="857" y="33" font-family="'Barlow Semi Condensed', sans-serif" font-size="11" font-weight="800" fill="#2563eb" text-anchor="middle" letter-spacing="0.8">PHASE 4.5 &middot; DIGITAL THREAD</text>
         </g>
@@ -7188,6 +7185,7 @@ def update_notes_panel(current_phase, selected_node, view_mode, ship_scenario):
                     "padding": "14px",
                     "borderRadius": "10px",
                     "border": "1px solid #e2e8f0",
+                    "display": "block" if phase_info.get("description") else "none",
                 },
             ),
 
