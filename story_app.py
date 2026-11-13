@@ -70,9 +70,12 @@ CONTENT: Dict[str, Any] = {
         },
         4.5: {
         "name": "Phase 4.5",
-        "title": "MBSE & Data Stack",
-        "subtitle": "MBSE & Data Stack",
-        "description": "",
+        "title": "AST System Model",
+        "subtitle": "MBSE & Enterprise Data Architecture Framework",
+        "description": (
+            "Formalizes the enterprise data foundation and systems engineering architecture for the Autonomous / Advanced Ship Technology (AST) Digital Twin. "
+            "Connects the semantic ontology, hierarchical taxonomy, and relational schema through SysML 2.0 digital thread execution and algedonic closed-loop feedback directly into operational twin telemetry."
+        ),
     },
     },
 
@@ -1209,6 +1212,7 @@ IMAGE_PATH_HYP: Optional[str] = str(ASSETS_DIR / "hyperspectral.jpg") if (ASSETS
 # Place SAC (Surface Area Calculation) image here
 IMAGE_PATH_SAC: Optional[str] = str(UPLOADS_DIR / "sac.jpg") if (UPLOADS_DIR / "sac.jpg").is_file() else None
 IMAGE_PATH_BLENDER: Optional[str] = str(UPLOADS_DIR / "blender_remesh.jpg") if (UPLOADS_DIR / "blender_remesh.jpg").is_file() else None
+IMAGE_PATH_AST_SLIDE: Optional[str] = str(UPLOADS_DIR / "ast_system_model.png") if (UPLOADS_DIR / "ast_system_model.png").is_file() else None
 
 # Place VTL (Virtual Technical Library) image here
 IMAGE_PATH_VTL: Optional[str] = None  # e.g. r"C:\path\to\vtl_scantling_record.jpg"
@@ -1234,6 +1238,8 @@ IMAGE_PATHS: Dict[str, Optional[str]] = {
     "sac": IMAGE_PATH_SAC,
     "blender": IMAGE_PATH_BLENDER,
     "blender_remesh": IMAGE_PATH_BLENDER,
+    "ast_system_model": IMAGE_PATH_AST_SLIDE,
+    "ast_slide": IMAGE_PATH_AST_SLIDE,
     "vtl": IMAGE_PATH_VTL,
     "lrms": IMAGE_PATH_LRMS,
     "samm": IMAGE_PATH_SAMM,
@@ -2339,7 +2345,270 @@ app.index_string = """
                         <g id="group-boxes"></g>
                         <g id="edges"></g>
                         <g id="nodes"></g>
-                        <g id="phase45-placeholder" style="display:none; pointer-events:none;"></g>
+                        <!-- ======================================================== -->
+    <!-- PHASE 4.5: AST SYSTEM MODEL & MBSE ARCHITECTURE BLUEPRINT -->
+    <!-- ======================================================== -->
+    <g id="phase45-placeholder" style="display:none;">
+        <!-- Background Grid Anchor / Frame -->
+        <rect x="15" y="10" width="970" height="600" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
+
+        <!-- Canvas Header -->
+        <text x="35" y="44" font-family="'Barlow Semi Condensed', sans-serif" font-size="28" font-weight="800" fill="#0f172a" letter-spacing="0.5">AST System Model</text>
+        <rect x="735" y="18" width="235" height="24" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+        <text x="852" y="34" font-family="'Barlow Semi Condensed', sans-serif" font-size="11" font-weight="800" fill="#2563eb" text-anchor="middle">MBSE &amp; DATA STACK FOUNDATION</text>
+
+        <!-- ========================================== -->
+        <!-- LEFT: 3 DATA TIERS + VERTICAL ARROWS       -->
+        <!-- ========================================== -->
+
+        <!-- Left Arrow: Persistence (Pointing DOWN) -->
+        <g id="arrow-persistence" style="cursor:help;">
+            <title>Persistence: Downward data flow into permanent multi-temporal storage</title>
+            <!-- Shaft -->
+            <rect x="25" y="65" width="24" height="475" rx="3" fill="#0e3a53" stroke="#092535" stroke-width="1"/>
+            <!-- Arrowhead -->
+            <polygon points="19,538 55,538 37,575" fill="#0e3a53" stroke="#092535" stroke-width="1"/>
+            <!-- Vertical Text -->
+            <text x="37" y="105" font-family="'Barlow Semi Condensed', sans-serif" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">P</text>
+            <text x="37" y="145" font-family="'Barlow Semi Condensed', sans-serif" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">e</text>
+            <text x="37" y="185" font-family="'Barlow Semi Condensed', sans-serif" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">r</text>
+            <text x="37" y="225" font-family="'Barlow Semi Condensed', sans-serif" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">s</text>
+            <text x="37" y="265" font-family="'Barlow Semi Condensed', sans-serif" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">i</text>
+            <text x="37" y="305" font-family="'Barlow Semi Condensed', sans-serif" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">s</text>
+            <text x="37" y="345" font-family="'Barlow Semi Condensed', sans-serif" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">t</text>
+            <text x="37" y="385" font-family="'Barlow Semi Condensed', sans-serif" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">e</text>
+            <text x="37" y="425" font-family="'Barlow Semi Condensed', sans-serif" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">n</text>
+            <text x="37" y="465" font-family="'Barlow Semi Condensed', sans-serif" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">c</text>
+            <text x="37" y="505" font-family="'Barlow Semi Condensed', sans-serif" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">e</text>
+        </g>
+
+        <!-- Right Arrow: Algedonic (Pointing UP) -->
+        <g id="arrow-algedonic" style="cursor:help;">
+            <title>Algedonic: Cybernetic feedback signals flowing upward to adapt decision policies</title>
+            <!-- Arrowhead -->
+            <polygon points="507,102 543,102 525,65" fill="#0e3a53" stroke="#092535" stroke-width="1"/>
+            <!-- Shaft -->
+            <rect x="513" y="100" width="24" height="475" rx="3" fill="#0e3a53" stroke="#092535" stroke-width="1"/>
+            <!-- Vertical Text -->
+            <text x="525" y="145" font-family="'Barlow Semi Condensed', sans-serif" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">A</text>
+            <text x="525" y="185" font-family="'Barlow Semi Condensed', sans-serif" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">l</text>
+            <text x="525" y="225" font-family="'Barlow Semi Condensed', sans-serif" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">g</text>
+            <text x="525" y="265" font-family="'Barlow Semi Condensed', sans-serif" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">e</text>
+            <text x="525" y="305" font-family="'Barlow Semi Condensed', sans-serif" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">d</text>
+            <text x="525" y="345" font-family="'Barlow Semi Condensed', sans-serif" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">o</text>
+            <text x="525" y="385" font-family="'Barlow Semi Condensed', sans-serif" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">n</text>
+            <text x="525" y="425" font-family="'Barlow Semi Condensed', sans-serif" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">i</text>
+            <text x="525" y="465" font-family="'Barlow Semi Condensed', sans-serif" font-size="14" font-weight="800" fill="#ffffff" text-anchor="middle">c</text>
+        </g>
+
+        <!-- Tier 1: Ontology Semantic Representation (Orange) -->
+        <g id="tier-1-ontology" class="ast-tier" style="cursor:pointer;" onclick="if(window.selectAstTier) selectAstTier(1);">
+            <rect x="56" y="65" width="450" height="162" fill="#ea580c" stroke="#c2410c" stroke-width="1.5" rx="4"/>
+            <!-- Column 1: Number -->
+            <text x="74" y="94" font-family="'Barlow Semi Condensed', sans-serif" font-size="17" font-weight="800" fill="#0f172a">1</text>
+            <!-- Column 2: Title -->
+            <text x="96" y="94" font-family="'Barlow Semi Condensed', sans-serif" font-size="14.5" font-weight="800" fill="#0f172a">Ontology Semantic</text>
+            <text x="96" y="113" font-family="'Barlow Semi Condensed', sans-serif" font-size="14.5" font-weight="800" fill="#0f172a">Representation</text>
+            <!-- Divider Line -->
+            <line x1="218" y1="65" x2="218" y2="227" stroke="#fdba74" stroke-width="1.5"/>
+            <!-- Column 3: Description -->
+            <text x="228" y="87" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#0f172a">Encodes system entities, their relationships,</text>
+            <text x="228" y="104" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#0f172a">and constraints in a formal semantic model.</text>
+            <text x="228" y="122" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#0f172a">Answers the question: what exists in this</text>
+            <text x="228" y="140" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#0f172a">system and how do system relationships,</text>
+            <text x="228" y="158" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#0f172a">dependencies, and decision objectives</text>
+            <text x="228" y="176" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#0f172a">connect to one another?</text>
+        </g>
+
+        <!-- Tier 2: Taxonomy Hierarchical Classification (Teal) -->
+        <g id="tier-2-taxonomy" class="ast-tier" style="cursor:pointer;" onclick="if(window.selectAstTier) selectAstTier(2);">
+            <rect x="56" y="238" width="450" height="162" fill="#0284c7" stroke="#0369a1" stroke-width="1.5" rx="4"/>
+            <!-- Column 1: Number -->
+            <text x="74" y="267" font-family="'Barlow Semi Condensed', sans-serif" font-size="17" font-weight="800" fill="#0f172a">2</text>
+            <!-- Column 2: Title -->
+            <text x="96" y="267" font-family="'Barlow Semi Condensed', sans-serif" font-size="14.5" font-weight="800" fill="#991b1b">Taxonomy Hierarchical</text>
+            <text x="96" y="286" font-family="'Barlow Semi Condensed', sans-serif" font-size="14.5" font-weight="800" fill="#991b1b">Classification</text>
+            <!-- Divider Line -->
+            <line x1="218" y1="238" x2="218" y2="400" stroke="#7dd3fc" stroke-width="1.5"/>
+            <!-- Column 3: Description -->
+            <text x="228" y="263" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#0f172a">Organizes system elements into typed classes</text>
+            <text x="228" y="280" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#0f172a">with inheritance. Enables structured</text>
+            <text x="228" y="298" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#0f172a">reasoning about failure modes, behaviors,</text>
+            <text x="228" y="316" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#0f172a">and decision categories across levels</text>
+            <text x="228" y="334" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#0f172a">of abstraction.</text>
+        </g>
+
+        <!-- Tier 3: Schema Data Structure & Relational Encoding (Cyan) -->
+        <g id="tier-3-schema" class="ast-tier" style="cursor:pointer;" onclick="if(window.selectAstTier) selectAstTier(3);">
+            <rect x="56" y="412" width="450" height="162" fill="#00a3e0" stroke="#0284c7" stroke-width="1.5" rx="4"/>
+            <!-- Column 1: Number -->
+            <text x="74" y="441" font-family="'Barlow Semi Condensed', sans-serif" font-size="17" font-weight="800" fill="#0f172a">3</text>
+            <!-- Column 2: Title -->
+            <text x="96" y="441" font-family="'Barlow Semi Condensed', sans-serif" font-size="14.5" font-weight="800" fill="#0f172a">Schema Data Structure and</text>
+            <text x="96" y="460" font-family="'Barlow Semi Condensed', sans-serif" font-size="14.5" font-weight="800" fill="#0f172a">Relational Encoding</text>
+            <!-- Divider Line -->
+            <line x1="218" y1="412" x2="218" y2="574" stroke="#bae6fd" stroke-width="1.5"/>
+            <!-- Column 3: Description -->
+            <text x="228" y="437" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#0f172a">Translates ontological and taxonomic</text>
+            <text x="228" y="454" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#0f172a">knowledge into structured, queryable, and</text>
+            <text x="228" y="472" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#0f172a">traceable data linked to system requirements</text>
+            <text x="228" y="490" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#0f172a">and observed states. Establishes traceability</text>
+            <text x="228" y="508" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#0f172a">links between system states, requirements,</text>
+            <text x="228" y="526" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#0f172a">and observations.</text>
+        </g>
+
+        <!-- ========================================== -->
+        <!-- CENTER: BIDIRECTIONAL LINK & SYSML TREE    -->
+        <!-- ========================================== -->
+
+        <!-- Bidirectional Green Arrow <===> -->
+        <g id="arrow-bidirectional" style="cursor:help;">
+            <title>Bidirectional semantic mapping between Data Architecture and MBSE SysML models</title>
+            <polygon points="562,352 562,342 546,357 562,372 562,362 590,362 590,372 606,357 590,342 590,352" fill="#86efac" stroke="#16a34a" stroke-width="1.8"/>
+        </g>
+
+        <!-- SysML Diagram Tree -->
+        <g id="sysml-tree" style="cursor:pointer;" onclick="if(window.selectAstTier) selectAstTier('sysml');">
+            <!-- Central Spine -->
+            <rect x="630" y="325" width="22" height="75" fill="#f8fafc" stroke="#475569" stroke-width="1.2" rx="2"/>
+            <text x="641" y="348" font-family="'Barlow Semi Condensed', sans-serif" font-size="9" font-weight="800" fill="#1e293b" text-anchor="middle" transform="rotate(-90 641 348)">SysML Diagram</text>
+            <text x="641" y="378" font-family="'Barlow Semi Condensed', sans-serif" font-size="9" font-weight="800" fill="#1e293b" text-anchor="middle" transform="rotate(-90 641 378)">Tree</text>
+
+            <!-- Orthogonal connector lines -->
+            <path d="M 652 335 L 672 335 L 672 230 L 684 230" fill="none" stroke="#64748b" stroke-width="1.2"/>
+            <path d="M 672 260 L 684 260" fill="none" stroke="#64748b" stroke-width="1.2"/>
+            <path d="M 672 290 L 684 290" fill="none" stroke="#64748b" stroke-width="1.2"/>
+            <path d="M 672 320 L 684 320" fill="none" stroke="#64748b" stroke-width="1.2"/>
+            <path d="M 652 362 L 684 362" fill="none" stroke="#64748b" stroke-width="1.2"/>
+            <path d="M 652 390 L 672 390 L 672 485 L 684 485" fill="none" stroke="#64748b" stroke-width="1.2"/>
+            <path d="M 672 425 L 684 425" fill="none" stroke="#64748b" stroke-width="1.2"/>
+            <path d="M 672 455 L 684 455" fill="none" stroke="#64748b" stroke-width="1.2"/>
+            <path d="M 672 515 L 684 515" fill="none" stroke="#64748b" stroke-width="1.2"/>
+            <path d="M 672 545 L 684 545" fill="none" stroke="#64748b" stroke-width="1.2"/>
+
+            <!-- Behavior Diagrams (Top) -->
+            <rect x="684" y="218" width="76" height="22" rx="3" fill="#e9d5ff" stroke="#c084fc" stroke-width="1"/>
+            <text x="722" y="233" font-family="'Inter', sans-serif" font-size="8.5" font-weight="700" fill="#581c87" text-anchor="middle">Use Case Diagram</text>
+
+            <rect x="684" y="248" width="76" height="22" rx="3" fill="#e9d5ff" stroke="#c084fc" stroke-width="1"/>
+            <text x="722" y="263" font-family="'Inter', sans-serif" font-size="8.5" font-weight="700" fill="#581c87" text-anchor="middle">State Machine</text>
+
+            <rect x="684" y="278" width="76" height="22" rx="3" fill="#e9d5ff" stroke="#c084fc" stroke-width="1"/>
+            <text x="722" y="293" font-family="'Inter', sans-serif" font-size="8.5" font-weight="700" fill="#581c87" text-anchor="middle">Sequence Diagram</text>
+
+            <rect x="684" y="308" width="76" height="22" rx="3" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+            <text x="722" y="323" font-family="'Inter', sans-serif" font-size="8.5" font-weight="700" fill="#14532d" text-anchor="middle">Activity Diagram</text>
+
+            <!-- Requirements Diagram (Middle) -->
+            <rect x="684" y="350" width="76" height="22" rx="3" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+            <text x="722" y="365" font-family="'Inter', sans-serif" font-size="8.5" font-weight="700" fill="#7f1d1d" text-anchor="middle">Requirement Diag</text>
+
+            <!-- Structure Diagrams (Bottom) -->
+            <rect x="684" y="414" width="76" height="22" rx="3" fill="#e0e7ff" stroke="#a5b4fc" stroke-width="1"/>
+            <text x="722" y="429" font-family="'Inter', sans-serif" font-size="8.5" font-weight="700" fill="#312e81" text-anchor="middle">Package Diagram</text>
+
+            <rect x="684" y="444" width="76" height="22" rx="3" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+            <text x="722" y="459" font-family="'Inter', sans-serif" font-size="8.5" font-weight="700" fill="#14532d" text-anchor="middle">Block Definition</text>
+
+            <rect x="684" y="474" width="76" height="22" rx="3" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+            <text x="722" y="489" font-family="'Inter', sans-serif" font-size="8.5" font-weight="700" fill="#14532d" text-anchor="middle">Internal Block</text>
+
+            <rect x="684" y="504" width="76" height="22" rx="3" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+            <text x="722" y="519" font-family="'Inter', sans-serif" font-size="8.5" font-weight="700" fill="#7f1d1d" text-anchor="middle">Parametric Diag</text>
+
+            <!-- Legend Pills (Bottom of SysML Tree) -->
+            <rect x="625" y="548" width="40" height="16" rx="2" fill="#fecaca" stroke="#f87171" stroke-width="0.8"/>
+            <text x="645" y="559" font-family="'Inter', sans-serif" font-size="6.5" font-weight="700" fill="#991b1b" text-anchor="middle">Non-Diagram</text>
+
+            <rect x="670" y="548" width="40" height="16" rx="2" fill="#e9d5ff" stroke="#c084fc" stroke-width="0.8"/>
+            <text x="690" y="559" font-family="'Inter', sans-serif" font-size="6.5" font-weight="700" fill="#581c87" text-anchor="middle">SysML 2.0</text>
+
+            <rect x="715" y="548" width="42" height="16" rx="2" fill="#dcfce7" stroke="#86efac" stroke-width="0.8"/>
+            <text x="736" y="559" font-family="'Inter', sans-serif" font-size="6.5" font-weight="700" fill="#14532d" text-anchor="middle">Modified UML</text>
+        </g>
+
+        <!-- Large Curved Green Arrow from SysML Tree directly up to DT -->
+        <g id="arrow-sysml-to-dt" style="cursor:help;">
+            <title>Digital Thread: SysML model executes directly into the operational Digital Twin runtime</title>
+            <path d="M 764 360 C 808 360, 808 245, 788 214" fill="none" stroke="#16a34a" stroke-width="9" stroke-linecap="round"/>
+            <polygon points="777,222 788,198 801,218" fill="#16a34a"/>
+            <!-- Inner highlight -->
+            <path d="M 764 360 C 808 360, 808 245, 788 214" fill="none" stroke="#86efac" stroke-width="5.5" stroke-linecap="round"/>
+            <polygon points="781,220 788,202 798,217" fill="#86efac"/>
+        </g>
+
+        <!-- ========================================== -->
+        <!-- TOP-RIGHT: OPERATIONAL RUNTIME PIPELINE    -->
+        <!-- ========================================== -->
+
+        <g id="runtime-pipeline">
+            <!-- Connecting Lines -->
+            <!-- LIDAR to SAC -->
+            <path d="M 665 46 L 605 46 L 605 110" fill="none" stroke="#0284c7" stroke-width="1.5"/>
+            <polygon points="601,108 605,118 609,108" fill="#0284c7"/>
+
+            <!-- SAC to VTL -->
+            <path d="M 605 142 L 605 185 L 655 185" fill="none" stroke="#0284c7" stroke-width="1.5"/>
+            <polygon points="653,181 663,185 653,189" fill="#0284c7"/>
+
+            <!-- VTL to DT -->
+            <path d="M 725 185 L 750 185" fill="none" stroke="#0284c7" stroke-width="1.5"/>
+            <polygon points="748,181 758,185 748,189" fill="#0284c7"/>
+
+            <!-- Hyper to Tank -->
+            <path d="M 776 60 L 776 85" fill="none" stroke="#0284c7" stroke-width="1.5"/>
+            <polygon points="772,83 776,93 780,83" fill="#0284c7"/>
+
+            <!-- RGB to Tank -->
+            <path d="M 880 60 L 880 105 L 808 105" fill="none" stroke="#0284c7" stroke-width="1.5"/>
+            <polygon points="810,101 800,105 810,109" fill="#0284c7"/>
+
+            <!-- Tank <==> DT -->
+            <line x1="776" y1="123" x2="776" y2="162" stroke="#0284c7" stroke-width="1.5"/>
+            <polygon points="772,128 776,120 780,128" fill="#0284c7"/>
+            <polygon points="772,157 776,165 780,157" fill="#0284c7"/>
+
+            <!-- Tank to SAMM -->
+            <path d="M 804 105 L 918 105 L 918 128" fill="none" stroke="#0284c7" stroke-width="1.5"/>
+            <polygon points="914,126 918,136 922,126" fill="#0284c7"/>
+
+            <!-- DT to CMS & SAMM -->
+            <path d="M 802 185 L 880 185" fill="none" stroke="#0284c7" stroke-width="1.5"/>
+            <polygon points="878,181 888,185 878,189" fill="#0284c7"/>
+
+            <!-- Top Row: Sensors -->
+            <rect x="665" y="32" width="70" height="28" rx="4" fill="#ffffff" stroke="#0284c7" stroke-width="1.5" style="cursor:pointer;" onclick="if(window.openModal) openModal('lidar');"/>
+            <text x="700" y="51" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle" style="pointer-events:none;">LIDAR</text>
+
+            <rect x="744" y="32" width="68" height="28" rx="4" fill="#ffffff" stroke="#0284c7" stroke-width="1.5" style="cursor:pointer;" onclick="if(window.openModal) openModal('hyp');"/>
+            <text x="778" y="51" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle" style="pointer-events:none;">Hyper</text>
+
+            <rect x="840" y="32" width="78" height="28" rx="4" fill="#ffffff" stroke="#0284c7" stroke-width="1.5" style="cursor:pointer;" onclick="if(window.openModal) openModal('rgb');"/>
+            <text x="879" y="51" font-family="'Barlow Semi Condensed', sans-serif" font-size="11.5" font-weight="800" fill="#0f172a" text-anchor="middle" style="pointer-events:none;">RGB/Video</text>
+
+            <!-- Computation & VTL -->
+            <rect x="570" y="114" width="70" height="28" rx="4" fill="#ffffff" stroke="#0284c7" stroke-width="1.5" style="cursor:pointer;" onclick="if(window.openModal) openModal('sac');"/>
+            <text x="605" y="133" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle" style="pointer-events:none;">SAC</text>
+
+            <rect x="655" y="171" width="70" height="28" rx="4" fill="#ffffff" stroke="#0284c7" stroke-width="1.5" style="cursor:pointer;" onclick="if(window.openModal) openModal('vtl');"/>
+            <text x="690" y="190" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle" style="pointer-events:none;">VTL</text>
+
+            <!-- Physical & Virtual Assets -->
+            <ellipse cx="776" cy="105" rx="26" ry="18" fill="#ffffff" stroke="#0284c7" stroke-width="1.8" style="cursor:pointer;" onclick="if(window.openModal) openModal('tank');"/>
+            <text x="776" y="102" font-family="'Barlow Semi Condensed', sans-serif" font-size="11" font-weight="800" fill="#0f172a" text-anchor="middle" style="pointer-events:none;">Tan</text>
+            <text x="776" y="114" font-family="'Barlow Semi Condensed', sans-serif" font-size="11" font-weight="800" fill="#0f172a" text-anchor="middle" style="pointer-events:none;">k</text>
+
+            <ellipse cx="776" cy="185" rx="26" ry="18" fill="#ffffff" stroke="#0284c7" stroke-width="1.8" style="cursor:pointer;" onclick="if(window.openModal) openModal('twin');"/>
+            <text x="776" y="190" font-family="'Barlow Semi Condensed', sans-serif" font-size="12.5" font-weight="800" fill="#0f172a" text-anchor="middle" style="pointer-events:none;">DT</text>
+
+            <!-- Enterprise Decision Systems -->
+            <rect x="880" y="138" width="72" height="24" rx="3" fill="#2563eb" stroke="#1d4ed8" stroke-width="1" style="cursor:pointer;" onclick="if(window.openModal) openModal('lrms');"/>
+            <text x="916" y="154" font-family="'Barlow Semi Condensed', sans-serif" font-size="11.5" font-weight="800" fill="#ffffff" text-anchor="middle" style="pointer-events:none;">SAMM</text>
+
+            <rect x="880" y="166" width="72" height="24" rx="3" fill="#16a34a" stroke="#15803d" stroke-width="1" style="cursor:pointer;" onclick="if(window.openModal) openModal('hms');"/>
+            <text x="916" y="182" font-family="'Barlow Semi Condensed', sans-serif" font-size="11.5" font-weight="800" fill="#ffffff" text-anchor="middle" style="pointer-events:none;">CMS</text>
+        </g>
+    </g>
                     </svg>
                 `;
 
@@ -5343,6 +5612,28 @@ def update_modal_content(scenario, phase, selected_node, user_dropped=None):
     is_rust = (sc == "rust")
     target = selected_node or "tank"
 
+    if target in ("ast_system_model", "ast_slide"):
+        titles = [
+            html.Span("MBSE & DATA STACK ARCHITECTURE", style={"fontSize": "11px", "fontWeight": "800", "letterSpacing": "1.2px", "color": "#2563eb", "fontFamily": "'Barlow Semi Condensed', sans-serif"}),
+            html.H2("AST System Model: Formal Systems Engineering & Enterprise Data Stack", style={"fontSize": "22px", "fontWeight": "800", "color": "#ffffff", "margin": "2px 0 0 0", "fontFamily": "'Barlow Semi Condensed', sans-serif"}),
+            html.Span("Ontological Semantics · Taxonomic Classification · Relational Schema · SysML 2.0 Digital Thread · Algedonic Closed-Loop", style={"fontSize": "12px", "color": "#94a3b8"}),
+        ]
+        badge_text = "📐 MBSE ARCHITECTURE SPECIFICATION"
+        badge_style = {"backgroundColor": "#eff6ff", "color": "#2563eb", "border": "1.5px solid #bfdbfe", "borderRadius": "8px", "padding": "6px 14px", "fontWeight": "800", "fontSize": "12px"}
+        ast_img_src = IMAGE_DATA.get("ast_system_model") or IMAGE_DATA.get("ast_slide", "")
+        body_content = html.Div(
+            style={"display": "flex", "flexDirection": "column", "width": "100%", "gap": "14px", "maxHeight": "calc(88vh - 80px)", "overflowY": "auto", "padding": "8px"},
+            children=[
+                html.Div(
+                    style={"backgroundColor": "#0f172a", "borderRadius": "12px", "border": "2px solid #2563eb", "overflow": "hidden", "display": "flex", "alignItems": "center", "justifyContent": "center", "boxShadow": "0 4px 14px rgba(0,0,0,0.25)", "minHeight": "450px"},
+                    children=[
+                        html.Img(src=ast_img_src, style={"width": "100%", "height": "auto", "maxHeight": "560px", "objectFit": "contain", "display": "block"}) if ast_img_src else html.Div("AST System Model", style={"color": "#64748b", "padding": "20px"}),
+                    ],
+                ),
+            ],
+        )
+        return titles, badge_text, badge_style, body_content
+
     if target in ("point_cloud", "point-cloud", "pipeline_lidar_sac"):
         titles = [
             html.Span(
@@ -6651,6 +6942,106 @@ def update_notes_panel(current_phase, selected_node, view_mode, ship_scenario):
     visible_node_ids = list(CONTENT["positions"].get(phase, {}).keys())
 
     phase4_5_special_card = None
+    if phase == 4.5:
+        ast_img_src = IMAGE_DATA.get("ast_system_model") or IMAGE_DATA.get("ast_slide", "")
+        phase4_5_special_card = html.Div(
+            style={
+                "backgroundColor": "#ffffff",
+                "borderRadius": "12px",
+                "border": "1px solid #cbd5e1",
+                "padding": "16px",
+                "display": "flex",
+                "flexDirection": "column",
+                "gap": "12px",
+                "marginTop": "8px",
+                "boxShadow": "0 1px 3px rgba(0,0,0,0.04)",
+            },
+            children=[
+                html.Div(
+                    style={"display": "flex", "justifyContent": "space-between", "alignItems": "center"},
+                    children=[
+                        html.Span("AST SYSTEM MODEL • ARCHITECTURE TIERS", style={"fontSize": "11.5px", "fontWeight": "800", "letterSpacing": "1.2px", "color": "#0f172a", "fontFamily": "'Barlow Semi Condensed', sans-serif"}),
+                        html.Span("MBSE FOUNDATION", style={"fontSize": "10.5px", "fontWeight": "800", "color": "#2563eb", "backgroundColor": "#eff6ff", "padding": "2px 8px", "borderRadius": "4px", "border": "1px solid #bfdbfe"}),
+                    ],
+                ),
+                html.Div(
+                    style={"backgroundColor": "#0f172a", "borderRadius": "8px", "overflow": "hidden", "border": "1.5px solid #38bdf8", "position": "relative", "cursor": "pointer"},
+                    id={"type": "open-modal-btn", "index": "ast_system_model"},
+                    children=[
+                        html.Img(src=ast_img_src, style={"width": "100%", "height": "140px", "objectFit": "contain", "display": "block"}) if ast_img_src else html.Div("AST System Model", style={"color": "#64748b", "padding": "20px", "textAlign": "center"}),
+                        html.Div("🔍 View Full-Res Slide", style={"position": "absolute", "bottom": "6px", "right": "8px", "backgroundColor": "rgba(15,23,42,0.85)", "color": "#38bdf8", "fontSize": "10.5px", "fontWeight": "700", "padding": "2px 8px", "borderRadius": "4px", "border": "1px solid #0284c7"}),
+                    ],
+                ),
+                html.Div(
+                    style={"backgroundColor": "#fff7ed", "borderLeft": "4px solid #ea580c", "borderRadius": "0 8px 8px 0", "padding": "10px 12px", "display": "flex", "flexDirection": "column", "gap": "3px"},
+                    children=[
+                        html.Div(
+                            style={"display": "flex", "justifyContent": "space-between", "alignItems": "center"},
+                            children=[
+                                html.Span("1. ONTOLOGY SEMANTIC REPRESENTATION", style={"fontFamily": "'Barlow Semi Condensed', sans-serif", "fontSize": "12px", "fontWeight": "800", "color": "#c2410c"}),
+                                html.Span("WHAT EXISTS", style={"fontSize": "10px", "fontWeight": "700", "color": "#c2410c", "backgroundColor": "#ffedd5", "padding": "1px 6px", "borderRadius": "3px"}),
+                            ],
+                        ),
+                        html.P(
+                            "Encodes system entities, constraints, and relationships in a formal semantic model. Answers: what exists in this system and how do system relationships connect?",
+                            style={"fontSize": "12px", "lineHeight": "1.4", "color": "#334155", "margin": "0"},
+                        ),
+                    ],
+                ),
+                html.Div(
+                    style={"backgroundColor": "#f0f9ff", "borderLeft": "4px solid #0284c7", "borderRadius": "0 8px 8px 0", "padding": "10px 12px", "display": "flex", "flexDirection": "column", "gap": "3px"},
+                    children=[
+                        html.Div(
+                            style={"display": "flex", "justifyContent": "space-between", "alignItems": "center"},
+                            children=[
+                                html.Span("2. TAXONOMY HIERARCHICAL CLASSIFICATION", style={"fontFamily": "'Barlow Semi Condensed', sans-serif", "fontSize": "12px", "fontWeight": "800", "color": "#0369a1"}),
+                                html.Span("CLASS INHERITANCE", style={"fontSize": "10px", "fontWeight": "700", "color": "#0369a1", "backgroundColor": "#e0f2fe", "padding": "1px 6px", "borderRadius": "3px"}),
+                            ],
+                        ),
+                        html.P(
+                            "Organizes system elements into typed classes with inheritance. Enables structured reasoning about failure modes, behaviors, and decision categories across levels of abstraction.",
+                            style={"fontSize": "12px", "lineHeight": "1.4", "color": "#334155", "margin": "0"},
+                        ),
+                    ],
+                ),
+                html.Div(
+                    style={"backgroundColor": "#f0fdfa", "borderLeft": "4px solid #00a3e0", "borderRadius": "0 8px 8px 0", "padding": "10px 12px", "display": "flex", "flexDirection": "column", "gap": "3px"},
+                    children=[
+                        html.Div(
+                            style={"display": "flex", "justifyContent": "space-between", "alignItems": "center"},
+                            children=[
+                                html.Span("3. SCHEMA DATA STRUCTURE & RELATIONAL ENCODING", style={"fontFamily": "'Barlow Semi Condensed', sans-serif", "fontSize": "12px", "fontWeight": "800", "color": "#0f766e"}),
+                                html.Span("QUERYABLE DATA", style={"fontSize": "10px", "fontWeight": "700", "color": "#0f766e", "backgroundColor": "#ccfbf1", "padding": "1px 6px", "borderRadius": "3px"}),
+                            ],
+                        ),
+                        html.P(
+                            "Translates ontological and taxonomic knowledge into structured, queryable, and traceable data linked to system requirements and observed states.",
+                            style={"fontSize": "12px", "lineHeight": "1.4", "color": "#334155", "margin": "0"},
+                        ),
+                    ],
+                ),
+                html.Div(
+                    style={"backgroundColor": "#f8fafc", "border": "1px solid #e2e8f0", "borderRadius": "8px", "padding": "10px 12px", "display": "grid", "gridTemplateColumns": "1fr 1fr", "gap": "8px"},
+                    children=[
+                        html.Div([
+                            html.Div("↓ PERSISTENCE", style={"fontFamily": "'Barlow Semi Condensed', sans-serif", "fontSize": "11px", "fontWeight": "800", "color": "#0e3a53"}),
+                            html.Div("Downward multi-temporal revision storage across vessel service life.", style={"fontSize": "10.5px", "color": "#64748b", "marginTop": "2px"}),
+                        ]),
+                        html.Div([
+                            html.Div("↑ ALGEDONIC FEEDBACK", style={"fontFamily": "'Barlow Semi Condensed', sans-serif", "fontSize": "11px", "fontWeight": "800", "color": "#0e3a53"}),
+                            html.Div("Upward cybernetic signals alerting when states deviate from safety rules.", style={"fontSize": "10.5px", "color": "#64748b", "marginTop": "2px"}),
+                        ]),
+                    ],
+                ),
+                html.Div(
+                    style={"backgroundColor": "#f0fdf4", "border": "1px solid #bbf7d0", "borderRadius": "8px", "padding": "10px 12px", "display": "flex", "flexDirection": "column", "gap": "4px"},
+                    children=[
+                        html.Div("🔄 SYSML 2.0 DIGITAL THREAD → DIGITAL TWIN (DT)", style={"fontFamily": "'Barlow Semi Condensed', sans-serif", "fontSize": "11.5px", "fontWeight": "800", "color": "#15803d"}),
+                        html.Div("Bidirectional semantic link connects formal MBSE models (Behavior, Requirements, Structure) into live runtime execution within the operational Digital Twin.", style={"fontSize": "11px", "color": "#334155", "lineHeight": "1.4"}),
+                    ],
+                ),
+            ],
+        )
 
     phase2_special_card = None
     if phase == 2:
@@ -6838,7 +7229,10 @@ def update_notes_panel(current_phase, selected_node, view_mode, ship_scenario):
                     html.Div(
                         style={"display": "flex", "flexDirection": "column", "gap": "8px"},
                         children=[
-                            html.Span(
+                            html.Div(
+                                "AST System Model · 3 Tiers & SysML Digital Thread",
+                                style={"fontSize": "12px", "fontWeight": "700", "color": "#2563eb", "backgroundColor": "#eff6ff", "border": "1px solid #bfdbfe", "padding": "6px 12px", "borderRadius": "6px"}
+                            ) if phase == 4.5 else html.Span(
                                 "None",
                                 style={"fontSize": "12px", "color": "#94a3b8", "fontStyle": "italic"}
                             )
