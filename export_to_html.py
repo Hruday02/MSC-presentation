@@ -710,6 +710,12 @@ def generate_html():
                 <g id="groups"></g>
                 <g id="edges"></g>
                 <g id="nodes"></g>
+                <g id="phase45-placeholder" style="display:none; pointer-events:none;">
+                    <rect x="240" y="150" width="520" height="280" rx="16" fill="rgba(248, 250, 252, 0.85)" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6,6" />
+                    <text x="500" y="255" text-anchor="middle" font-family="'Barlow Semi Condensed', sans-serif" font-size="24" font-weight="800" fill="#1e293b" letter-spacing="0.8">PHASE 4.5 &middot; MBSE &amp; DATA STACK</text>
+                    <text x="500" y="295" text-anchor="middle" font-family="'Inter', sans-serif" font-size="14" font-weight="600" fill="#64748b">Model-Based Systems Engineering &amp; Enterprise Data Foundation</text>
+                    <text x="500" y="335" text-anchor="middle" font-family="'Inter', sans-serif" font-size="13" font-style="italic" fill="#94a3b8">Architecture canvas reserved &bull; Blank stage for future diagrams</text>
+                </g>
             </svg>
             <div class="hint">Tap a node for details &middot; Arrow keys change phase</div>
         </div>
@@ -828,6 +834,12 @@ const PHASES = {{
         title: "Beyond the twin",
         subtitle: "External Expansion & Decision Support",
         description: "Beyond the twin: LRMS and HMS act as the next link for the digital twin. DT feeds HMS (Hull Maintenance System) for fleet-wide awareness and analytics, while LRMS (Long Range Maintenance Schedule) provides decision support directing maintenance actions back to the physical Ballast Tank."
+    }},
+    4.5: {{
+        name: "Phase 4.5",
+        title: "MBSE & Data Stack",
+        subtitle: "Model-Based Systems Engineering & Enterprise Data Foundation",
+        description: "Placeholder for MBSE (Model-Based Systems Engineering) architecture and enterprise data stack integration. Canvas currently blank."
     }}
 }};
 
@@ -875,8 +887,11 @@ const SVG_LAYOUT = {{
         sac: [180, 205], vtl: [220, 410],
         twin: [520, 475],
         samm: [820, 335], cms: [820, 475]
-    }}
+    }},
+    4.5: {{}}
 }};
+
+const PHASE_ORDER = [1, 2, 3, 4, 4.5];
 
 /* Directed Edges matching story_app.py */
 const SVG_EDGES = [
@@ -1019,6 +1034,11 @@ function clipBoundary(xA, yA, xB, yB, node) {{
 }}
 
 function draw() {{
+    const p45El = document.getElementById("phase45-placeholder");
+    if (p45El) {{
+        p45El.style.display = (currentPhase === 4.5) ? "" : "none";
+    }}
+
     // 1. Draw Nodes
     for (const id in SVG_NODES) {{
         const p = pos[id], el = nodeEls[id];
@@ -1140,9 +1160,11 @@ function draw() {{
 
 let anim = null;
 function goToPhase(targetPhase) {{
-    const p = Math.max(1, Math.min(4, targetPhase));
+    const target = parseFloat(targetPhase);
+    if (!PHASES[target]) return;
+    const p = target;
     currentPhase = p;
-    if (selectedNode && !SVG_LAYOUT[p][selectedNode]) {{
+    if (selectedNode && (!SVG_LAYOUT[p] || !SVG_LAYOUT[p][selectedNode])) {{
         selectedNode = null;
     }}
 
@@ -1150,7 +1172,7 @@ function goToPhase(targetPhase) {{
     for (const id in pos) from[id] = {{ ...pos[id] }};
     const to = {{}};
     for (const id in pos) {{
-        const t = SVG_LAYOUT[p][id];
+        const t = SVG_LAYOUT[p] ? SVG_LAYOUT[p][id] : null;
         to[id] = t ? {{ x: t[0], y: t[1], o: 1 }} : {{ x: from[id].x, y: from[id].y, o: 0 }};
         if (t && from[id].o < 0.02) {{
             from[id].x = t[0];
@@ -1195,14 +1217,14 @@ function goToPhase(targetPhase) {{
 function renderTabs() {{
     const bar = document.getElementById("phase-tabs");
     bar.innerHTML = "";
-    for (let i = 1; i <= 4; i++) {{
-        const p = PHASES[i];
+    PHASE_ORDER.forEach(pKey => {{
+        const p = PHASES[pKey];
         const btn = document.createElement("button");
-        btn.className = "phase-tab-btn" + (i === currentPhase ? " active" : "");
-        btn.innerHTML = `<span class="p-num">Phase ${{i}}</span><span class="p-title">${{p.title}}</span>`;
-        btn.addEventListener("click", () => goToPhase(i));
+        btn.className = "phase-tab-btn" + (pKey === currentPhase ? " active" : "");
+        btn.innerHTML = `<span class="p-num">${{p.name}}</span><span class="p-title">${{p.title}}</span>`;
+        btn.addEventListener("click", () => goToPhase(pKey));
         bar.appendChild(btn);
-    }}
+    }});
 }}
 
 function highlight() {{
@@ -1234,24 +1256,28 @@ function renderNotes() {{
     void box.offsetWidth;
     box.classList.add("panel-slide-anim");
     const P = PHASES[currentPhase];
+    const curIdx = PHASE_ORDER.indexOf(currentPhase);
+    const prevPhase = curIdx > 0 ? PHASE_ORDER[curIdx - 1] : null;
+    const nextPhase = curIdx < PHASE_ORDER.length - 1 ? PHASE_ORDER[curIdx + 1] : null;
+
     const nav = `
         <div class="footer-nav">
-            <button class="nav-btn" id="btn-prev" ${{currentPhase === 1 ? "disabled" : ""}}>Previous</button>
-            <button class="nav-btn primary" id="btn-next" ${{currentPhase === 4 ? "disabled" : ""}}>Next Phase</button>
+            <button class="nav-btn" id="btn-prev" ${{prevPhase === null ? "disabled" : ""}}>Previous</button>
+            <button class="nav-btn primary" id="btn-next" ${{nextPhase === null ? "disabled" : ""}}>Next Phase</button>
         </div>`;
 
     if (!selectedNode) {{
-        const visibleIds = Object.keys(SVG_LAYOUT[currentPhase]);
+        const visibleIds = Object.keys(SVG_LAYOUT[currentPhase] || {{}});
         box.innerHTML = `
             <div>
-                <div class="notes-tag">PHASE ${{currentPhase}} OF 4</div>
+                <div class="notes-tag">${{P.name.toUpperCase()}} &middot; ARCHITECTURE OVERVIEW</div>
                 <h2 class="notes-title">${{P.subtitle}}</h2>
             </div>
             <p class="notes-desc">${{P.description}}</p>
             <div>
                 <div style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; color:#64748b; letter-spacing:1px; margin-bottom:6px;">ACTIVE NODES IN THIS PHASE (${{visibleIds.length}})</div>
                 <div class="pill-group">
-                    ${{visibleIds.map(id => `<button class="node-pill" onclick="selectNode('${{id}}'); openModal('${{id}}');">${{SVG_NODES[id].name}}</button>`).join("")}}
+                    ${{visibleIds.length > 0 ? visibleIds.map(id => `<button class="node-pill" onclick="selectNode('${{id}}'); openModal('${{id}}');">${{SVG_NODES[id].name}}</button>`).join("") : '<span style="color:#64748b; font-size:12.5px; font-style:italic; padding:4px 0;">Blank canvas / Future architecture stage</span>'}}
                 </div>
             </div>
 
@@ -1314,6 +1340,15 @@ function renderNotes() {{
                 <button class="inspect-action-btn" style="background:#2563eb; border-color:#2563eb; padding:10px 14px;" onclick="switchViewMode('sim')">
                     🌐 Open Interactive Dual-Asset Simulation
                 </button>
+            </div>` : ""}}
+
+            ${{currentPhase === 4.5 ? `
+            <div style="margin-top:14px; background:#f8fafc; border:2px dashed #94a3b8; border-radius:12px; padding:20px 16px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:8px;">
+                <span style="font-size:32px;">📐</span>
+                <span style="font-family:'Barlow Semi Condensed',sans-serif; font-weight:800; font-size:15px; color:#1e293b; letter-spacing:0.5px;">MBSE & Enterprise Data Stack</span>
+                <p style="font-size:12.5px; color:#64748b; margin:0; max-width:320px; line-height:1.4;">
+                    This stage is reserved for Model-Based Systems Engineering (MBSE) architecture and enterprise data stack integration. Canvas currently blank.
+                </p>
             </div>` : ""}}
 
             ${{nav}}`;
@@ -1388,8 +1423,12 @@ function renderNotes() {{
             ${{nav}}`;
     }}
 
-    document.getElementById("btn-prev")?.addEventListener("click", () => goToPhase(currentPhase - 1));
-    document.getElementById("btn-next")?.addEventListener("click", () => goToPhase(currentPhase + 1));
+    document.getElementById("btn-prev")?.addEventListener("click", () => {{
+        if (prevPhase !== null) goToPhase(prevPhase);
+    }});
+    document.getElementById("btn-next")?.addEventListener("click", () => {{
+        if (nextPhase !== null) goToPhase(nextPhase);
+    }});
 }}
 
 function selectNode(id) {{
@@ -1855,8 +1894,9 @@ function renderSimSvg() {{
 /* Keyboard Navigation (Arrow Keys) */
 window.addEventListener('keydown', (e) => {{
     if (e.target.closest && e.target.closest("button, [role=button], input")) return;
-    if (e.key === 'ArrowLeft' && currentPhase > 1) goToPhase(currentPhase - 1);
-    if (e.key === 'ArrowRight' && currentPhase < 4) goToPhase(currentPhase + 1);
+    const curIdx = PHASE_ORDER.indexOf(currentPhase);
+    if (e.key === 'ArrowLeft' && curIdx > 0) goToPhase(PHASE_ORDER[curIdx - 1]);
+    if (e.key === 'ArrowRight' && curIdx < PHASE_ORDER.length - 1) goToPhase(PHASE_ORDER[curIdx + 1]);
     if (e.key === 'Escape') {{
         document.getElementById("modal-overlay").classList.remove("active");
         if (selectedNode) selectNode(null);

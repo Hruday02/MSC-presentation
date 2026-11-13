@@ -68,6 +68,15 @@ CONTENT: Dict[str, Any] = {
                 "while LRMS (Long Range Maintenance Schedule) provides decision support directing maintenance actions back to the physical Ballast Tank."
             ),
         },
+        4.5: {
+            "name": "Phase 4.5",
+            "title": "MBSE & Data Stack",
+            "subtitle": "Model-Based Systems Engineering & Enterprise Data Foundation",
+            "description": (
+                "Placeholder for MBSE (Model-Based Systems Engineering) architecture and enterprise data stack integration. "
+                "Canvas currently blank."
+            ),
+        },
     },
 
     # Groups (Compound parent bounding boxes)
@@ -240,6 +249,7 @@ CONTENT: Dict[str, Any] = {
             "samm": (820, 335),
             "cms": (820, 475),
         },
+        4.5: {},
     },
 
     # Directed and bidirectional edges matching remapped architecture
@@ -2270,7 +2280,8 @@ app.index_string = """
                     sac: [180, 205], vtl: [220, 410],
                     twin: [520, 475],
                     samm: [820, 335], cms: [820, 475]
-                }
+                },
+                4.5: {}
             };
 
             const SVG_EDGES = [
@@ -2328,6 +2339,12 @@ app.index_string = """
                         <g id="group-boxes"></g>
                         <g id="edges"></g>
                         <g id="nodes"></g>
+                        <g id="phase45-placeholder" style="display:none; pointer-events:none;">
+                            <rect x="240" y="150" width="520" height="280" rx="16" fill="rgba(248, 250, 252, 0.85)" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6,6" />
+                            <text x="500" y="255" text-anchor="middle" font-family="'Barlow Semi Condensed', sans-serif" font-size="24" font-weight="800" fill="#1e293b" letter-spacing="0.8">PHASE 4.5 &middot; MBSE &amp; DATA STACK</text>
+                            <text x="500" y="295" text-anchor="middle" font-family="'Inter', sans-serif" font-size="14" font-weight="600" fill="#64748b">Model-Based Systems Engineering &amp; Enterprise Data Foundation</text>
+                            <text x="500" y="335" text-anchor="middle" font-family="'Inter', sans-serif" font-size="13" font-style="italic" fill="#94a3b8">Architecture canvas reserved &bull; Blank stage for future diagrams</text>
+                        </g>
                     </svg>
                 `;
 
@@ -2456,6 +2473,11 @@ app.index_string = """
             }
 
             function draw() {
+                const p45El = document.getElementById("phase45-placeholder");
+                if (p45El) {
+                    p45El.style.display = (currentPhase === 4.5) ? "" : "none";
+                }
+
                 // 1. Draw Nodes
                 for (const id in SVG_NODES) {
                     const p = pos[id], el = nodeEls[id];
@@ -2599,12 +2621,13 @@ app.index_string = """
 
             let anim = null;
             window.goToPhase = function(targetPhase) {
-                const p = Math.max(1, Math.min(4, targetPhase));
+                const target = parseFloat(targetPhase);
+                const p = isNaN(target) ? 1 : target;
                 currentPhase = p;
                 if (!document.getElementById("svg")) {
                     initDiagram();
                 }
-                if (selectedNode && !SVG_LAYOUT[p][selectedNode]) {
+                if (selectedNode && (!SVG_LAYOUT[p] || !SVG_LAYOUT[p][selectedNode])) {
                     window.selectNodeInternal(null);
                 }
 
@@ -2612,7 +2635,7 @@ app.index_string = """
                 for (const id in pos) from[id] = { ...pos[id] };
                 const to = {};
                 for (const id in pos) {
-                    const t = SVG_LAYOUT[p][id];
+                    const t = SVG_LAYOUT[p] ? SVG_LAYOUT[p][id] : null;
                     to[id] = t ? { x: t[0], y: t[1], o: 1 } : { x: from[id].x, y: from[id].y, o: 0 };
                     if (t && from[id].o < 0.02) {
                         from[id].x = t[0];
@@ -2708,14 +2731,16 @@ app.index_string = """
             document.addEventListener('click', function(e) {
                 const target = e.target.closest('button, .phase-tab-btn');
                 if (!target) return;
+                const PHASE_KEYS = [1, 2, 3, 4, 4.5];
+                const curIdx = PHASE_KEYS.indexOf(currentPhase);
                 if (target.id === 'btn-prev-phase') {
-                    if (window.goToPhase && currentPhase > 1) window.goToPhase(currentPhase - 1);
+                    if (window.goToPhase && curIdx > 0) window.goToPhase(PHASE_KEYS[curIdx - 1]);
                 } else if (target.id === 'btn-next-phase') {
-                    if (window.goToPhase && currentPhase < 4) window.goToPhase(currentPhase + 1);
+                    if (window.goToPhase && curIdx < PHASE_KEYS.length - 1) window.goToPhase(PHASE_KEYS[curIdx + 1]);
                 } else {
-                    const match = (target.id || '').match(/btn-phase-(\d+)/);
+                    const match = (target.id || '').match(/btn-phase-([0-9_]+)/);
                     if (match) {
-                        const p = parseInt(match[1]);
+                        const p = parseFloat(match[1].replace('_', '.'));
                         if (window.goToPhase) window.goToPhase(p);
                     }
                 }
@@ -2915,18 +2940,18 @@ def create_layout() -> html.Div:
                 id="phase-buttons-bar",
                 style={
                     "display": "grid",
-                    "gridTemplateColumns": "repeat(4, 1fr)",
-                    "gap": "14px",
+                    "gridTemplateColumns": "repeat(5, 1fr)",
+                    "gap": "12px",
                     "width": "100%",
                 },
                 children=[
                     html.Button(
-                        id=f"btn-phase-{p}",
+                        id=f"btn-phase-{str(p).replace('.', '_')}",
                         n_clicks=0,
                         className="phase-tab-btn",
                         style={
                             "minHeight": "60px",
-                            "padding": "10px 16px",
+                            "padding": "10px 14px",
                             "borderRadius": "12px",
                             "border": "2px solid #cbd5e1",
                             "backgroundColor": "#ffffff",
@@ -2939,7 +2964,7 @@ def create_layout() -> html.Div:
                         },
                         children=[
                             html.Span(
-                                f"PHASE {p}",
+                                f"{CONTENT['phases'][p]['name'].upper()}",
                                 style={
                                     "fontSize": "11px",
                                     "fontWeight": "800",
@@ -2952,7 +2977,7 @@ def create_layout() -> html.Div:
                             html.Span(
                                 CONTENT["phases"][p]["title"],
                                 style={
-                                    "fontSize": "16px",
+                                    "fontSize": "15px",
                                     "fontWeight": "700",
                                     "fontFamily": "'Barlow Semi Condensed', sans-serif",
                                     "lineHeight": 1.15,
@@ -2960,7 +2985,7 @@ def create_layout() -> html.Div:
                             ),
                         ],
                     )
-                    for p in range(1, 5)
+                    for p in [1, 2, 3, 4, 4.5]
                 ],
             ),
 
@@ -5122,6 +5147,7 @@ def build_modal_dialog(sc: str = "clean", phase: int = 3, target_node: str = "ta
         Input("btn-phase-2", "n_clicks"),
         Input("btn-phase-3", "n_clicks"),
         Input("btn-phase-4", "n_clicks"),
+        Input("btn-phase-4_5", "n_clicks"),
         Input("btn-prev-phase", "n_clicks"),
         Input("btn-next-phase", "n_clicks"),
         Input("svg-phase-sync-input", "value"),
@@ -5129,12 +5155,20 @@ def build_modal_dialog(sc: str = "clean", phase: int = 3, target_node: str = "ta
     State("current-phase", "data"),
     prevent_initial_call=True,
 )
-def handle_phase_switch(p1, p2, p3, p4, prev_click, next_click, svg_phase, current_phase):
+def handle_phase_switch(p1, p2, p3, p4, p4_5, prev_click, next_click, svg_phase, current_phase):
     trig_id = callback_context.triggered_id
     if not trig_id:
         return current_phase or 1
 
     current = current_phase or 1
+    phase_keys = [1, 2, 3, 4, 4.5]
+    if current not in phase_keys:
+        try:
+            current = float(current) if "." in str(current) else int(current)
+        except Exception:
+            current = 1
+
+    cur_idx = phase_keys.index(current) if current in phase_keys else 0
 
     if trig_id == "btn-phase-1":
         return 1
@@ -5144,15 +5178,19 @@ def handle_phase_switch(p1, p2, p3, p4, prev_click, next_click, svg_phase, curre
         return 3
     elif trig_id == "btn-phase-4":
         return 4
+    elif trig_id == "btn-phase-4_5":
+        return 4.5
     elif trig_id == "btn-prev-phase":
-        if prev_click and prev_click > 0:
-            return max(1, current - 1)
+        if prev_click and prev_click > 0 and cur_idx > 0:
+            return phase_keys[cur_idx - 1]
     elif trig_id == "btn-next-phase":
-        if next_click and next_click > 0:
-            return min(4, current + 1)
+        if next_click and next_click > 0 and cur_idx < len(phase_keys) - 1:
+            return phase_keys[cur_idx + 1]
     elif trig_id == "svg-phase-sync-input":
         try:
-            return int(svg_phase)
+            val = float(svg_phase) if "." in str(svg_phase) else int(svg_phase)
+            if val in phase_keys:
+                return val
         except Exception:
             return current
 
@@ -5526,18 +5564,22 @@ def handle_user_dropped_images(drop_contents, replace_contents, clear_clicks, dr
 
 # 3. Highlight the Active Phase Button in Amber
 @app.callback(
-    [Output(f"btn-phase-{p}", "style") for p in range(1, 5)],
+    [Output(f"btn-phase-{str(p).replace('.', '_')}", "style") for p in [1, 2, 3, 4, 4.5]],
     Input("current-phase", "data"),
 )
 def update_phase_button_styles(current_phase):
     phase = current_phase or 1
-    styles = []
+    try:
+        phase = float(phase) if "." in str(phase) else int(phase)
+    except Exception:
+        phase = 1
 
-    for p in range(1, 5):
+    styles = []
+    for p in [1, 2, 3, 4, 4.5]:
         if p == phase:
             styles.append({
                 "minHeight": "60px",
-                "padding": "10px 16px",
+                "padding": "10px 14px",
                 "borderRadius": "12px",
                 "border": "2.5px solid #d97706",
                 "backgroundColor": "#f59e0b",
@@ -5555,7 +5597,7 @@ def update_phase_button_styles(current_phase):
         else:
             styles.append({
                 "minHeight": "60px",
-                "padding": "10px 16px",
+                "padding": "10px 14px",
                 "borderRadius": "12px",
                 "border": "2px solid #e2e8f0",
                 "backgroundColor": "#ffffff",
@@ -5889,10 +5931,17 @@ def update_ship_simulation_display(scenario):
 )
 def update_notes_panel(current_phase, selected_node, view_mode, ship_scenario):
     phase = current_phase or 1
-    phase_info = CONTENT["phases"][phase]
+    try:
+        phase = float(phase) if "." in str(phase) else int(phase)
+    except Exception:
+        phase = 1
 
-    is_prev_disabled = (phase <= 1)
-    is_next_disabled = (phase >= 4)
+    phase_info = CONTENT["phases"].get(phase, CONTENT["phases"][1])
+
+    phase_keys = [1, 2, 3, 4, 4.5]
+    cur_idx = phase_keys.index(phase) if phase in phase_keys else 0
+    is_prev_disabled = (cur_idx <= 0)
+    is_next_disabled = (cur_idx >= len(phase_keys) - 1)
 
     prev_style = {
         "minHeight": "56px",
@@ -6599,6 +6648,31 @@ def update_notes_panel(current_phase, selected_node, view_mode, ship_scenario):
     # Case D: Phase Overview (Nothing Selected)
     visible_node_ids = list(CONTENT["positions"].get(phase, {}).keys())
 
+    phase4_5_special_card = None
+    if phase == 4.5:
+        phase4_5_special_card = html.Div(
+            style={
+                "backgroundColor": "#f8fafc",
+                "borderRadius": "12px",
+                "border": "2px dashed #94a3b8",
+                "padding": "20px 16px",
+                "display": "flex",
+                "flexDirection": "column",
+                "alignItems": "center",
+                "textAlign": "center",
+                "gap": "8px",
+                "marginTop": "8px",
+            },
+            children=[
+                html.Span("📐", style={"fontSize": "32px"}),
+                html.Span("MBSE & Enterprise Data Stack", style={"fontSize": "15px", "fontWeight": "800", "color": "#1e293b", "fontFamily": "'Barlow Semi Condensed', sans-serif"}),
+                html.P(
+                    "This stage is reserved for Model-Based Systems Engineering (MBSE) architecture and enterprise data stack integration. Canvas currently blank.",
+                    style={"fontSize": "13px", "lineHeight": "1.4", "color": "#64748b", "margin": "0", "maxWidth": "320px"},
+                ),
+            ],
+        )
+
     phase2_special_card = None
     if phase == 2:
         phase2_special_card = html.Div(
@@ -6745,6 +6819,9 @@ def update_notes_panel(current_phase, selected_node, view_mode, ship_scenario):
             # Phase 3 Feature Card (Direct Tank & Twin Quick Inspector)
             phase3_special_card,
 
+            # Phase 4.5 Feature Card (MBSE & Data Stack)
+            phase4_5_special_card,
+
             # Phase Description
             html.P(
                 phase_info["description"],
@@ -6782,6 +6859,11 @@ def update_notes_panel(current_phase, selected_node, view_mode, ship_scenario):
                     html.Div(
                         style={"display": "flex", "flexDirection": "column", "gap": "8px"},
                         children=[
+                            html.Div(
+                                "Blank canvas / Future architecture stage",
+                                style={"fontSize": "13px", "fontStyle": "italic", "color": "#64748b", "padding": "6px 0"}
+                            )
+                        ] if len(visible_node_ids) == 0 else [
                             html.Button(
                                 id={"type": "node-list-item", "index": nid},
                                 n_clicks=0,
