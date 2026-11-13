@@ -2591,107 +2591,125 @@ app.index_string = """
                 <text x="872" y="187" font-family="'Barlow Semi Condensed', sans-serif" font-size="11.5" font-weight="800" fill="#ffffff" text-anchor="middle">CMS</text>
             </g>
             <!-- ----------------------------------------------------- -->
-            <!-- SUB-BLOCK: SYSML 2.0 MBSE ARCHITECTURE TREE (BOTTOM) -->
+            <!-- SUB-BLOCK: SYSML 2.0 HIERARCHY TREE METAMODEL         -->
+            <!-- Authentic match to user slide (uploaded_media_1794606972675.png) -->
             <!-- ----------------------------------------------------- -->
-            <g id="sysml-tree-block" style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
-                <!-- Header divider -->
-                <line x1="535" y1="266" x2="960" y2="266" stroke="#e2e8f0" stroke-width="1.5"/>
-                <rect x="640" y="256" width="190" height="20" rx="5" fill="#f5f3ff" stroke="#ddd6fe" stroke-width="1"/>
-                <text x="735" y="270" font-family="'Barlow Semi Condensed', sans-serif" font-size="10.5" font-weight="800" fill="#6d28d9" text-anchor="middle">SYSML 2.0 ARCHITECTURE SPECIFICATION</text>
+            <!-- Connecting Tree Lines & Generalization Triangles -->
+            <path d="M 626 350 L 642 350 L 642 260 L 655 260" fill="none" stroke="#334155" stroke-width="1.2"/>
+            <path d="M 626 365 L 655 365" fill="none" stroke="#334155" stroke-width="1.2"/>
+            <path d="M 626 380 L 642 380 L 642 453 L 655 453" fill="none" stroke="#334155" stroke-width="1.2"/>
 
-                <!-- Model Cards Grid -->
-                <!-- 1. Behavior Diagrams -->
-                <rect x="545" y="286" width="125" height="188" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
-                <rect x="545" y="286" width="125" height="24" rx="8" fill="#fdf4ff"/>
-                <text x="607" y="302" font-family="'Barlow Semi Condensed', sans-serif" font-size="11" font-weight="800" fill="#86198f" text-anchor="middle">BEHAVIOR MODELS</text>
-                <g transform="translate(552, 318)">
-                    <rect x="0" y="0" width="111" height="22" rx="4" fill="#faf5ff" stroke="#e9d5ff"/>
-                    <text x="55" y="14" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#6b21a8" text-anchor="middle">Use Case Diagram</text>
+            <polygon points="626,350 634,346 634,354" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
+            <polygon points="626,365 634,361 634,369" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
+            <polygon points="626,380 634,376 634,384" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
 
-                    <rect x="0" y="28" width="111" height="22" rx="4" fill="#faf5ff" stroke="#e9d5ff"/>
-                    <text x="55" y="42" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#6b21a8" text-anchor="middle">State Machine</text>
+            <path d="M 753 248 L 766 248 L 766 217 L 778 217" fill="none" stroke="#334155" stroke-width="1.2"/>
+            <path d="M 753 256 L 766 256 L 766 244 L 778 244" fill="none" stroke="#334155" stroke-width="1.2"/>
+            <path d="M 753 264 L 766 264 L 766 271 L 778 271" fill="none" stroke="#334155" stroke-width="1.2"/>
+            <path d="M 753 272 L 766 272 L 766 298 L 778 298" fill="none" stroke="#334155" stroke-width="1.2"/>
 
-                    <rect x="0" y="56" width="111" height="22" rx="4" fill="#faf5ff" stroke="#e9d5ff"/>
-                    <text x="55" y="70" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#6b21a8" text-anchor="middle">Sequence Diagram</text>
+            <polygon points="753,248 760,245 760,251" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
+            <polygon points="753,256 760,253 760,259" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
+            <polygon points="753,264 760,261 760,267" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
+            <polygon points="753,272 760,269 760,275" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
 
-                    <rect x="0" y="84" width="111" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0"/>
-                    <text x="55" y="98" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#15803d" text-anchor="middle">Activity Diagram</text>
+            <path d="M 753 444 L 766 444 L 766 405 L 778 405" fill="none" stroke="#334155" stroke-width="1.2"/>
+            <path d="M 753 453 L 766 453 L 766 432 L 778 432" fill="none" stroke="#334155" stroke-width="1.2"/>
+            <path d="M 753 462 L 766 462 L 766 459 L 778 459" fill="none" stroke="#334155" stroke-width="1.2"/>
 
-                    <text x="55" y="128" font-family="'Inter', sans-serif" font-size="8" fill="#64748b" text-anchor="middle">Defines degradation states</text>
-                    <text x="55" y="140" font-family="'Inter', sans-serif" font-size="8" fill="#64748b" text-anchor="middle">&amp; sensor sampling logic</text>
-                </g>
+            <polygon points="753,444 760,441 760,447" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
+            <polygon points="753,453 760,450 760,456" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
+            <polygon points="753,462 760,459 760,465" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
 
-                <!-- 2. Requirements & Verification -->
-                <rect x="680" y="286" width="125" height="188" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
-                <rect x="680" y="286" width="125" height="24" rx="8" fill="#fef2f2"/>
-                <text x="742" y="302" font-family="'Barlow Semi Condensed', sans-serif" font-size="11" font-weight="800" fill="#991b1b" text-anchor="middle">REQUIREMENTS</text>
-                <g transform="translate(687, 318)">
-                    <rect x="0" y="0" width="111" height="22" rx="4" fill="#fff1f2" stroke="#fecdd3"/>
-                    <text x="55" y="14" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#9f1239" text-anchor="middle">Requirement Diagram</text>
+            <line x1="845" y1="470" x2="845" y2="483" stroke="#334155" stroke-width="1.2"/>
+            <polygon points="845,470 841,476 849,476" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
 
-                    <rect x="0" y="28" width="111" height="22" rx="4" fill="#fff1f2" stroke="#fecdd3"/>
-                    <text x="55" y="42" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#9f1239" text-anchor="middle">DNV-GL Class Limits</text>
-
-                    <rect x="0" y="56" width="111" height="22" rx="4" fill="#fff1f2" stroke="#fecdd3"/>
-                    <text x="55" y="70" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#9f1239" text-anchor="middle">Plate Thickness Audit</text>
-
-                    <rect x="0" y="84" width="111" height="22" rx="4" fill="#eff6ff" stroke="#bfdbfe"/>
-                    <text x="55" y="98" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#1d4ed8" text-anchor="middle">Package Diagram</text>
-
-                    <text x="55" y="128" font-family="'Inter', sans-serif" font-size="8" fill="#64748b" text-anchor="middle">Automated verification of</text>
-                    <text x="55" y="140" font-family="'Inter', sans-serif" font-size="8" fill="#64748b" text-anchor="middle">structural safety criteria</text>
-                </g>
-
-                <!-- 3. Structure & Parametric Diagrams -->
-                <rect x="815" y="286" width="125" height="188" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
-                <rect x="815" y="286" width="125" height="24" rx="8" fill="#f0fdf4"/>
-                <text x="877" y="302" font-family="'Barlow Semi Condensed', sans-serif" font-size="11" font-weight="800" fill="#166534" text-anchor="middle">STRUCTURAL / BDD</text>
-                <g transform="translate(822, 318)">
-                    <rect x="0" y="0" width="111" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0"/>
-                    <text x="55" y="14" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#15803d" text-anchor="middle">Block Definition (BDD)</text>
-
-                    <rect x="0" y="28" width="111" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0"/>
-                    <text x="55" y="42" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#15803d" text-anchor="middle">Internal Block (IBD)</text>
-
-                    <rect x="0" y="56" width="111" height="22" rx="4" fill="#fef2f2" stroke="#fecdd3"/>
-                    <text x="55" y="70" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#9f1239" text-anchor="middle">Parametric Diagram</text>
-
-                    <rect x="0" y="84" width="111" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0"/>
-                    <text x="55" y="98" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#15803d" text-anchor="middle">Modified UML 2.0</text>
-
-                    <text x="55" y="128" font-family="'Inter', sans-serif" font-size="8" fill="#64748b" text-anchor="middle">Scantling geometry &amp; FEA</text>
-                    <text x="55" y="140" font-family="'Inter', sans-serif" font-size="8" fill="#64748b" text-anchor="middle">boundary parameterization</text>
-                </g>
+            <!-- Root Box -->
+            <g style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
+                <rect x="530" y="343" width="96" height="44" rx="4" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" />
+                <text x="578" y="369" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">SysML Diagram</text>
             </g>
 
-            <!-- ----------------------------------------------------- -->
-            <!-- DIGITAL THREAD EXECUTION CURVED ARROW (SysML -> DT)  -->
-            <!-- ----------------------------------------------------- -->
-            <g id="digital-thread-arrow" style="cursor:help;">
-                <title>Digital Thread: SysML model directly executes and parameterizes the runtime Digital Twin</title>
-                <!-- Curved Arrow Line -->
-                <path d="M 742 284 C 742 270, 735 260, 735 252" fill="none" stroke="#16a34a" stroke-width="4" stroke-linecap="round"/>
-                <polygon points="730,255 735,246 740,255" fill="#16a34a"/>
+            <!-- Branches -->
+            <g style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
+                <rect x="655" y="240" width="98" height="40" rx="4" fill="#ffffff" stroke="#1e293b" stroke-width="1.4" />
+                <text x="704" y="264" font-family="'Barlow Semi Condensed', sans-serif" font-size="11.5" font-weight="800" fill="#0f172a" text-anchor="middle">Behavior Diagram</text>
             </g>
 
-            <!-- Legend Badge Bar at Bottom -->
-            <g transform="translate(545, 486)">
-                <rect x="0" y="0" width="395" height="28" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-                <circle cx="20" cy="14" r="5" fill="#f43f5e"/>
-                <text x="30" y="17" font-family="'Inter', sans-serif" font-size="9" font-weight="600" fill="#475569">Requirements</text>
-
-                <circle cx="115" cy="14" r="5" fill="#a855f7"/>
-                <text x="125" y="17" font-family="'Inter', sans-serif" font-size="9" font-weight="600" fill="#475569">Behavioral</text>
-
-                <circle cx="200" cy="14" r="5" fill="#22c55e"/>
-                <text x="210" y="17" font-family="'Inter', sans-serif" font-size="9" font-weight="600" fill="#475569">Structural (BDD)</text>
-
-                <circle cx="310" cy="14" r="5" fill="#3b82f6"/>
-                <text x="320" y="17" font-family="'Inter', sans-serif" font-size="9" font-weight="600" fill="#475569">Digital Thread</text>
+            <g style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
+                <rect x="655" y="347" width="98" height="36" rx="4" fill="#fff1f2" stroke="#fda4af" stroke-width="1.5" />
+                <text x="704" y="369" font-family="'Barlow Semi Condensed', sans-serif" font-size="11" font-weight="800" fill="#be123c" text-anchor="middle">Requirement Diagram</text>
             </g>
-        </g>
+
+            <g style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
+                <rect x="655" y="433" width="98" height="40" rx="4" fill="#ffffff" stroke="#1e293b" stroke-width="1.4" />
+                <text x="704" y="457" font-family="'Barlow Semi Condensed', sans-serif" font-size="11.5" font-weight="800" fill="#0f172a" text-anchor="middle">Structure Diagram</text>
+            </g>
+
+            <!-- Behavior Leaves -->
+            <g style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
+                <rect x="778" y="206" width="136" height="22" rx="3" fill="#faf5ff" stroke="#c084fc" stroke-width="1.2" />
+                <text x="846" y="221" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#6b21a8" text-anchor="middle">Use Case Diagram</text>
+            </g>
+
+            <g style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
+                <rect x="778" y="233" width="136" height="22" rx="3" fill="#faf5ff" stroke="#c084fc" stroke-width="1.2" />
+                <text x="846" y="248" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#6b21a8" text-anchor="middle">State Machine Diagram</text>
+            </g>
+
+            <g style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
+                <rect x="778" y="260" width="136" height="22" rx="3" fill="#faf5ff" stroke="#c084fc" stroke-width="1.2" />
+                <text x="846" y="275" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#6b21a8" text-anchor="middle">Sequence Diagram</text>
+            </g>
+
+            <g style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
+                <rect x="778" y="287" width="136" height="22" rx="3" fill="#f0fdf4" stroke="#86efac" stroke-width="1.2" />
+                <text x="846" y="302" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#15803d" text-anchor="middle">Activity Diagram</text>
+            </g>
+
+            <!-- Structure Leaves -->
+            <g style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
+                <rect x="778" y="394" width="136" height="22" rx="3" fill="#faf5ff" stroke="#c084fc" stroke-width="1.2" />
+                <text x="846" y="409" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#6b21a8" text-anchor="middle">Package Diagram</text>
+            </g>
+
+            <g style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
+                <rect x="778" y="421" width="136" height="22" rx="3" fill="#f0fdf4" stroke="#86efac" stroke-width="1.2" />
+                <text x="846" y="436" font-family="'Inter', sans-serif" font-size="8.8" font-weight="700" fill="#15803d" text-anchor="middle">Block Definition Diagram</text>
+            </g>
+
+            <g style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
+                <rect x="778" y="448" width="136" height="22" rx="3" fill="#f0fdf4" stroke="#86efac" stroke-width="1.2" />
+                <text x="846" y="463" font-family="'Inter', sans-serif" font-size="8.8" font-weight="700" fill="#15803d" text-anchor="middle">Internal Block Diagram</text>
+            </g>
+
+            <g style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
+                <rect x="778" y="484" width="136" height="22" rx="3" fill="#fff1f2" stroke="#fda4af" stroke-width="1.2" />
+                <text x="846" y="499" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#be123c" text-anchor="middle">Parametric Diagram</text>
+            </g>
+
+            <!-- Digital Thread Curved Arrow -->
+            <g id="p45-digital-thread-arrow">
+                <path d="M 753 365 C 778 365, 765 240, 735 204" fill="none" stroke="#16a34a" stroke-width="3.5" stroke-linecap="round"/>
+                <polygon points="731,209 735,201 739,209" fill="#16a34a"/>
+            </g>
+
+            <!-- Legend -->
+            <g id="p45-legend" transform="translate(535, 528)">
+                <rect x="0" y="0" width="124" height="24" rx="5" fill="#fff1f2" stroke="#fda4af" stroke-width="1"/>
+                <circle cx="12" cy="12" r="4.5" fill="#f43f5e"/>
+                <text x="24" y="16" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#be123c">New Diagram Type</text>
+
+                <rect x="134" y="0" width="124" height="24" rx="5" fill="#faf5ff" stroke="#c084fc" stroke-width="1"/>
+                <circle cx="146" cy="12" r="4.5" fill="#a855f7"/>
+                <text x="158" y="16" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#6b21a8">Same as UML 2.0</text>
+
+                <rect x="268" y="0" width="138" height="24" rx="5" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+                <circle cx="280" cy="12" r="4.5" fill="#22c55e"/>
+                <text x="292" y="16" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#15803d">Modified from UML 2.0</text>
+            </g>
     </g>
-                    </svg>
+</svg>
                 `;
 
                 const svg = mount.querySelector("svg");

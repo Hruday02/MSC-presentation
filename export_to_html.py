@@ -812,7 +812,7 @@ def generate_html():
         <!-- CENTER: BIDIRECTIONAL CONNECTOR                            -->
         <!-- ========================================================= -->
         <g id="p45-double-arrow">
-            <polygon points="492,266 502,256 502,262 522,262 522,256 532,266 522,276 522,270 502,270 502,276" fill="#10b981" stroke="#059669" stroke-width="1.5" />
+            <polygon points="486,365 496,355 496,361 518,361 518,355 528,365 518,375 518,369 496,369 496,375" fill="#86efac" stroke="#15803d" stroke-width="1.5" />
         </g>
 
         <!-- ========================================================= -->
@@ -929,85 +929,164 @@ def generate_html():
             </g>
         </g>
         <!-- ========================================================= -->
-        <!-- RIGHT BOTTOM: TRADITIONAL SYSML DIAGRAM TREE               -->
-        <!-- Exact 9 diagrams and 3-color taxonomy from slide           -->
+        <!-- RIGHT BOTTOM: SYSML 2.0 HIERARCHY TREE METAMODEL          -->
+        <!-- Authentic match to user slide (uploaded_media_1794606972675.png) -->
         <!-- ========================================================= -->
         <g id="p45-sysml-tree" style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
-            <!-- Root Label (Rotated vertically) -->
-            <text x="576" y="328" transform="rotate(-90 576 328)" font-family="'Barlow Semi Condensed', sans-serif" font-size="11.5" font-weight="800" fill="#475569" text-anchor="middle" letter-spacing="0.8">Traditional SysML Diagram</text>
 
-            <!-- Tree Hierarchy Lines -->
-            <line x1="594" y1="228" x2="594" y2="420" stroke="#94a3b8" stroke-width="1.4"/>
+            <!-- ----------------------------------------------------- -->
+            <!-- CONNECTING TREE LINES & GENERALIZATION TRIANGLES      -->
+            <!-- ----------------------------------------------------- -->
+            <!-- Root to Level 1 spine -->
+            <path d="M 626 350 L 642 350 L 642 260 L 655 260" fill="none" stroke="#334155" stroke-width="1.2"/>
+            <path d="M 626 365 L 655 365" fill="none" stroke="#334155" stroke-width="1.2"/>
+            <path d="M 626 380 L 642 380 L 642 453 L 655 453" fill="none" stroke="#334155" stroke-width="1.2"/>
 
-            <line x1="594" y1="228" x2="614" y2="228" stroke="#94a3b8" stroke-width="1.4"/>
-            <line x1="594" y1="252" x2="614" y2="252" stroke="#94a3b8" stroke-width="1.4"/>
-            <line x1="594" y1="276" x2="614" y2="276" stroke="#94a3b8" stroke-width="1.4"/>
-            <line x1="594" y1="300" x2="614" y2="300" stroke="#94a3b8" stroke-width="1.4"/>
-            <line x1="594" y1="324" x2="614" y2="324" stroke="#94a3b8" stroke-width="1.4"/>
-            <line x1="594" y1="348" x2="614" y2="348" stroke="#94a3b8" stroke-width="1.4"/>
-            <line x1="594" y1="372" x2="614" y2="372" stroke="#94a3b8" stroke-width="1.4"/>
-            <line x1="594" y1="396" x2="614" y2="396" stroke="#94a3b8" stroke-width="1.4"/>
-            <line x1="594" y1="420" x2="614" y2="420" stroke="#94a3b8" stroke-width="1.4"/>
+            <!-- Generalization Triangles pointing into Root (SysML Diagram) -->
+            <polygon points="626,350 634,346 634,354" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
+            <polygon points="626,365 634,361 634,369" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
+            <polygon points="626,380 634,376 634,384" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
 
-            <!-- 1. Use Case Diagram (SysML 2.0 / Purple) -->
-            <rect x="614" y="217" width="156" height="21" rx="4" fill="#faf5ff" stroke="#c084fc" stroke-width="1.1"/>
-            <text x="692" y="232" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#6b21a8" text-anchor="middle">Use Case Diagram</text>
+            <!-- Behavior Diagram to 4 children spine -->
+            <path d="M 753 248 L 766 248 L 766 217 L 778 217" fill="none" stroke="#334155" stroke-width="1.2"/>
+            <path d="M 753 256 L 766 256 L 766 244 L 778 244" fill="none" stroke="#334155" stroke-width="1.2"/>
+            <path d="M 753 264 L 766 264 L 766 271 L 778 271" fill="none" stroke="#334155" stroke-width="1.2"/>
+            <path d="M 753 272 L 766 272 L 766 298 L 778 298" fill="none" stroke="#334155" stroke-width="1.2"/>
 
-            <!-- 2. State Machine Diagram (SysML 2.0 / Purple) -->
-            <rect x="614" y="241" width="156" height="21" rx="4" fill="#faf5ff" stroke="#c084fc" stroke-width="1.1"/>
-            <text x="692" y="256" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#6b21a8" text-anchor="middle">State Machine Diagram</text>
+            <!-- Generalization Triangles pointing into Behavior Diagram -->
+            <polygon points="753,248 760,245 760,251" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
+            <polygon points="753,256 760,253 760,259" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
+            <polygon points="753,264 760,261 760,267" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
+            <polygon points="753,272 760,269 760,275" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
 
-            <!-- 3. Sequence Diagram (SysML 2.0 / Purple) -->
-            <rect x="614" y="265" width="156" height="21" rx="4" fill="#faf5ff" stroke="#c084fc" stroke-width="1.1"/>
-            <text x="692" y="280" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#6b21a8" text-anchor="middle">Sequence Diagram</text>
+            <!-- Structure Diagram to 3 children spine -->
+            <path d="M 753 444 L 766 444 L 766 405 L 778 405" fill="none" stroke="#334155" stroke-width="1.2"/>
+            <path d="M 753 453 L 766 453 L 766 432 L 778 432" fill="none" stroke="#334155" stroke-width="1.2"/>
+            <path d="M 753 462 L 766 462 L 766 459 L 778 459" fill="none" stroke="#334155" stroke-width="1.2"/>
 
-            <!-- 4. Activity Diagram (Modified UML / Green) -->
-            <rect x="614" y="289" width="156" height="21" rx="4" fill="#f0fdf4" stroke="#86efac" stroke-width="1.1"/>
-            <text x="692" y="304" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#15803d" text-anchor="middle">Activity Diagram</text>
+            <!-- Generalization Triangles pointing into Structure Diagram -->
+            <polygon points="753,444 760,441 760,447" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
+            <polygon points="753,453 760,450 760,456" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
+            <polygon points="753,462 760,459 760,465" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
 
-            <!-- 5. Requirement Diagram (Non-Diagram / Pink) -->
-            <rect x="614" y="313" width="156" height="21" rx="4" fill="#fff1f2" stroke="#fda4af" stroke-width="1.3"/>
-            <text x="692" y="328" font-family="'Inter', sans-serif" font-size="9.2" font-weight="800" fill="#be123c" text-anchor="middle">Requirement Diagram</text>
+            <!-- Internal Block Diagram to Parametric Diagram (Vertical drop) -->
+            <line x1="845" y1="470" x2="845" y2="483" stroke="#334155" stroke-width="1.2"/>
+            <polygon points="845,470 841,476 849,476" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
 
-            <!-- 6. Package Diagram (SysML 2.0 / Purple) -->
-            <rect x="614" y="337" width="156" height="21" rx="4" fill="#faf5ff" stroke="#c084fc" stroke-width="1.1"/>
-            <text x="692" y="352" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#6b21a8" text-anchor="middle">Package Diagram</text>
+            <!-- ----------------------------------------------------- -->
+            <!-- NODES: LEVEL 0 (ROOT)                                 -->
+            <!-- ----------------------------------------------------- -->
+            <!-- SysML Diagram -->
+            <g style="cursor:pointer;">
+                <rect x="530" y="343" width="96" height="44" rx="4" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" />
+                <text x="578" y="369" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">SysML Diagram</text>
+            </g>
 
-            <!-- 7. Block Definition Diagram (Modified UML / Green) -->
-            <rect x="614" y="361" width="156" height="21" rx="4" fill="#f0fdf4" stroke="#86efac" stroke-width="1.1"/>
-            <text x="692" y="376" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#15803d" text-anchor="middle">Block Definition Diagram</text>
+            <!-- ----------------------------------------------------- -->
+            <!-- NODES: LEVEL 1 (PRIMARY BRANCHES)                     -->
+            <!-- ----------------------------------------------------- -->
+            <!-- Behavior Diagram -->
+            <g style="cursor:pointer;">
+                <rect x="655" y="240" width="98" height="40" rx="4" fill="#ffffff" stroke="#1e293b" stroke-width="1.4" />
+                <text x="704" y="264" font-family="'Barlow Semi Condensed', sans-serif" font-size="11.5" font-weight="800" fill="#0f172a" text-anchor="middle">Behavior Diagram</text>
+            </g>
 
-            <!-- 8. Internal Block Diagram (Modified UML / Green) -->
-            <rect x="614" y="385" width="156" height="21" rx="4" fill="#f0fdf4" stroke="#86efac" stroke-width="1.1"/>
-            <text x="692" y="400" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#15803d" text-anchor="middle">Internal Block Diagram</text>
+            <!-- Requirement Diagram (New Diagram Type / Pink) -->
+            <g style="cursor:pointer;">
+                <rect x="655" y="347" width="98" height="36" rx="4" fill="#fff1f2" stroke="#fda4af" stroke-width="1.5" />
+                <text x="704" y="369" font-family="'Barlow Semi Condensed', sans-serif" font-size="11" font-weight="800" fill="#be123c" text-anchor="middle">Requirement Diagram</text>
+            </g>
 
-            <!-- 9. Parametric Diagram (Non-Diagram / Pink) -->
-            <rect x="614" y="409" width="156" height="21" rx="4" fill="#fff1f2" stroke="#fda4af" stroke-width="1.1"/>
-            <text x="692" y="424" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#be123c" text-anchor="middle">Parametric Diagram</text>
+            <!-- Structure Diagram -->
+            <g style="cursor:pointer;">
+                <rect x="655" y="433" width="98" height="40" rx="4" fill="#ffffff" stroke="#1e293b" stroke-width="1.4" />
+                <text x="704" y="457" font-family="'Barlow Semi Condensed', sans-serif" font-size="11.5" font-weight="800" fill="#0f172a" text-anchor="middle">Structure Diagram</text>
+            </g>
+
+            <!-- ----------------------------------------------------- -->
+            <!-- NODES: LEVEL 2 (BEHAVIOR LEAVES)                      -->
+            <!-- ----------------------------------------------------- -->
+            <!-- 1. Use Case Diagram (Same as UML 2.0 / Purple) -->
+            <g style="cursor:pointer;">
+                <rect x="778" y="206" width="136" height="22" rx="3" fill="#faf5ff" stroke="#c084fc" stroke-width="1.2" />
+                <text x="846" y="221" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#6b21a8" text-anchor="middle">Use Case Diagram</text>
+            </g>
+
+            <!-- 2. State Machine Diagram (Same as UML 2.0 / Purple) -->
+            <g style="cursor:pointer;">
+                <rect x="778" y="233" width="136" height="22" rx="3" fill="#faf5ff" stroke="#c084fc" stroke-width="1.2" />
+                <text x="846" y="248" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#6b21a8" text-anchor="middle">State Machine Diagram</text>
+            </g>
+
+            <!-- 3. Sequence Diagram (Same as UML 2.0 / Purple) -->
+            <g style="cursor:pointer;">
+                <rect x="778" y="260" width="136" height="22" rx="3" fill="#faf5ff" stroke="#c084fc" stroke-width="1.2" />
+                <text x="846" y="275" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#6b21a8" text-anchor="middle">Sequence Diagram</text>
+            </g>
+
+            <!-- 4. Activity Diagram (Modified from UML 2.0 / Green) -->
+            <g style="cursor:pointer;">
+                <rect x="778" y="287" width="136" height="22" rx="3" fill="#f0fdf4" stroke="#86efac" stroke-width="1.2" />
+                <text x="846" y="302" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#15803d" text-anchor="middle">Activity Diagram</text>
+            </g>
+
+            <!-- ----------------------------------------------------- -->
+            <!-- NODES: LEVEL 2 (STRUCTURE LEAVES)                     -->
+            <!-- ----------------------------------------------------- -->
+            <!-- 5. Package Diagram (Same as UML 2.0 / Purple) -->
+            <g style="cursor:pointer;">
+                <rect x="778" y="394" width="136" height="22" rx="3" fill="#faf5ff" stroke="#c084fc" stroke-width="1.2" />
+                <text x="846" y="409" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#6b21a8" text-anchor="middle">Package Diagram</text>
+            </g>
+
+            <!-- 6. Block Definition Diagram (Modified from UML 2.0 / Green) -->
+            <g style="cursor:pointer;">
+                <rect x="778" y="421" width="136" height="22" rx="3" fill="#f0fdf4" stroke="#86efac" stroke-width="1.2" />
+                <text x="846" y="436" font-family="'Inter', sans-serif" font-size="8.8" font-weight="700" fill="#15803d" text-anchor="middle">Block Definition Diagram</text>
+            </g>
+
+            <!-- 7. Internal Block Diagram (Modified from UML 2.0 / Green) -->
+            <g style="cursor:pointer;">
+                <rect x="778" y="448" width="136" height="22" rx="3" fill="#f0fdf4" stroke="#86efac" stroke-width="1.2" />
+                <text x="846" y="463" font-family="'Inter', sans-serif" font-size="8.8" font-weight="700" fill="#15803d" text-anchor="middle">Internal Block Diagram</text>
+            </g>
+
+            <!-- 8. Parametric Diagram (New Diagram Type / Pink) -->
+            <!-- Child of Internal Block Diagram -->
+            <g style="cursor:pointer;">
+                <rect x="778" y="484" width="136" height="22" rx="3" fill="#fff1f2" stroke="#fda4af" stroke-width="1.2" />
+                <text x="846" y="499" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#be123c" text-anchor="middle">Parametric Diagram</text>
+            </g>
         </g>
 
-        <!-- Digital Thread Execution Curved Arrow (Requirement Diagram -> DT) -->
+        <!-- ========================================================= -->
+        <!-- DIGITAL THREAD CURVED ARROW (Requirement Diagram -> DT)   -->
+        <!-- Authentic match to user slide (uploaded_media_1794606972675.png) -->
+        <!-- ========================================================= -->
         <g id="p45-digital-thread-arrow">
-            <path d="M 770 324 C 805 324, 805 212, 755 200" fill="none" stroke="#16a34a" stroke-width="3.5" stroke-linecap="round"/>
-            <polygon points="752,206 746,197 755,194" fill="#16a34a"/>
+            <!-- Sweeps from Requirement Diagram (753, 365) up into DT (728, 200) -->
+            <path d="M 753 365 C 778 365, 765 240, 735 204" fill="none" stroke="#16a34a" stroke-width="3.5" stroke-linecap="round"/>
+            <polygon points="731,209 735,201 739,209" fill="#16a34a"/>
         </g>
 
-        <!-- SysML Legend (Exact 3 categories from slide) -->
-        <g id="p45-legend" transform="translate(560, 446)">
-            <!-- Non-Diagram -->
-            <rect x="0" y="0" width="108" height="24" rx="5" fill="#fff1f2" stroke="#fda4af" stroke-width="1"/>
-            <circle cx="14" cy="12" r="4.5" fill="#f43f5e"/>
-            <text x="26" y="16" font-family="'Inter', sans-serif" font-size="9.5" font-weight="700" fill="#be123c">Non-Diagram</text>
+        <!-- ========================================================= -->
+        <!-- SYSML LEGEND (Exact 3 categories from user reference)     -->
+        <!-- ========================================================= -->
+        <g id="p45-legend" transform="translate(535, 528)">
+            <!-- New Diagram Type -->
+            <rect x="0" y="0" width="124" height="24" rx="5" fill="#fff1f2" stroke="#fda4af" stroke-width="1"/>
+            <circle cx="12" cy="12" r="4.5" fill="#f43f5e"/>
+            <text x="24" y="16" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#be123c">New Diagram Type</text>
 
-            <!-- SysML 2.0 -->
-            <rect x="122" y="0" width="98" height="24" rx="5" fill="#faf5ff" stroke="#c084fc" stroke-width="1"/>
-            <circle cx="136" cy="12" r="4.5" fill="#a855f7"/>
-            <text x="148" y="16" font-family="'Inter', sans-serif" font-size="9.5" font-weight="700" fill="#6b21a8">SysML 2.0</text>
+            <!-- Same as UML 2.0 -->
+            <rect x="134" y="0" width="124" height="24" rx="5" fill="#faf5ff" stroke="#c084fc" stroke-width="1"/>
+            <circle cx="146" cy="12" r="4.5" fill="#a855f7"/>
+            <text x="158" y="16" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#6b21a8">Same as UML 2.0</text>
 
-            <!-- Modified UML -->
-            <rect x="234" y="0" width="112" height="24" rx="5" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
-            <circle cx="248" cy="12" r="4.5" fill="#22c55e"/>
-            <text x="260" y="16" font-family="'Inter', sans-serif" font-size="9.5" font-weight="700" fill="#15803d">Modified UML</text>
+            <!-- Modified from UML 2.0 -->
+            <rect x="268" y="0" width="138" height="24" rx="5" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+            <circle cx="280" cy="12" r="4.5" fill="#22c55e"/>
+            <text x="292" y="16" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#15803d">Modified from UML 2.0</text>
         </g>
     </g>    </g>
             </svg>
