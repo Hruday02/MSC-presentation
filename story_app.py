@@ -93,14 +93,14 @@ CONTENT: Dict[str, Any] = {
             "border_color": "#10b981",      # green dashed border
             "bg_color": "rgba(240, 253, 244, 0.4)",
             "text_color": "#047857",
-            "phases": [2, 3, 4],
+            "phases": [1, 2, 3, 4],
         },
         "dtsync": {
             "label": "Digital Twin",
             "border_color": "#3b82f6",      # blue dashed border
             "bg_color": "rgba(239, 246, 255, 0.4)",
             "text_color": "#1d4ed8",
-            "phases": [3, 4],               # only visible in phases 3 and 4
+            "phases": [2, 3, 4],            # visible from phase 2 onwards
         },
         "decision": {
             "label": "Beyond the Twin",
@@ -216,10 +216,12 @@ CONTENT: Dict[str, Any] = {
     # - Right: Beyond the Twin layer [LRMS (820, 335), HMS (820, 475)]
     "positions": {
         1: {
-            "lidar": (370, 230),
-            "rgb": (500, 230),
-            "hyp": (630, 230),
-            "tank": (500, 385),
+            "lidar": (400, 130),
+            "rgb": (520, 130),
+            "hyp": (640, 130),
+            "tank": (520, 265),
+            "sac": (180, 205),
+            "vtl": (220, 410),
         },
         2: {
             "lidar": (400, 130),
@@ -228,6 +230,7 @@ CONTENT: Dict[str, Any] = {
             "tank": (520, 265),
             "sac": (180, 205),
             "vtl": (220, 410),
+            "twin": (520, 475),
         },
         3: {
             "lidar": (400, 130),
@@ -254,18 +257,19 @@ CONTENT: Dict[str, Any] = {
 
     # Directed and bidirectional edges matching remapped architecture
     "edges": [
-        # Phase 2, 3, 4: Computation links (LiDAR -> SAC -> VTL)
+        # Phase 2, 3, 4: Computation links (LiDAR -> SAC -> VTL) and direct DT connections (SAC -> DT, VTL -> DT)
         {"source": "lidar", "target": "sac", "label": "point cloud", "phases": [2, 3, 4]},
         {"source": "sac", "target": "vtl", "label": "model + area", "phases": [2, 3, 4]},
+        {"source": "sac", "target": "twin", "label": "area + model", "phases": [2, 3, 4]},
 
         # Phase 3 & 4: Sensor inputs to physical Ballast Tank (Bidirectional telemetry & control loop)
         {"source": "lidar", "target": "tank", "label": "", "phases": [3, 4], "bidirectional": True},
         {"source": "rgb", "target": "tank", "label": "", "phases": [3, 4], "bidirectional": True},
         {"source": "hyp", "target": "tank", "label": "", "phases": [3, 4], "bidirectional": True},
 
-        # Phase 3 & 4: Digital Twin synchronization & Technical records
+        # Phase 2, 3 & 4: Digital Twin synchronization & Technical records
         {"source": "tank", "target": "twin", "label": "sync", "phases": [3, 4], "bidirectional": True},
-        {"source": "vtl", "target": "twin", "label": "tank records", "phases": [3, 4]},
+        {"source": "vtl", "target": "twin", "label": "tank records", "phases": [2, 3, 4]},
 
         # Phase 4: Beyond the Twin layer connections (DT -> HMS, LRMS -> Ballast Tank)
         {"source": "twin", "target": "cms", "label": "twin data", "phases": [4]},
