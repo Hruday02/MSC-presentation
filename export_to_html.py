@@ -1,0 +1,1778 @@
+import os
+import base64
+from pathlib import Path
+import story_app
+
+def generate_html():
+    # Load all images as base64
+    img_data = {}
+    for k, p in story_app.IMAGE_PATHS.items():
+        if p and os.path.exists(p):
+            try:
+                ext = Path(p).suffix.lower().replace(".", "")
+                mime = "image/svg+xml" if ext == "svg" else "image/png" if ext == "png" else "image/webp" if ext == "webp" else "image/jpeg"
+                with open(p, "rb") as f:
+                    img_data[k] = f"data:{mime};base64,{base64.b64encode(f.read()).decode('utf-8')}"
+            except Exception as e:
+                print(f"Warning loading {k}: {e}")
+        else:
+            img_data[k] = ""
+
+
+    # Scan project's uploads/ directory for cross-system uploaded images
+    uploads_dir = Path(__file__).parent / "uploads"
+    if uploads_dir.is_dir():
+        for cand in uploads_dir.iterdir():
+            if cand.is_file() and cand.suffix.lower() in (".png", ".jpg", ".jpeg", ".webp", ".svg"):
+                k = cand.stem.lower()
+                try:
+                    ext = cand.suffix.lower().replace(".", "")
+                    mime = "image/svg+xml" if ext == "svg" else "image/png" if ext == "png" else "image/webp" if ext == "webp" else "image/jpeg"
+                    with open(cand, "rb") as fl:
+                        b64 = base64.b64encode(fl.read()).decode("utf-8")
+                        img_data[k] = f"data:{mime};base64,{b64}"
+                        if k in ("samm", "lrms"):
+                            img_data["samm"] = img_data[k]
+                            img_data["lrms"] = img_data[k]
+                        elif k in ("cms", "hms"):
+                            img_data["cms"] = img_data[k]
+                            img_data["hms"] = img_data[k]
+                except Exception as ex:
+                    print(f"Notice reading uploaded {cand}: {ex}")
+
+    html_content = f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Twin Story Timeline</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }}
+        body {{
+            background-color: #f8fafc;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #0f172a;
+            -webkit-font-smoothing: antialiased;
+            user-select: none;
+            padding: 24px 32px 36px 32px;
+            max-width: 1640px;
+            margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }}
+
+        /* App Header */
+        header {{
+            display: flex;
+            justifyContent: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            background: #ffffff;
+            padding: 20px 24px;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+        }}
+        .eyebrow {{
+            font-family: 'Barlow Semi Condensed', sans-serif;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: #2563eb;
+        }}
+        h1 {{
+            font-family: 'Barlow Semi Condensed', sans-serif;
+            font-size: clamp(26px, 2.5vw, 34px);
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.15;
+            margin-top: 2px;
+        }}
+
+        /* Phase Navigation Buttons */
+        .phase-tabs {{
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }}
+        .phase-tab-btn {{
+            appearance: none;
+            border: 1.5px solid #cbd5e1;
+            background: #ffffff;
+            color: #334155;
+            border-radius: 10px;
+            padding: 8px 16px;
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }}
+        .phase-tab-btn .p-num {{
+            font-family: 'Barlow Semi Condensed', sans-serif;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #64748b;
+        }}
+        .phase-tab-btn .p-title {{
+            font-family: 'Barlow Semi Condensed', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: #0f172a;
+        }}
+        .phase-tab-btn:hover {{
+            border-color: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+        }}
+        .phase-tab-btn.active {{
+            background: #eff6ff;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+        }}
+        .phase-tab-btn.active .p-num {{ color: #2563eb; }}
+        .phase-tab-btn.active .p-title {{ color: #1d4ed8; font-weight: 800; }}
+
+        /* Main Workspace Grid */
+        main {{
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 420px;
+            gap: 20px;
+            flex: 1;
+        }}
+        @media (max-width: 1080px) {{
+            main {{ grid-template-columns: 1fr; }}
+        }}
+
+        /* Stage & Drafting Sheet Aesthetics */
+        .stage {{
+            position: relative;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            overflow: hidden;
+            height: 620px;
+            background-image: 
+                radial-gradient(#cbd5e1 1.1px, transparent 1.1px),
+                linear-gradient(to right, rgba(226, 232, 240, 0.6) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(226, 232, 240, 0.6) 1px, transparent 1px);
+            background-size: 25px 25px, 25px 25px, 25px 25px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+            display: flex;
+            flex-direction: column;
+        }}
+        .stage svg {{
+            width: 100%;
+            height: 100%;
+            display: block;
+            touch-action: manipulation;
+        }}
+        .hint {{
+            position: absolute;
+            left: 14px;
+            bottom: 10px;
+            font-family: 'Barlow Semi Condensed', sans-serif;
+            font-size: 11.5px;
+            color: #64748b;
+            letter-spacing: .04em;
+            background: rgba(255, 255, 255, 0.94);
+            padding: 3px 8px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+            pointer-events: none;
+        }}
+
+        /* Phase 3 View Mode Toggle Header */
+        .view-mode-bar {{
+            display: none;
+            background: #ffffff;
+            padding: 10px 18px;
+            border-bottom: 1px solid #e2e8f0;
+            justify-content: space-between;
+            align-items: center;
+        }}
+        .mode-btn {{
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-family: 'Barlow Semi Condensed', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 1.5px solid #cbd5e1;
+            background: #ffffff;
+            color: #475569;
+            transition: all 0.2s;
+        }}
+        .mode-btn.active {{
+            background: #2563eb;
+            color: #ffffff;
+            border-color: #2563eb;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+        }}
+
+        /* Simulation Canvas Viewport */
+        .sim-viewport {{
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            background: #030712;
+            padding: 18px;
+            gap: 12px;
+            overflow-y: auto;
+        }}
+        .sim-action-bar {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1e293b;
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: 1px solid #334155;
+            flex-wrap: wrap;
+            gap: 10px;
+        }}
+        .sim-action-btn {{
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-family: 'Barlow Semi Condensed', sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }}
+        .btn-rust {{ background: #450a0a; color: #f87171; border-color: #ef4444; }}
+        .btn-rust.active {{ background: #ef4444; color: #ffffff; box-shadow: 0 0 14px rgba(239, 68, 68, 0.45); }}
+        .btn-clean {{ background: #064e3b; color: #34d399; border-color: #10b981; }}
+        .btn-clean.active {{ background: #10b981; color: #ffffff; box-shadow: 0 0 14px rgba(16, 185, 129, 0.45); }}
+
+        /* SVG Nodes & Elements */
+        .node {{ cursor: pointer; }}
+        .node .body {{
+            stroke-width: 2.5px;
+            transition: stroke-width .22s cubic-bezier(0.34, 1.56, 0.64, 1), filter .22s ease, stroke .22s ease;
+        }}
+        .node:hover .body {{
+            stroke-width: 3.5px;
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.12));
+        }}
+        .node.selected .body {{
+            stroke: #d97706 !important;
+            stroke-width: 5.5px !important;
+            filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.65));
+        }}
+        .node .glow-ring {{
+            fill: none;
+            stroke: #f59e0b;
+            stroke-width: 4px;
+            opacity: 0;
+            transition: opacity .25s ease;
+        }}
+        .node.selected .glow-ring {{
+            opacity: 0.55;
+            animation: nodePulse 2s infinite ease-in-out;
+        }}
+        @keyframes nodePulse {{
+            0%, 100% {{ stroke-width: 4px; opacity: 0.55; }}
+            50% {{ stroke-width: 7px; opacity: 0.25; }}
+        }}
+
+        .node .label {{
+            font-family: 'Barlow Semi Condensed', 'Arial Narrow', sans-serif;
+            font-weight: 700;
+            font-size: 13.5px;
+            fill: #0f172a;
+            text-anchor: middle;
+            pointer-events: none;
+        }}
+        .node .sub {{
+            font-family: 'Barlow Semi Condensed', 'Arial Narrow', sans-serif;
+            font-weight: 600;
+            font-size: 11px;
+            fill: #64748b;
+            text-anchor: middle;
+            pointer-events: none;
+        }}
+        .node.k-samm .label, .node.k-cms .label {{ fill: #ffffff; }}
+        .node.k-samm .sub, .node.k-cms .sub {{ fill: rgba(255, 255, 255, 0.95); }}
+        .node.k-samm .sub {{ font-size: 7.8px; font-weight: 700; letter-spacing: -0.2px; }}
+        .node.k-cms .sub {{ font-size: 8.5px; font-weight: 700; letter-spacing: -0.2px; }}
+
+        .dim {{ opacity: 0.20 !important; transition: opacity .3s ease; }}
+        .node, .edge, .group-box {{ transition: opacity .3s ease; }}
+
+        /* Edges */
+        .clickable-pipeline-edge {{
+            cursor: pointer;
+        }}
+        .clickable-pipeline-edge .elabel-bg {{
+            transition: all 0.2s ease;
+        }}
+        .clickable-pipeline-edge:hover .edge-path {{
+            stroke: #0284c7 !important;
+            stroke-width: 3.5px !important;
+            filter: drop-shadow(0 0 10px rgba(2, 132, 199, 0.75));
+        }}
+        .clickable-pipeline-edge:hover .elabel-bg {{
+            fill: #0284c7 !important;
+            stroke: #38bdf8 !important;
+        }}
+        .clickable-pipeline-edge:hover .elabel {{
+            fill: #ffffff !important;
+            font-weight: 800 !important;
+        }}
+
+        .edge path {{
+            stroke: #2563eb;
+            stroke-width: 2.5px;
+            fill: none;
+            transition: stroke 0.25s, stroke-width 0.25s;
+        }}
+        .edge.feedback path {{
+            stroke: #94a3b8;
+            stroke-width: 2px;
+            stroke-dasharray: 6 4;
+        }}
+        .edge.hot path {{
+            stroke: #d97706 !important;
+            stroke-width: 4px !important;
+        }}
+        .edge .elabel {{
+            font-family: 'Barlow Semi Condensed', sans-serif;
+            font-size: 10.5px;
+            font-weight: 700;
+            fill: #1e293b;
+            text-anchor: middle;
+            pointer-events: none;
+        }}
+        .edge .elabel-bg {{
+            fill: #ffffff;
+            stroke: #cbd5e1;
+            stroke-width: 1px;
+            rx: 4px;
+        }}
+        .edge.hot .elabel {{ fill: #b45309; }}
+        .edge.hot .elabel-bg {{ stroke: #f59e0b; fill: #fffbeb; }}
+
+        /* Group Boxes */
+        .group-box {{ pointer-events: none; }}
+        .group-box rect.group-bg {{ stroke-dasharray: 6 4; stroke-width: 2px; }}
+        .group-box text.group-title {{
+            font-family: 'Barlow Semi Condensed', sans-serif;
+            font-weight: 800;
+            font-size: 13px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-anchor: middle;
+        }}
+
+        /* Notes Sidebar */
+        .notes-panel {{
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
+            overflow-y: auto;
+        }}
+        .notes-tag {{
+            font-family: 'Barlow Semi Condensed', sans-serif;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: #2563eb;
+        }}
+        .notes-title {{
+            font-family: 'Barlow Semi Condensed', sans-serif;
+            font-size: 26px;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.15;
+        }}
+        .notes-desc {{
+            font-size: 14px;
+            line-height: 1.55;
+            color: #334155;
+            background: #f8fafc;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }}
+        .pill-group {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 4px;
+        }}
+        .node-pill {{
+            font-size: 12.5px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: #f1f5f9;
+            color: #0f172a;
+            border: 1px solid #cbd5e1;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }}
+        .node-pill:hover {{
+            background: #e2e8f0;
+            border-color: #2563eb;
+            color: #2563eb;
+        }}
+
+        .inspect-action-btn {{
+            margin-top: 6px;
+            padding: 12px 16px;
+            background: #2563eb;
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Barlow Semi Condensed', sans-serif;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }}
+        .inspect-action-btn:hover {{
+            background: #1d4ed8;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+        }}
+
+        .footer-nav {{
+            margin-top: auto;
+            display: flex;
+            gap: 10px;
+            padding-top: 10px;
+        }}
+        .nav-btn {{
+            flex: 1;
+            padding: 11px 14px;
+            border-radius: 10px;
+            font-family: 'Barlow Semi Condensed', sans-serif;
+            font-size: 14.5px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 1.5px solid #cbd5e1;
+            background: #ffffff;
+            color: #0f172a;
+        }}
+        .nav-btn.primary {{
+            background: #2563eb;
+            border-color: #2563eb;
+            color: #ffffff;
+            font-weight: 800;
+        }}
+        .nav-btn:disabled {{
+            opacity: 0.35;
+            cursor: default;
+        }}
+
+        /* Full Screen Modal Viewport */
+        .modal-overlay {{
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 23, 0.88);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }}
+        .modal-overlay.active {{ display: flex; }}
+        .modal-card {{
+            background: #020617;
+            border: 1.5px solid #334155;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 1160px;
+            max-height: 94vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8);
+        }}
+        .modal-header {{
+            background: #1e293b;
+            padding: 16px 24px;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }}
+        .modal-title-text {{
+            font-family: 'Barlow Semi Condensed', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            color: #ffffff;
+        }}
+        .modal-close {{
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 28px;
+            cursor: pointer;
+            line-height: 1;
+        }}
+        .modal-close:hover {{ color: #ffffff; }}
+
+        .modal-body {{
+            padding: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            background: #020617;
+            overflow-y: auto;
+            max-height: calc(94vh - 75px);
+            min-height: 480px;
+        }}
+        .modal-body img {{
+            max-width: 100%;
+            max-height: calc(88vh - 130px);
+            object-fit: contain;
+            border-radius: 12px;
+            border: 1.5px solid #1e293b;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8);
+            display: block;
+            margin: auto;
+        }}
+
+        /* Clean Image Slot (No mock telemetry, only space for the image) */
+        .image-slot-container {{
+            border: 2px dashed #334155;
+            border-radius: 16px;
+            padding: 56px 36px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 16px;
+            background: #0b0f19;
+            max-width: 720px;
+            width: 100%;
+        }}
+        .image-slot-container h3 {{
+            font-family: 'Barlow Semi Condensed', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            color: #f8fafc;
+        }}
+        .image-slot-container p {{
+            font-size: 13.5px;
+            color: #94a3b8;
+            max-width: 500px;
+        }}
+        .image-slot-container .code-badge {{
+            font-size: 12px;
+            font-family: monospace;
+            background: #030712;
+            color: #38bdf8;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1px solid #1e293b;
+        }}
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+    <div>
+        <div class="eyebrow">MSC BALLAST TANK DIGITAL TWIN &middot; PROOF OF CONCEPT</div>
+        <h1>From separate projects to one digital twin</h1>
+    </div>
+    <div class="phase-tabs" id="phase-tabs"></div>
+</header>
+
+<!-- Main Grid -->
+<main>
+    <!-- Left Stage -->
+    <section class="stage">
+        <!-- Phase 3 View Mode Bar -->
+        <div class="view-mode-bar" id="view-mode-bar">
+            <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:12px; font-weight:800; color:#64748b; letter-spacing:1px;">PHASE 3 VIEW:</span>
+            <div style="display:flex; gap:8px;">
+                <button class="mode-btn active" id="btn-mode-graph">Architecture Graph</button>
+                <button class="mode-btn" id="btn-mode-sim">🚢 Ship &amp; Ballast Tank Simulation</button>
+            </div>
+        </div>
+
+        <!-- Diagram SVG Mount -->
+        <div id="svg-diagram-mount" style="width:100%; height:100%; position:relative;">
+            <svg id="svg" viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9 z" fill="#2563eb"/></marker>
+                    <marker id="arrow-feedback" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9 z" fill="#94a3b8"/></marker>
+                    <marker id="arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9 z" fill="#d97706"/></marker>
+                </defs>
+                <g id="groups"></g>
+                <g id="edges"></g>
+                <g id="nodes"></g>
+            </svg>
+            <div class="hint">Tap a node for details &middot; Arrow keys change phase</div>
+        </div>
+
+        <!-- Simulation Viewport -->
+        <div class="sim-viewport" id="sim-viewport">
+            <div class="sim-action-bar">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:15px; font-weight:800; color:#ffffff;">BALLAST TANK B-3 REAL-TIME TWIN SIMULATION</span>
+                    <span id="sim-status-badge" style="font-size:11px; font-family:'Barlow Semi Condensed',sans-serif; font-weight:800; padding:4px 10px; border-radius:6px; background:#064e3b; color:#34d399; border:1px solid #10b981;">🟢 BULKHEAD NOMINAL (18.0mm)</span>
+                </div>
+                <div style="display:flex; gap:10px;">
+                    <button class="sim-action-btn btn-rust" id="btn-trigger-rust">⚠️ Simulate Rust Defect</button>
+                    <button class="sim-action-btn btn-clean active" id="btn-trigger-clean">🟢 Restore Clean Bulkhead</button>
+                </div>
+            </div>
+            <div id="sim-svg-container" style="flex:1; border-radius:12px; overflow:hidden; border:1px solid #1e293b;"></div>
+        </div>
+    </section>
+
+    <!-- Right Sidebar Notes Panel -->
+    <aside class="notes-panel" id="notes-panel"></aside>
+</main>
+
+<!-- Screen-Covering Modal Popup -->
+<div class="modal-overlay" id="modal-overlay">
+    <div class="modal-card">
+        <div class="modal-header">
+            <span class="modal-title-text" id="modal-title-text">Component Inspection</span>
+            <button class="modal-close" id="btn-modal-close">&times;</button>
+        </div>
+        <div class="modal-body" id="modal-body-container"></div>
+    </div>
+</div>
+
+<script>
+// =============================================================================
+// SENSOR & COMPONENT INSPECTION IMAGES CONFIGURATION
+// To add or replace an image, simply paste your Base64 string or local file path:
+// =============================================================================
+
+// Place LiDAR image here
+const IMAGE_LIDAR = "{img_data.get('lidar', '')}";
+
+// Place RGB / Video camera image here
+const IMAGE_RGB = "{img_data.get('rgb', '')}";
+
+// Place Hyperspectral camera image here
+const IMAGE_HYP = "{img_data.get('hyp', '') or img_data.get('hyperspectral_cubert', '')}";
+
+// Place SAC (Surface Area Calculation) image here
+const IMAGE_SAC = "{img_data.get('sac', '')}";
+
+// Place VTL (Virtual Technical Library) image here
+const IMAGE_VTL = "{img_data.get('vtl', '')}";
+
+// Place LRMS (Long Range Maintenance Schedule) image here
+const IMAGE_LRMS = "{img_data.get('lrms', '') or img_data.get('samm', '')}";
+const IMAGE_SAMM = IMAGE_LRMS;
+
+// Place HMS (Hull Maintenance System) image here
+const IMAGE_HMS = "{img_data.get('hms', '') or img_data.get('cms', '')}";
+const IMAGE_CMS = IMAGE_HMS;
+
+// Place Real Tank images here
+const IMAGE_TANK_CLEAN = "{img_data.get('clean', '')}";
+const IMAGE_TANK_RUST = "{img_data.get('rust', '')}";
+
+// Place Digital Twin 3D CAD mesh images here
+const IMAGE_TWIN_CLEAN = "{img_data.get('dt_clean', '')}";
+const IMAGE_TWIN_RUST = "{img_data.get('dt_rust', '')}";
+
+const SENSOR_IMAGES = {{
+    lidar: IMAGE_LIDAR,
+    rgb: IMAGE_RGB,
+    hyp: IMAGE_HYP,
+    sac: IMAGE_SAC,
+    vtl: IMAGE_VTL,
+    lrms: IMAGE_LRMS,
+    samm: IMAGE_LRMS,
+    hms: IMAGE_HMS,
+    cms: IMAGE_HMS,
+    tank: IMAGE_TANK_CLEAN,
+    twin: IMAGE_TWIN_CLEAN,
+}};
+
+/* Phases Configuration matching story_app.py */
+const PHASES = {{
+    1: {{
+        name: "Phase 1",
+        title: "Separate projects",
+        subtitle: "Independent Foundation",
+        description: "The initial phase establishes the physical Ballast Tank and its onboard inspection sensors (LiDAR 3D Scanner, RGB/Video Camera, and Hyperspectral Chemical Scanner). Each sensor operates directly on the tank before computation and surface area pipelines are connected in Phase 2."
+    }},
+    2: {{
+        name: "Phase 2",
+        title: "Connected projects",
+        subtitle: "Early Integration",
+        description: "The first integration links form between scanning and computation. LiDAR point cloud from the Ballast Tank feeds the SAC surface area calculation engine, and SAC outputs verified 3D models and calculated surface area into the VTL."
+    }},
+    3: {{
+        name: "Phase 3",
+        title: "The digital twin",
+        subtitle: "Full Digital Synchronization",
+        description: "The complete digital twin architecture is live. All three sensors (LiDAR, RGB/Video, Hyper) monitor the physical Ballast Tank, while VTL feeds structural records to the Digital Twin (DT). DT maintains continuous real-time bidirectional synchronization with the Ballast Tank."
+    }},
+    4: {{
+        name: "Phase 4",
+        title: "Beyond the twin",
+        subtitle: "External Expansion & Decision Support",
+        description: "Beyond the twin: LRMS and HMS act as the next link for the digital twin. DT feeds HMS (Hull Maintenance System) for fleet-wide awareness and analytics, while LRMS (Long Range Maintenance Schedule) provides decision support directing maintenance actions back to the physical Ballast Tank."
+    }}
+}};
+
+/* SVG Nodes Specification matching story_app.py */
+const SVG_NODES = {{
+    lidar: {{ group: "sensors", label: "LIDAR", sub: "3D laser scan", shape: "rect", w: 116, h: 62, rx: 10, fill: "#ffffff", stroke: "#1e293b", name: "LD-01 3D Conical LiDAR Scanner", about: "Conical 3D laser scanner mounted on tank ceiling dome producing 1.2M points/sec.", gives: ["3D Point Cloud", "Surface Profile"] }},
+    rgb:   {{ group: "sensors", label: "RGB/Video", sub: "visual images", shape: "rect", w: 116, h: 62, rx: 10, fill: "#ffffff", stroke: "#1e293b", name: "RGB & Video Camera", about: "High-resolution 4K optical camera stream capturing physical surface texture and visual coating condition.", gives: ["4K Video Feed", "Surface Orthophotos"] }},
+    hyp:   {{ group: "sensors", label: "Hyper", sub: "surface condition", shape: "rect", w: 116, h: 62, rx: 10, fill: "#ffffff", stroke: "#1e293b", name: "Hyperspectral Imager (Auto_000_1123.cu3s)", about: "Cubert VNIR hyperspectral scanner detecting chemical oxidation and coating degradation signatures.", gives: ["Spectral Tensors", "Fe₂O₃ Oxidation Maps"] }},
+    sac:   {{ group: "computation", label: "SAC", sub: "surface area", shape: "rect", w: 116, h: 62, rx: 10, fill: "#ffffff", stroke: "#1e293b", name: "Surface Area Engine (SAC)", about: "Computes 3D surface area Delaunay meshes and compares real-time scans against baseline CAD scantling.", gives: ["3D Mesh Model", "Surface Area Delta"] }},
+    vtl:   {{ group: "computation", label: "VTL", sub: "technical library", shape: "rect", w: 116, h: 62, rx: 10, fill: "#ffffff", stroke: "#1e293b", name: "Virtual Technical Library (VTL)", about: "Stores vessel scantling plans, DNV-GL class records, and coating decay curves.", gives: ["Scantling Compliance", "Tank Records"] }},
+    tank:  {{ group: "sensors", label: "Ballast Tank", sub: "", shape: "ellipse", rx: 65, ry: 38, fill: "#ffffff", stroke: "#1e293b", name: "MSC Ballast Tank B-3", about: "The physical cargo tank compartment on board the vessel.", gives: ["Physical Inspection Data", "Ultrasound Scantling"] }},
+    twin:  {{ group: "dtsync", label: "DT", sub: "digital twin", shape: "ellipse", rx: 59, ry: 38, fill: "#ffffff", stroke: "#1e293b", name: "Digital Twin (DT)", about: "A virtual 3D replica of the ballast tank kept continuously synchronized with the physical asset.", gives: ["Synchronized 3D Mesh", "Real-Time Telemetry"] }},
+    samm:  {{ group: "decision", label: "LRMS", sub: "Long Range Maintenance Schedule", shape: "rect", w: 126, h: 62, rx: 10, fill: "#0284c7", stroke: "#0369a1", name: "LRMS: Long Range Maintenance Schedule", about: "Condition-Based Maintenance policy engine that optimizes drydock work packs and repair ROI.", gives: ["Maintenance Schedule", "Repair Work Packs"] }},
+    cms:   {{ group: "decision", label: "HMS", sub: "Hull Maintenance System", shape: "rect", w: 126, h: 62, rx: 10, fill: "#10b981", stroke: "#059669", name: "HMS: Hull Maintenance System", about: "Fleet-wide corrosion predictive analytics and remaining useful life (RUL) modeling.", gives: ["Hull Health Index", "Fleet Predictive RUL"] }}
+}};
+
+/* Group Bounding Boxes matching story_app.py */
+const SVG_GROUPS = {{
+    sensors:     {{ label: "Ballast Tank & Sensors", stroke: "#ef4444", fill: "rgba(254, 242, 242, 0.45)", text: "#b91c1c", badgeAlign: "top-center" }},
+    computation: {{ label: "Computation", stroke: "#10b981", fill: "rgba(240, 253, 244, 0.45)", text: "#047857", badgeAlign: "bottom-center" }},
+    dtsync:      {{ label: "Digital Twin", stroke: "#3b82f6", fill: "rgba(239, 246, 255, 0.45)", text: "#1d4ed8", badgeAlign: "top-center" }},
+    decision:    {{ label: "Beyond the Twin", stroke: "#8b5cf6", fill: "rgba(245, 243, 255, 0.45)", text: "#6d28d9", badgeAlign: "top-center" }}
+}};
+
+/* Layout coordinates per Phase matching story_app.py */
+const SVG_LAYOUT = {{
+    1: {{
+        lidar: [400, 130], rgb: [520, 130], hyp: [640, 130],
+        tank: [520, 265]
+    }},
+    2: {{
+        lidar: [400, 130], rgb: [520, 130], hyp: [640, 130],
+        tank: [520, 265],
+        sac: [180, 205], vtl: [220, 410]
+    }},
+    3: {{
+        lidar: [400, 130], rgb: [520, 130], hyp: [640, 130],
+        tank: [520, 265],
+        sac: [180, 205], vtl: [220, 410],
+        twin: [520, 475]
+    }},
+    4: {{
+        lidar: [400, 130], rgb: [520, 130], hyp: [640, 130],
+        tank: [520, 265],
+        sac: [180, 205], vtl: [220, 410],
+        twin: [520, 475],
+        samm: [820, 335], cms: [820, 475]
+    }}
+}};
+
+/* Directed Edges matching story_app.py */
+const SVG_EDGES = [
+    {{ a: "lidar", b: "sac", label: "point cloud", phases: [2, 3, 4] }},
+    {{ a: "sac", b: "vtl", label: "model + area", phases: [2, 3, 4] }},
+    {{ a: "lidar", b: "tank", label: "", phases: [3, 4], bidirectional: true }},
+    {{ a: "rgb", b: "tank", label: "", phases: [3, 4], bidirectional: true }},
+    {{ a: "hyp", b: "tank", label: "", phases: [3, 4], bidirectional: true }},
+    {{ a: "tank", b: "twin", label: "sync", phases: [3, 4], bidirectional: true }},
+    {{ a: "vtl", b: "twin", label: "tank records", phases: [3, 4] }},
+    {{ a: "twin", b: "cms", label: "twin data", phases: [4] }},
+    {{ a: "samm", b: "tank", label: "actions", phases: [4] }}
+];
+
+const svgNS = "http://www.w3.org/2000/svg";
+let currentPhase = 1;
+let selectedNode = null;
+let currentScenario = "clean";
+let viewMode = "graph";
+const pos = {{}};
+const nodeEls = {{}}, groupEls = {{}}, edgeEls = [];
+
+for (const id in SVG_NODES) {{
+    const start = SVG_LAYOUT[1][id] || SVG_LAYOUT[3][id] || SVG_LAYOUT[4][id] || [500, 300];
+    pos[id] = {{ x: start[0], y: start[1], o: SVG_LAYOUT[1][id] ? 1 : 0 }};
+}}
+
+function svgEl(tag, attrs, parent) {{
+    const el = document.createElementNS(svgNS, tag);
+    for (const k in attrs) el.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(el);
+    return el;
+}}
+
+function initDiagram() {{
+    // Restore any previously dropped images from browser localStorage
+    for (const id in SVG_NODES) {{
+        try {{
+            const cached = localStorage.getItem('dt_user_img_' + id);
+            if (cached && cached.length > 20) {{
+                SENSOR_IMAGES[id] = cached;
+            }}
+        }} catch(e) {{}}
+    }}
+
+    const gGroups = document.getElementById("groups");
+    const gEdges = document.getElementById("edges");
+    const gNodes = document.getElementById("nodes");
+    gGroups.innerHTML = "";
+    gEdges.innerHTML = "";
+    gNodes.innerHTML = "";
+
+    // 1. Build Group Boxes
+    for (const gid in SVG_GROUPS) {{
+        const grp = SVG_GROUPS[gid];
+        const gg = svgEl("g", {{ class: "group-box g-" + gid }}, gGroups);
+        const rect = svgEl("rect", {{ class: "group-bg", rx: 14, ry: 14, fill: grp.fill, stroke: grp.stroke }}, gg);
+        const text = svgEl("text", {{ class: "group-title", fill: grp.text }}, gg);
+        text.textContent = grp.label;
+        groupEls[gid] = {{ g: gg, rect, text }};
+    }}
+
+    // 2. Build Edges
+    SVG_EDGES.forEach(e => {{
+        const eg = svgEl("g", {{ class: "edge" }}, gEdges);
+        const path = svgEl("path", {{ class: "edge-path" }}, eg);
+        let bg = null, tx = null;
+        if (e.label) {{
+            bg = svgEl("rect", {{ class: "elabel-bg", height: 18 }}, eg);
+            tx = svgEl("text", {{ class: "elabel" }}, eg);
+            tx.textContent = e.label;
+        }}
+        if (e.label === "point cloud" || (e.a === "lidar" && e.b === "sac")) {{
+            eg.style.cursor = "pointer";
+            eg.classList.add("clickable-pipeline-edge");
+            eg.setAttribute("role", "button");
+            eg.setAttribute("tabindex", "0");
+            eg.setAttribute("title", "Click to inspect LiDAR ➔ SAC Point Cloud Surface Area Pipeline");
+            eg.addEventListener("click", function(evt) {{
+                evt.stopPropagation();
+                openPointCloudModal();
+            }});
+            if (bg) {{ bg.style.cursor = "pointer"; }}
+            if (tx) {{ tx.style.cursor = "pointer"; }}
+        }}
+        edgeEls.push({{ a: e.a, b: e.b, label: e.label, phases: e.phases, bidirectional: e.bidirectional, g: eg, path, bg, tx }});
+    }});
+
+    // 3. Build Nodes
+    for (const id in SVG_NODES) {{
+        const n = SVG_NODES[id];
+        const ng = svgEl("g", {{ class: "node k-" + id, role: "button" }}, gNodes);
+
+        if (n.shape === "ellipse") {{
+            svgEl("ellipse", {{ class: "glow-ring", rx: n.rx + 6, ry: n.ry + 6 }}, ng);
+            svgEl("ellipse", {{ class: "body", rx: n.rx, ry: n.ry, fill: n.fill, stroke: n.stroke }}, ng);
+        }} else {{
+            svgEl("rect", {{ class: "glow-ring", x: -n.w / 2 - 5, y: -n.h / 2 - 5, width: n.w + 10, height: n.h + 10, rx: n.rx + 4, ry: n.rx + 4 }}, ng);
+            svgEl("rect", {{ class: "body", x: -n.w / 2, y: -n.h / 2, width: n.w, height: n.h, rx: n.rx, ry: n.rx, fill: n.fill, stroke: n.stroke }}, ng);
+        }}
+
+        const t = svgEl("text", {{ class: "label", y: n.sub ? -4 : 4 }}, ng);
+        t.textContent = n.label;
+        if (n.sub) {{
+            const s = svgEl("text", {{ class: "sub", y: 16 }}, ng);
+            s.textContent = n.sub;
+        }}
+
+        ng.addEventListener("click", (evt) => {{
+            evt.stopPropagation();
+            selectNode(id);
+        }});
+        nodeEls[id] = ng;
+    }}
+
+    document.getElementById("svg").addEventListener("click", () => {{
+        if (selectedNode) selectNode(null);
+    }});
+
+    draw();
+    highlight();
+}}
+
+function clipBoundary(xA, yA, xB, yB, node) {{
+    const dx = xB - xA, dy = yB - yA, d = Math.hypot(dx, dy) || 1;
+    const ux = dx / d, uy = dy / d;
+    if (node.shape === "ellipse") {{
+        const scale = 1.0 / Math.sqrt(Math.pow(ux / node.rx, 2) + Math.pow(uy / node.ry, 2));
+        return {{ x: xA + ux * scale, y: yA + uy * scale }};
+    }} else {{
+        const hw = node.w / 2, hh = node.h / 2;
+        const tx = ux !== 0 ? Math.abs(hw / ux) : 1e9;
+        const ty = uy !== 0 ? Math.abs(hh / uy) : 1e9;
+        const t = Math.min(tx, ty);
+        return {{ x: xA + ux * (t + 1), y: yA + uy * (t + 1) }};
+    }}
+}}
+
+function draw() {{
+    // 1. Draw Nodes
+    for (const id in SVG_NODES) {{
+        const p = pos[id], el = nodeEls[id];
+        if (!el) continue;
+        el.setAttribute("transform", `translate(${{p.x}},${{p.y}})`);
+        el.setAttribute("opacity", p.o.toFixed(3));
+        el.style.display = p.o < 0.02 ? "none" : "";
+    }}
+
+    // 2. Draw Group Boxes
+    for (const gid in SVG_GROUPS) {{
+        const grp = SVG_GROUPS[gid];
+        const grpEl = groupEls[gid];
+        if (!grpEl) continue;
+
+        const childIds = Object.keys(SVG_NODES).filter(nid => SVG_NODES[nid].group === gid);
+        const visChildren = childIds.filter(nid => pos[nid] && pos[nid].o > 0.02);
+
+        if (visChildren.length === 0) {{
+            grpEl.g.style.display = "none";
+            continue;
+        }}
+        grpEl.g.style.display = "";
+
+        let minX = 1e9, maxX = -1e9, minY = 1e9, maxY = -1e9, maxO = 0;
+        visChildren.forEach(nid => {{
+            const p = pos[nid], n = SVG_NODES[nid];
+            const hw = (n.shape === "ellipse" ? n.rx : n.w / 2);
+            const hh = (n.shape === "ellipse" ? n.ry : n.h / 2);
+            minX = Math.min(minX, p.x - hw);
+            maxX = Math.max(maxX, p.x + hw);
+            minY = Math.min(minY, p.y - hh);
+            maxY = Math.max(maxY, p.y + hh);
+            maxO = Math.max(maxO, p.o);
+        }});
+
+        const padX = 20;
+        const padYTop = (grp.badgeAlign === "top-center" ? 26 : 20);
+        const padYBottom = (grp.badgeAlign === "bottom-center" ? 32 : 20);
+        minX -= padX; maxX += padX;
+        minY -= padYTop; maxY += padYBottom;
+        const w = maxX - minX, h = maxY - minY;
+
+        grpEl.rect.setAttribute("x", minX);
+        grpEl.rect.setAttribute("y", minY);
+        grpEl.rect.setAttribute("width", w);
+        grpEl.rect.setAttribute("height", h);
+        grpEl.g.setAttribute("opacity", maxO.toFixed(3));
+
+        if (grp.badgeAlign === "bottom-center") {{
+            grpEl.text.setAttribute("x", (minX + maxX) / 2);
+            grpEl.text.setAttribute("y", maxY - 10);
+        }} else {{
+            grpEl.text.setAttribute("x", (minX + maxX) / 2);
+            grpEl.text.setAttribute("y", minY + 15);
+        }}
+    }}
+
+    // 3. Draw Edges
+    edgeEls.forEach(e => {{
+        const on = e.phases.includes(currentPhase);
+        const A = pos[e.a], B = pos[e.b];
+        const vis = on ? Math.min(A.o, B.o) : 0;
+        e.g.style.display = vis < 0.02 ? "none" : "";
+        e.g.setAttribute("opacity", vis.toFixed(3));
+        if (vis < 0.02) return;
+
+        const nodeA = SVG_NODES[e.a], nodeB = SVG_NODES[e.b];
+        const pA = clipBoundary(A.x, A.y, B.x, B.y, nodeA);
+        const pB = clipBoundary(B.x, B.y, A.x, A.y, nodeB);
+
+        const dPath = `M ${{pA.x}} ${{pA.y}} L ${{pB.x}} ${{pB.y}}`;
+        e.path.setAttribute("d", dPath);
+        e.path.setAttribute("marker-end", "url(#arrow)");
+
+        if (e.tx) {{
+            const mx = (pA.x + pB.x) / 2, my = (pA.y + pB.y) / 2;
+            e.tx.setAttribute("x", mx);
+            e.tx.setAttribute("y", my + 4);
+            const w = e.label.length * 6.8 + 12;
+            e.bg.setAttribute("x", mx - w / 2);
+            e.bg.setAttribute("y", my - 9);
+            e.bg.setAttribute("width", w);
+        }}
+    }});
+}}
+
+function goToPhase(p) {{
+    currentPhase = Math.max(1, Math.min(4, p));
+    if (selectedNode && !SVG_LAYOUT[currentPhase][selectedNode]) selectedNode = null;
+
+    for (const id in pos) {{
+        const t = SVG_LAYOUT[currentPhase][id];
+        pos[id].x = t ? t[0] : pos[id].x;
+        pos[id].y = t ? t[1] : pos[id].y;
+        pos[id].o = t ? 1 : 0;
+    }}
+    draw();
+    renderTabs();
+    highlight();
+    renderNotes();
+
+    const viewBar = document.getElementById("view-mode-bar");
+    if (currentPhase === 3) {{
+        viewBar.style.display = "flex";
+    }} else {{
+        viewBar.style.display = "none";
+        switchViewMode("graph");
+    }}
+}}
+
+function renderTabs() {{
+    const bar = document.getElementById("phase-tabs");
+    bar.innerHTML = "";
+    for (let i = 1; i <= 4; i++) {{
+        const p = PHASES[i];
+        const btn = document.createElement("button");
+        btn.className = "phase-tab-btn" + (i === currentPhase ? " active" : "");
+        btn.innerHTML = `<span class="p-num">Phase ${{i}}</span><span class="p-title">${{p.title}}</span>`;
+        btn.addEventListener("click", () => goToPhase(i));
+        bar.appendChild(btn);
+    }}
+}}
+
+function highlight() {{
+    for (const id in nodeEls) {{
+        nodeEls[id].classList.toggle("selected", id === selectedNode);
+        const related = !selectedNode || id === selectedNode || SVG_EDGES.some(e => e.phases.includes(currentPhase) && ((e.a === selectedNode && e.b === id) || (e.b === selectedNode && e.a === id)));
+        nodeEls[id].classList.toggle("dim", !related);
+    }}
+    edgeEls.forEach(e => {{
+        const hot = selectedNode && (e.a === selectedNode || e.b === selectedNode);
+        e.g.classList.toggle("hot", !!hot);
+        e.g.classList.toggle("dim", !!selectedNode && !hot);
+        e.path.setAttribute("marker-end", hot ? "url(#arrow-hot)" : "url(#arrow)");
+    }});
+}}
+
+function renderNotes() {{
+    const box = document.getElementById("notes-panel");
+    const P = PHASES[currentPhase];
+    const nav = `
+        <div class="footer-nav">
+            <button class="nav-btn" id="btn-prev" ${{currentPhase === 1 ? "disabled" : ""}}>Previous</button>
+            <button class="nav-btn primary" id="btn-next" ${{currentPhase === 4 ? "disabled" : ""}}>Next Phase</button>
+        </div>`;
+
+    if (!selectedNode) {{
+        const visibleIds = Object.keys(SVG_LAYOUT[currentPhase]);
+        box.innerHTML = `
+            <div>
+                <div class="notes-tag">PHASE ${{currentPhase}} OF 4</div>
+                <h2 class="notes-title">${{P.subtitle}}</h2>
+            </div>
+            <p class="notes-desc">${{P.description}}</p>
+            <div>
+                <div style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; color:#64748b; letter-spacing:1px; margin-bottom:6px;">ACTIVE NODES IN THIS PHASE (${{visibleIds.length}})</div>
+                <div class="pill-group">
+                    ${{visibleIds.map(id => `<button class="node-pill" onclick="selectNode('${{id}}')">${{SVG_NODES[id].name}}</button>`).join("")}}
+                </div>
+            </div>
+
+            ${{currentPhase === 1 ? `
+            <div style="margin-top:14px; background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:10px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; color:#475569; letter-spacing:1px;">PHYSICAL ASSET &amp; SENSORS</span>
+                    <span style="font-size:11px; font-weight:800; color:#2563eb; background:#eff6ff; padding:2px 6px; border-radius:4px;">PHASE 1 FOUNDATION</span>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                    <div style="background:#0f172a; border-radius:8px; overflow:hidden; border:1px solid #334155; height:110px; display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="selectNode('tank')" title="Click to inspect Ballast Tank">
+                        <img src="${{IMAGE_TANK_CLEAN}}" alt="Tank" style="width:100%; height:100%; object-fit:cover;" />
+                    </div>
+                    <div style="background:#0f172a; border-radius:8px; overflow:hidden; border:1px solid #0284c7; height:110px; display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="selectNode('lidar')" title="Click to inspect LiDAR">
+                        <img src="${{IMAGE_LIDAR}}" alt="LiDAR" style="width:100%; height:100%; object-fit:contain;" />
+                    </div>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:11px; color:#64748b; font-weight:700;">
+                    <span>⚓ Ballast Tank B-3</span>
+                    <span>📸 LiDAR Scan (.e57)</span>
+                </div>
+            </div>` : ""}}
+
+            ${{currentPhase === 2 ? `
+            <div style="margin-top:14px; background:#f0f9ff; border:1.5px solid #0284c7; border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:10px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; color:#0284c7; letter-spacing:1px;">INTEGRATION PIPELINE</span>
+                    <span style="font-size:11px; font-weight:800; color:#059669; background:#dcfce7; padding:2px 6px; border-radius:4px;">CONFIDENCE &gt; 0.83</span>
+                </div>
+                <p style="font-size:12.5px; color:#334155; margin:0; line-height:1.4;">
+                    LiDAR point cloud connects to SAC surface area calculation engine:
+                </p>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; cursor:pointer;" onclick="openPointCloudModal()" title="Click to open LiDAR ➔ SAC Software Manual">
+                    <div style="background:#0f172a; border-radius:8px; overflow:hidden; border:1px solid #0284c7; height:100px; display:flex; align-items:center; justify-content:center;">
+                        <img src="${{IMAGE_LIDAR}}" alt="LiDAR Scan" style="width:100%; height:100%; object-fit:contain;" />
+                    </div>
+                    <div style="background:#0f172a; border-radius:8px; overflow:hidden; border:1px solid #10b981; height:100px; display:flex; align-items:center; justify-content:center;">
+                        <img src="${{IMAGE_SAC}}" alt="SAC Mesh" style="width:100%; height:100%; object-fit:contain;" />
+                    </div>
+                </div>
+                <button class="inspect-action-btn" style="background:#0284c7; border-color:#0284c7; padding:10px 14px; font-size:13px;" onclick="openPointCloudModal()">
+                    ☁️ Open LiDAR ➔ SAC Software Manual
+                </button>
+            </div>` : ""}}
+
+            ${{currentPhase === 3 ? `
+            <div style="margin-top:14px; background:#eff6ff; border:1.5px solid #3b82f6; border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:10px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; color:#1d4ed8; letter-spacing:1px;">DIGITAL TWIN SYNCHRONIZATION</span>
+                    <span style="font-size:11px; font-weight:800; color:#059669; background:#dcfce7; padding:2px 6px; border-radius:4px;">REAL-TIME SYNC</span>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; cursor:pointer;" onclick="switchViewMode('sim')" title="Click to open simulation view">
+                    <div style="background:#0f172a; border-radius:8px; overflow:hidden; border:1px solid #334155; height:100px; display:flex; align-items:center; justify-content:center;">
+                        <img src="${{currentScenario === 'rust' ? IMAGE_TANK_RUST : IMAGE_TANK_CLEAN}}" alt="Ship Tank" style="width:100%; height:100%; object-fit:contain;" />
+                    </div>
+                    <div style="background:#0f172a; border-radius:8px; overflow:hidden; border:1px solid #38bdf8; height:100px; display:flex; align-items:center; justify-content:center;">
+                        <img src="${{currentScenario === 'rust' ? IMAGE_TWIN_RUST : IMAGE_TWIN_CLEAN}}" alt="Digital Twin" style="width:100%; height:100%; object-fit:contain;" />
+                    </div>
+                </div>
+                <button class="inspect-action-btn" style="background:#2563eb; border-color:#2563eb; padding:10px 14px;" onclick="switchViewMode('sim')">
+                    🌐 Open Interactive Dual-Asset Simulation
+                </button>
+            </div>` : ""}}
+
+            ${{nav}}`;
+    }} else {{
+        const n = SVG_NODES[selectedNode];
+        let previewImg = SENSOR_IMAGES[selectedNode];
+        let previewBadge = n.name.toUpperCase();
+        if (selectedNode === "twin" || selectedNode === "dt") {{
+            previewImg = currentScenario === "rust" ? IMAGE_TWIN_RUST : IMAGE_TWIN_CLEAN;
+            previewBadge = currentScenario === "rust" ? "⚠️ DIGITAL TWIN CAD (RUST DETECTED)" : "🟢 DIGITAL TWIN CAD (NOMINAL)";
+        }} else if (selectedNode === "tank") {{
+            previewImg = currentScenario === "rust" ? IMAGE_TANK_RUST : IMAGE_TANK_CLEAN;
+            previewBadge = currentScenario === "rust" ? "🔴 BALLAST TANK SHIP CUTAWAY (CORROSION)" : "🟢 BALLAST TANK SHIP CUTAWAY (NOMINAL)";
+        }} else if (selectedNode === "lidar") {{
+            previewBadge = "📸 LIDAR POINT CLOUD SCAN (.E57)";
+        }} else if (selectedNode === "sac") {{
+            previewBadge = "📐 SAC RECONSTRUCTED 3D SURFACE MESH";
+        }} else if (selectedNode === "hyp") {{
+            previewBadge = "🌈 HYPERSPECTRAL CAMERA SENSOR";
+        }}
+
+        const imgCardHtml = (previewImg && previewImg.length > 20) ? `
+            <div style="background:#0f172a; border-radius:12px; border:2px solid #38bdf8; overflow:hidden; display:flex; flex-direction:column; margin-top:8px; box-shadow:0 6px 18px rgba(0,0,0,0.25);">
+                <div style="background:#1e293b; padding:8px 12px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155;">
+                    <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11.5px; font-weight:800; color:#38bdf8; letter-spacing:0.8px;">
+                        ${{previewBadge}}
+                    </span>
+                    <span style="font-size:10.5px; font-family:'Barlow Semi Condensed',sans-serif; font-weight:800; color:#94a3b8; background:#0f172a; padding:2px 6px; border-radius:4px;">
+                        CLICK TO ENLARGE
+                    </span>
+                </div>
+                <div style="position:relative; height:240px; background:#020617; display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="openModal('${{selectedNode}}')" title="Click to view full screen">
+                    <img src="${{previewImg}}" alt="${{n.name}}" style="width:100%; height:100%; object-fit:contain; display:block;" />
+                    <div style="position:absolute; bottom:8px; right:8px; background:rgba(15, 23, 42, 0.88); padding:3px 8px; border-radius:6px; color:#cbd5e1; font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:700; border:1px solid #334155;">
+                        🔍 Click for Full Screen View
+                    </div>
+                </div>
+            </div>` : `
+            <div style="border:2px dashed #cbd5e1; border-radius:12px; padding:24px 16px; text-align:center; background:#f8fafc; margin-top:8px; display:flex; flex-direction:column; align-items:center; gap:6px;">
+                <span style="font-size:36px;">📷</span>
+                <span style="font-family:'Barlow Semi Condensed',sans-serif; font-weight:800; font-size:14px; color:#334155;">${{n.name}} Image Slot</span>
+                <span style="font-size:12px; color:#64748b;">Ready to receive inspection image for ${{n.name}}</span>
+            </div>`;
+
+        box.innerHTML = `
+            <div>
+                <div class="notes-tag">PHASE ${{currentPhase}} &middot; ${{n.group.toUpperCase()}}</div>
+                <h2 class="notes-title">${{n.name}}</h2>
+            </div>
+
+            ${{imgCardHtml}}
+
+            <p class="notes-desc">${{n.about}}</p>
+            <div>
+                <div style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; color:#64748b; letter-spacing:1px; margin-bottom:6px;">OUTPUTS / DATA FEEDS</div>
+                <div class="pill-group">
+                    ${{n.gives.map(g => `<span class="node-pill" style="cursor:default;">${{g}}</span>`).join("")}}
+                </div>
+            </div>
+
+            <button class="inspect-action-btn" onclick="openModal('${{selectedNode}}')">
+                🔍 Open Full-Screen Image Inspector
+            </button>
+            ${{(selectedNode === "lidar" || selectedNode === "sac") ? `
+            <button class="inspect-action-btn" style="background:#0284c7; border-color:#0284c7; margin-top:8px;" onclick="openPointCloudModal()">
+                ☁️ Inspect 'Point Cloud' Pipeline (LiDAR → SAC)
+            </button>` : ""}}
+
+            <button class="node-pill" style="margin-top:10px; align-self:flex-start;" onclick="selectNode(null)">
+                &larr; Back to Phase Overview
+            </button>
+            ${{nav}}`;
+    }}
+
+    document.getElementById("btn-prev")?.addEventListener("click", () => goToPhase(currentPhase - 1));
+    document.getElementById("btn-next")?.addEventListener("click", () => goToPhase(currentPhase + 1));
+}}
+
+function selectNode(id) {{
+    selectedNode = (id && id === selectedNode) ? null : id;
+    highlight();
+    renderNotes();
+}}
+
+/* Modal popup: NOTHING BUT THE IMAGE */
+
+function openPointCloudModal() {{
+    const modal = document.getElementById("modal-overlay");
+    const title = document.getElementById("modal-title-text");
+    const body = document.getElementById("modal-body-container");
+    title.textContent = "LiDAR Point Cloud ➔ SAC Surface Area Pipeline & Software Manual";
+
+    body.innerHTML = `
+        <div style="display:flex; flex-direction:column; gap:20px; width:100%; max-height:calc(88vh - 120px); overflow-y:auto; padding:8px 12px 24px 6px; color:#1e293b;">
+            
+            <!-- Header Telemetry Card -->
+            <div style="background:linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-radius:14px; padding:18px 22px; border:1px solid #334155; color:#ffffff; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:16px;">
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; letter-spacing:1.2px; background:#0284c7; color:#ffffff; padding:2px 8px; border-radius:4px; text-transform:uppercase;">DATA PIPELINE</span>
+                        <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:12px; color:#94a3b8; font-weight:700;">LIDAR SCANNING ➔ SURFACE AREA CALCULATION (SAC)</span>
+                    </div>
+                    <h2 style="font-family:'Barlow Semi Condensed',sans-serif; font-size:24px; font-weight:800; margin:0; color:#f8fafc;">
+                        Point Cloud to Surface Mesh Transformation Pipeline
+                    </h2>
+                    <p style="font-size:13px; color:#cbd5e1; margin:0; line-height:1.4;">
+                        Rigorous multi-stage software manual converting raw .e57 point clouds into validated watertight 3D meshes for tank surface area computation.
+                    </p>
+                </div>
+                <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px;">
+                    <div style="background:#064e3b; border:1.5px solid #10b981; color:#34d399; padding:6px 14px; border-radius:8px; font-family:'Barlow Semi Condensed',sans-serif; font-size:12px; font-weight:800; letter-spacing:0.5px;">
+                        🟢 ACCEPTANCE RULE: CONFIDENCE &gt; 0.83
+                    </div>
+                    <span style="font-size:11px; color:#94a3b8; font-family:'Inter',sans-serif;">Standardized Baseline: Steps 1–12 (All Tank Types)</span>
+                </div>
+            </div>
+
+            <!-- Dual Image Visual Showcase: LiDAR vs SAC Mesh -->
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(360px, 1fr)); gap:18px;">
+                
+                <!-- Card 1: LiDAR Point Cloud Capture -->
+                <div style="background:#0f172a; border-radius:14px; border:2px solid #0284c7; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 6px 20px rgba(0,0,0,0.25);">
+                    <div style="background:#1e293b; padding:10px 16px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155;">
+                        <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:13px; font-weight:800; color:#38bdf8;">
+                            📸 STEP 1: LIDAR RAW POINT CLOUD (.E57)
+                        </span>
+                        <span style="font-size:11px; font-family:'Barlow Semi Condensed',sans-serif; font-weight:800; padding:2px 8px; border-radius:4px; background:#0c4a6e; color:#7dd3fc;">
+                            INPUT DATA
+                        </span>
+                    </div>
+                    <div style="position:relative; height:320px; background:#020617; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+                        ${{IMAGE_LIDAR ? `<img src="${{IMAGE_LIDAR}}" alt="LiDAR Point Cloud Capture" style="width:100%; height:100%; object-fit:contain; display:block;" />` : '<div style="color:#64748b; font-size:13px;">LiDAR Image Slot</div>'}}
+                        <div style="position:absolute; bottom:10px; left:12px; background:rgba(15, 23, 42, 0.9); padding:4px 10px; border-radius:6px; border:1px solid #0284c7; color:#38bdf8; font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:700;">
+                            Distance &amp; Coordinate Matrix · ΔX/ΔY/ΔZ Extents
+                        </div>
+                    </div>
+                    <div style="padding:12px 16px; background:#1e293b; border-top:1px solid #334155; font-size:12px; color:#cbd5e1; line-height:1.45;">
+                        <strong>Raw LiDAR scan</strong> delivered by MSC in <code style="background:#0f172a; padding:2px 6px; border-radius:4px; color:#38bdf8;">Tanksdataset</code>. Millions of 3D spatial points with sensor noise and non-uniform density.
+                    </div>
+                </div>
+
+                <!-- Card 2: SAC Reconstructed Surface Mesh -->
+                <div style="background:#0f172a; border-radius:14px; border:2px solid #10b981; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 6px 20px rgba(0,0,0,0.25);">
+                    <div style="background:#1e293b; padding:10px 16px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155;">
+                        <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:13px; font-weight:800; color:#34d399;">
+                            📐 STEP 2: SAC RECONSTRUCTED 3D SURFACE MESH
+                        </span>
+                        <span style="font-size:11px; font-family:'Barlow Semi Condensed',sans-serif; font-weight:800; padding:2px 8px; border-radius:4px; background:#064e3b; color:#6ee7b7;">
+                            PROCESSED MODEL
+                        </span>
+                    </div>
+                    <div style="position:relative; height:320px; background:#020617; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+                        ${{IMAGE_SAC ? `<img src="${{IMAGE_SAC}}" alt="SAC Reconstructed Mesh" style="width:100%; height:100%; object-fit:contain; display:block;" />` : '<div style="color:#64748b; font-size:13px;">SAC Image Slot</div>'}}
+                        <div style="position:absolute; bottom:10px; left:12px; background:rgba(15, 23, 42, 0.9); padding:4px 10px; border-radius:6px; border:1px solid #10b981; color:#34d399; font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:700;">
+                            Watertight Mesh · Voxel Remesh: 0.15m · Area Verified
+                        </div>
+                    </div>
+                    <div style="padding:12px 16px; background:#1e293b; border-top:1px solid #334155; font-size:12px; color:#cbd5e1; line-height:1.45;">
+                        <strong>Cleaned manifold mesh</strong> generated via CloudCompare (Poisson Recon &amp; SF filter) and Blender 4.5. Continuous faces allow finite element area integration.
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Section 1: Purpose & The Engineering Challenge -->
+            <div style="background:#ffffff; border-radius:12px; padding:18px 20px; border:1px solid #e2e8f0; display:flex; flex-direction:column; gap:10px; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="font-size:18px;">🎯</span>
+                    <h3 style="font-family:'Barlow Semi Condensed',sans-serif; font-size:18px; font-weight:800; color:#0f172a; margin:0;">
+                        Project Purpose: Why Raw Point Clouds Cannot Directly Yield Surface Area
+                    </h3>
+                </div>
+                <p style="font-size:13.5px; line-height:1.6; color:#334155; margin:0;">
+                    The objective is to calculate the precise surface area of ship ballast tanks using high-definition LiDAR scanning. 
+                    However, raw point clouds <strong>cannot directly provide an accurate surface area</strong> because LiDAR returns are simply independent 3D coordinate points ($X, Y, Z$) without connected topology. Raw scans inherently contain:
+                </p>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px; margin-top:4px;">
+                    <div style="background:#f8fafc; border-left:3.5px solid #ef4444; padding:10px 14px; border-radius:0 8px 8px 0; font-size:12.5px; color:#475569;">
+                        <strong style="color:#b91c1c;">1. Sensor Noise &amp; Glare:</strong> High reflectivity off wet steel or standing water scatters scan points.
+                    </div>
+                    <div style="background:#f8fafc; border-left:3.5px solid #f59e0b; padding:10px 14px; border-radius:0 8px 8px 0; font-size:12.5px; color:#475569;">
+                        <strong style="color:#d97706;">2. Shadowed Gaps:</strong> Stiffeners, brackets, and suction pipes create blind spots with missing points.
+                    </div>
+                    <div style="background:#f8fafc; border-left:3.5px solid #3b82f6; padding:10px 14px; border-radius:0 8px 8px 0; font-size:12.5px; color:#475569;">
+                        <strong style="color:#1d4ed8;">3. Density Gradients:</strong> Far bulkheads exhibit sparse point spacing, while near dome areas are overdense.
+                    </div>
+                    <div style="background:#f8fafc; border-left:3.5px solid #10b981; padding:10px 14px; border-radius:0 8px 8px 0; font-size:12.5px; color:#475569;">
+                        <strong style="color:#047857;">4. Disconnected Points:</strong> Area integration requires watertight polygon faces, not discrete coordinates.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: Tank Categorization (MSC Dataset) -->
+            <div style="background:#ffffff; border-radius:12px; padding:18px 20px; border:1px solid #e2e8f0; display:flex; flex-direction:column; gap:12px; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span style="font-size:18px;">📋</span>
+                        <h3 style="font-family:'Barlow Semi Condensed',sans-serif; font-size:18px; font-weight:800; color:#0f172a; margin:0;">
+                            Dataset Intake &amp; Tank Complexity Categorization
+                        </h3>
+                    </div>
+                    <span style="font-size:12px; color:#64748b; font-weight:600;">Recorded in: <code style="background:#f1f5f9; padding:2px 8px; border-radius:4px; color:#0f172a;">Types of Tanks.xlsx</code></span>
+                </div>
+                <p style="font-size:13.5px; line-height:1.55; color:#334155; margin:0;">
+                    Delivered by MSC in the raw directory <code style="background:#f1f5f9; padding:2px 6px; border-radius:4px; color:#0284c7;">Tanksdataset</code>. Tanks are classified into 4 complexity categories to dictate processing parameters:
+                </p>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:10px;">
+                    <div style="border:1px solid #cbd5e1; border-radius:8px; padding:12px; background:#f8fafc;">
+                        <div style="font-family:'Barlow Semi Condensed',sans-serif; font-size:13px; font-weight:800; color:#0284c7;">TYPE A (SIMPLE)</div>
+                        <div style="font-size:12px; color:#64748b; margin-top:3px;">Prismatic, uniform planar bulkheads with minimal structural obstruction.</div>
+                    </div>
+                    <div style="border:1px solid #cbd5e1; border-radius:8px; padding:12px; background:#f8fafc;">
+                        <div style="font-family:'Barlow Semi Condensed',sans-serif; font-size:13px; font-weight:800; color:#059669;">TYPE B (MODERATE)</div>
+                        <div style="font-size:12px; color:#64748b; margin-top:3px;">Standard wing tanks with transverse framing and longitudinal stiffeners.</div>
+                    </div>
+                    <div style="border:1px solid #cbd5e1; border-radius:8px; padding:12px; background:#f8fafc;">
+                        <div style="font-family:'Barlow Semi Condensed',sans-serif; font-size:13px; font-weight:800; color:#d97706;">TYPE C (COMPLEX)</div>
+                        <div style="font-size:12px; color:#64748b; margin-top:3px;">Corrugated bulkheads, curved bilge radius, and stringer decks.</div>
+                    </div>
+                    <div style="border:1px solid #cbd5e1; border-radius:8px; padding:12px; background:#f8fafc;">
+                        <div style="font-family:'Barlow Semi Condensed',sans-serif; font-size:13px; font-weight:800; color:#dc2626;">TYPE D (HIGHLY COMPLEX)</div>
+                        <div style="font-size:12px; color:#64748b; margin-top:3px;">Heavy internal piping, heating coils, ladders, and lightening holes (Steps 13+).</div>
+                    </div>
+                </div>
+                <div style="font-size:12px; color:#64748b; background:#f1f5f9; padding:8px 12px; border-radius:6px;">
+                    💡 <strong>Standard Workflow:</strong> Steps 1–12 represent the universal baseline workflow for all tasks. Tanks with internal components require steps 13+ to isolate and subtract internal pipework.
+                </div>
+            </div>
+
+            <!-- Section 3: The 3-Stage Software Pipeline (Detailed Manual) -->
+            <div style="background:#ffffff; border-radius:12px; padding:18px 20px; border:1px solid #e2e8f0; display:flex; flex-direction:column; gap:16px; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="font-size:18px;">⚙️</span>
+                    <h3 style="font-family:'Barlow Semi Condensed',sans-serif; font-size:18px; font-weight:800; color:#0f172a; margin:0;">
+                        3-Stage Software Processing Workflow &amp; Technical Manual
+                    </h3>
+                </div>
+
+                <!-- Stage 1: CloudCompare -->
+                <div style="border:1px solid #bae6fd; border-radius:10px; padding:16px; background:#f0f9ff; display:flex; flex-direction:column; gap:10px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+                        <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:15px; font-weight:800; color:#0369a1;">
+                            STAGE 1: CLOUDCOMPARE (NORMALS COMPUTATION &amp; POISSON RECONSTRUCTION)
+                        </span>
+                        <span style="font-size:11px; font-weight:800; background:#e0f2fe; color:#0284c7; padding:2px 8px; border-radius:4px; font-family:'Barlow Semi Condensed',sans-serif;">STEPS 1 – 4</span>
+                    </div>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px; font-size:12.5px; color:#334155;">
+                        <div style="background:#ffffff; padding:12px; border-radius:8px; border:1px solid #e0f2fe;">
+                            <strong style="color:#0284c7;">1. Compute Surface Normals:</strong>
+                            <ul style="margin:6px 0 0 16px; line-height:1.5;">
+                                <li>Open <code style="color:#0369a1;">.e57</code> file (<code>File &gt; Open</code>) and select the tank point cloud.</li>
+                                <li>Go to <code>Edit &gt; Normals &gt; Compute</code>.</li>
+                                <li>Local Surface Model: <strong>Plane</strong> (estimates surface orientation).</li>
+                                <li>Octree: <strong>Auto</strong>; Orientation: <strong>Minimum Spanning Tree (MST)</strong> for uniform surface facing.</li>
+                            </ul>
+                        </div>
+                        <div style="background:#ffffff; padding:12px; border-radius:8px; border:1px solid #e0f2fe;">
+                            <strong style="color:#0284c7;">2. Poisson Mesh Reconstruction:</strong>
+                            <ul style="margin:6px 0 0 16px; line-height:1.5;">
+                                <li>Select point cloud with computed normals (yellow border).</li>
+                                <li>Open <code>Plugins &gt; PoissonRecon</code>.</li>
+                                <li>Octree Depth: <strong>10 or 11</strong> (balances geometric resolution vs scan noise).</li>
+                                <li>Enable <strong>Density Scalar Field</strong> output to track reconstruction confidence.</li>
+                            </ul>
+                        </div>
+                        <div style="background:#ffffff; padding:12px; border-radius:8px; border:1px solid #e0f2fe;">
+                            <strong style="color:#0284c7;">3. Save Raw Mesh:</strong>
+                            <ul style="margin:6px 0 0 16px; line-height:1.5;">
+                                <li>Select reconstructed mesh in DB tree.</li>
+                                <li>Save as <strong>Binary CloudCompare file</strong> (faster I/O).</li>
+                                <li>Naming: <code>Dataset_TankName_OctreeDepth_RawMesh</code> (e.g. <code>Dataset01_TankA_Octree10_RawMesh</code>).</li>
+                            </ul>
+                        </div>
+                        <div style="background:#ffffff; padding:12px; border-radius:8px; border:1px solid #e0f2fe;">
+                            <strong style="color:#0284c7;">4. Scalar Field (SF) Filtering:</strong>
+                            <ul style="margin:6px 0 0 16px; line-height:1.5;">
+                                <li>In properties, locate <strong>SF Display Parameters</strong>.</li>
+                                <li>Adjust slider to isolate verified blue/green high-density regions.</li>
+                                <li>Apply <code>Edit &gt; Scalar Fields &gt; Filter by Value</code> to eliminate low-density noise.</li>
+                                <li>Export cleaned model: <code>Dataset_TankName_OctreeDepth_SFilter.ply</code>.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stage 2: Blender 4.5 -->
+                <div style="border:1px solid #bbf7d0; border-radius:10px; padding:16px; background:#f0fdf4; display:flex; flex-direction:column; gap:10px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+                        <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:15px; font-weight:800; color:#15803d;">
+                            STAGE 2: BLENDER 4.5 (VOXEL REMESHING &amp; SHELL AREA COMPUTATION)
+                        </span>
+                        <span style="font-size:11px; font-weight:800; background:#dcfce7; color:#16a34a; padding:2px 8px; border-radius:4px; font-family:'Barlow Semi Condensed',sans-serif;">STEPS 5 – 7</span>
+                    </div>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px; font-size:12.5px; color:#334155;">
+                        <div style="background:#ffffff; padding:12px; border-radius:8px; border:1px solid #dcfce7;">
+                            <strong style="color:#16a34a;">5. Import &amp; Geometry Alignment:</strong>
+                            <ul style="margin:6px 0 0 16px; line-height:1.5;">
+                                <li>Start Blender 4.5 and go to <code>File &gt; Import &gt; Stanford (.PLY)</code>.</li>
+                                <li>Select <code>Dataset_TankName_OctreeDepth_SFilter.ply</code>.</li>
+                                <li>Apply <code>Object &gt; Set Origin &gt; Origin to Geometry</code> to center transform matrix.</li>
+                            </ul>
+                        </div>
+                        <div style="background:#ffffff; padding:12px; border-radius:8px; border:1px solid #dcfce7;">
+                            <strong style="color:#16a34a;">6. Voxel Remeshing:</strong>
+                            <ul style="margin:6px 0 0 16px; line-height:1.5;">
+                                <li>Add Modifier ➔ <code>Generate &gt; Remesh</code>.</li>
+                                <li>Mode: <strong>Voxel</strong>.</li>
+                                <li>Set <strong>Voxel Size = 0.15 m</strong> (creates uniform polygon face density).</li>
+                                <li>Click <strong>Apply</strong> to commit manifold geometry.</li>
+                            </ul>
+                        </div>
+                        <div style="background:#ffffff; padding:12px; border-radius:8px; border:1px solid #dcfce7;">
+                            <strong style="color:#16a34a;">7. Shell Area Verification &amp; Export:</strong>
+                            <ul style="margin:6px 0 0 16px; line-height:1.5;">
+                                <li>Select remeshed tank shell: <code>3D &gt; Check &gt; Area for Shell</code>.</li>
+                                <li>Record surface area ($m^2$) and cross-reference against design limits.</li>
+                                <li>Enable <strong>Selection Only</strong> and export to Stanford (.PLY).</li>
+                                <li>Naming: <code>Dataset_TankName_OctreeDepth_SFilter_Remesh.ply</code>.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stage 3: Developed Surface Calculation Application -->
+                <div style="border:1px solid #fed7aa; border-radius:10px; padding:16px; background:#fff7ed; display:flex; flex-direction:column; gap:10px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+                        <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:15px; font-weight:800; color:#c2410c;">
+                            STAGE 3: DEVELOPED APPLICATION (CONFIDENCE EVALUATION &amp; ACCEPTANCE CRITERIA)
+                        </span>
+                        <span style="font-size:11px; font-weight:800; background:#ffedd5; color:#ea580c; padding:2px 8px; border-radius:4px; font-family:'Barlow Semi Condensed',sans-serif;">STEPS 8 – 12</span>
+                    </div>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px; font-size:12.5px; color:#334155;">
+                        <div style="background:#ffffff; padding:12px; border-radius:8px; border:1px solid #ffedd5;">
+                            <strong style="color:#ea580c;">8. Dual Dataset Load &amp; Comparison:</strong>
+                            <ul style="margin:6px 0 0 16px; line-height:1.5;">
+                                <li>Open developed Surface Calculation Application.</li>
+                                <li>Load raw scan <code>Dataset_TankName</code> alongside remeshed model <code>..._SFilter_Remesh</code>.</li>
+                                <li>Execute comparison function to verify shell boundaries have not experienced shrinkage.</li>
+                            </ul>
+                        </div>
+                        <div style="background:#ffffff; padding:12px; border-radius:8px; border:1px solid #ffedd5;">
+                            <strong style="color:#ea580c;">9. Confidence Evaluation Rule:</strong>
+                            <div style="margin-top:6px; display:flex; flex-direction:column; gap:6px;">
+                                <div style="background:#f0fdf4; border-left:3px solid #10b981; padding:6px 10px; font-size:12px;">
+                                    <strong style="color:#047857;">Confidence &gt; 0.83: ACCEPTED!</strong><br/>
+                                    Mesh is validated as mathematically reliable. Accept surface area.
+                                </div>
+                                <div style="background:#fef2f2; border-left:3px solid #ef4444; padding:6px 10px; font-size:12px;">
+                                    <strong style="color:#b91c1c;">Confidence &le; 0.83: REJECTED / REVISE</strong><br/>
+                                    Return to step 10/11 to adjust SF filtering or octree depth.
+                                </div>
+                            </div>
+                        </div>
+                        <div style="background:#ffffff; padding:12px; border-radius:8px; border:1px solid #ffedd5;">
+                            <strong style="color:#ea580c;">10. Batch Execution &amp; MSC Reporting:</strong>
+                            <ul style="margin:6px 0 0 16px; line-height:1.5;">
+                                <li>If confidence passes, initiate <strong>Start Batch</strong> for remaining tanks.</li>
+                                <li>Final certified output: <code>Dataset_TankName_OctreeDepth_FinalArea</code>.</li>
+                                <li>Monthly delivery to MSC: One comprehensive Word document report and one certified Excel spreadsheet.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Section 4: Standardized File Naming Convention Reference Table -->
+            <div style="background:#ffffff; border-radius:12px; padding:18px 20px; border:1px solid #e2e8f0; display:flex; flex-direction:column; gap:10px; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="font-size:18px;">🏷️</span>
+                    <h3 style="font-family:'Barlow Semi Condensed',sans-serif; font-size:18px; font-weight:800; color:#0f172a; margin:0;">
+                        Standardized File Naming Convention &amp; Lifecycle
+                    </h3>
+                </div>
+                <div style="font-size:12.5px; color:#475569; line-height:1.5;">
+                    Every saved file throughout the entire pipeline must follow the strict format: 
+                    <code style="background:#f1f5f9; padding:2px 8px; border-radius:4px; color:#0f172a; font-weight:700;">Dataset_TankName_OctreeDepth_ProcessStep</code>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table style="width:100%; border-collapse:collapse; font-size:12.5px; text-align:left;">
+                        <thead>
+                            <tr style="background:#f8fafc; border-bottom:2px solid #cbd5e1; color:#475569; font-family:'Barlow Semi Condensed',sans-serif;">
+                                <th style="padding:10px 14px;">PROCESSING STAGE</th>
+                                <th style="padding:10px 14px;">FILE NAME FORMAT</th>
+                                <th style="padding:10px 14px;">CONCRETE EXAMPLE</th>
+                                <th style="padding:10px 14px;">SOFTWARE TOOL</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom:1px solid #e2e8f0;">
+                                <td style="padding:10px 14px; font-weight:700; color:#0369a1;">1. Raw Mesh</td>
+                                <td style="padding:10px 14px; font-family:monospace; color:#334155;">Dataset_TankName_OctreeDepth_RawMesh</td>
+                                <td style="padding:10px 14px; font-family:monospace; color:#0284c7;">Dataset01_TankA_Octree10_RawMesh</td>
+                                <td style="padding:10px 14px; color:#64748b;">CloudCompare (Poisson)</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid #e2e8f0; background:#f8fafc;">
+                                <td style="padding:10px 14px; font-weight:700; color:#0284c7;">2. Scalar-Field Filtered</td>
+                                <td style="padding:10px 14px; font-family:monospace; color:#334155;">Dataset_TankName_OctreeDepth_SFilter</td>
+                                <td style="padding:10px 14px; font-family:monospace; color:#0284c7;">Dataset01_TankA_Octree10_SFilter</td>
+                                <td style="padding:10px 14px; color:#64748b;">CloudCompare (SF Filter)</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid #e2e8f0;">
+                                <td style="padding:10px 14px; font-weight:700; color:#15803d;">3. Remeshed Mesh</td>
+                                <td style="padding:10px 14px; font-family:monospace; color:#334155;">Dataset_TankName_OctreeDepth_SFilter_Remesh</td>
+                                <td style="padding:10px 14px; font-family:monospace; color:#15803d;">Dataset01_TankA_Octree10_SFilter_Remesh</td>
+                                <td style="padding:10px 14px; color:#64748b;">Blender 4.5 (Voxel 0.15m)</td>
+                            </tr>
+                            <tr style="background:#f0fdf4;">
+                                <td style="padding:10px 14px; font-weight:800; color:#16a34a;">4. Final Accepted Result</td>
+                                <td style="padding:10px 14px; font-family:monospace; color:#16a34a; font-weight:700;">Dataset_TankName_OctreeDepth_FinalArea</td>
+                                <td style="padding:10px 14px; font-family:monospace; color:#16a34a; font-weight:700;">Dataset01_TankA_Octree10_FinalArea</td>
+                                <td style="padding:10px 14px; font-weight:700; color:#16a34a;">Developed App (Conf &gt; 0.83)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    `;
+    modal.classList.add("active");
+}}
+
+function openModal(nodeId) {{
+    if (nodeId === "point_cloud" || nodeId === "point-cloud") {{
+        openPointCloudModal();
+        return;
+    }}
+    const modal = document.getElementById("modal-overlay");
+    const title = document.getElementById("modal-title-text");
+    const body = document.getElementById("modal-body-container");
+    const node = SVG_NODES[nodeId] || {{ name: (nodeId === "samm" ? "LRMS: Long Range Maintenance Schedule" : nodeId === "cms" ? "HMS: Hull Maintenance System" : nodeId === "twin" ? "Digital Twin (DT)" : nodeId === "tank" ? "MSC Ballast Tank B-3" : nodeId.toUpperCase()) }};
+
+    title.textContent = `${{node.name}} - Inspection Image`;
+    
+    let imgSrc = SENSOR_IMAGES[nodeId];
+    if (nodeId === "twin") {{
+        imgSrc = currentScenario === "rust" ? IMAGE_TWIN_RUST : IMAGE_TWIN_CLEAN;
+    }} else if (nodeId === "tank") {{
+        imgSrc = currentScenario === "rust" ? IMAGE_TANK_RUST : IMAGE_TANK_CLEAN;
+    }}
+
+    if (imgSrc && imgSrc.length > 20) {{
+        // Render NOTHING BUT THE IMAGE
+        body.innerHTML = `<img src="${{imgSrc}}" alt="${{node.name}} Inspection Image" />`;
+    }} else {{
+        // Render clean image space / slot
+        const varName = nodeId === "samm" ? "LRMS" : nodeId === "cms" ? "HMS" : nodeId.toUpperCase();
+        body.innerHTML = `
+            <div class="image-slot-container">
+                <span style="font-size: 52px;">📷</span>
+                <h3>${{node.name}} Image Slot</h3>
+                <p>No image configured yet for ${{node.name}}. Configure IMAGE_PATH_${{varName}} in story_app.py to display your inspection image here.</p>
+                <div class="code-badge">IMAGE_PATH_${{varName}} = "path/to/image.jpg"</div>
+            </div>`;
+    }}
+
+    modal.classList.add("active");
+}}
+
+document.getElementById("btn-modal-close").addEventListener("click", () => {{
+    document.getElementById("modal-overlay").classList.remove("active");
+}});
+document.getElementById("modal-overlay").addEventListener("click", (e) => {{
+    if (e.target.id === "modal-overlay") document.getElementById("modal-overlay").classList.remove("active");
+}});
+
+/* Phase 3 Simulation View Switcher */
+function switchViewMode(mode) {{
+    viewMode = mode;
+    const diagView = document.getElementById("svg-diagram-mount");
+    const simView = document.getElementById("sim-viewport");
+    const btnGraph = document.getElementById("btn-mode-graph");
+    const btnSim = document.getElementById("btn-mode-sim");
+
+    if (mode === "sim") {{
+        diagView.style.display = "none";
+        simView.style.display = "flex";
+        btnGraph.classList.remove("active");
+        btnSim.classList.add("active");
+        renderSimSvg();
+    }} else {{
+        diagView.style.display = "block";
+        simView.style.display = "none";
+        btnGraph.classList.add("active");
+        btnSim.classList.remove("active");
+    }}
+}}
+
+document.getElementById("btn-mode-graph").addEventListener("click", () => switchViewMode("graph"));
+document.getElementById("btn-mode-sim").addEventListener("click", () => switchViewMode("sim"));
+
+function setScenario(sc) {{
+    currentScenario = sc;
+    document.getElementById("btn-trigger-rust").classList.toggle("active", sc === "rust");
+    document.getElementById("btn-trigger-clean").classList.toggle("active", sc === "clean");
+    const badge = document.getElementById("sim-status-badge");
+    if (sc === "rust") {{
+        badge.textContent = "⚠️ RUST DEFECT DETECTED @ FRAME 38 (16.2mm)";
+        badge.style.background = "#450a0a";
+        badge.style.color = "#f87171";
+        badge.style.borderColor = "#ef4444";
+    }} else {{
+        badge.textContent = "🟢 BULKHEAD NOMINAL (18.0mm)";
+        badge.style.background = "#064e3b";
+        badge.style.color = "#34d399";
+        badge.style.borderColor = "#10b981";
+    }}
+    renderSimSvg();
+}}
+
+document.getElementById("btn-trigger-rust").addEventListener("click", () => setScenario("rust"));
+document.getElementById("btn-trigger-clean").addEventListener("click", () => setScenario("clean"));
+
+function renderSimSvg() {{
+    const container = document.getElementById("sim-svg-container");
+    const isRust = currentScenario === "rust";
+    const rustColor = isRust ? "#ef4444" : "#10b981";
+    const thickness = isRust ? "16.2 mm (-1.8mm recess)" : "18.0 mm (nominal)";
+    const tankImg = isRust ? IMAGE_TANK_RUST : IMAGE_TANK_CLEAN;
+    const twinImg = isRust ? IMAGE_TWIN_RUST : IMAGE_TWIN_CLEAN;
+
+    container.innerHTML = `
+        <div style="display:flex; flex-direction:column; gap:16px; width:100%; height:100%; overflow-y:auto; padding:12px;">
+            <!-- Side-by-Side Dual Card View: Real Ship vs Digital Twin CAD -->
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(360px, 1fr)); gap:18px;">
+                
+                <!-- Card 1: Physical Asset (Ballast Tank B-3 Cutaway) -->
+                <div style="background:#0f172a; border-radius:14px; border:2.5px solid ${{isRust ? '#ef4444' : '#334155'}}; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 8px 24px rgba(0,0,0,0.3);">
+                    <div style="background:#1e293b; padding:10px 16px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155;">
+                        <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:13px; font-weight:800; color:#f8fafc;">⚓ REAL SHIP: BALLAST TANK B-3 CUTAWAY</span>
+                        <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; padding:3px 10px; border-radius:6px; background:${{isRust ? '#dc2626' : '#059669'}}; color:#ffffff;">
+                            ${{isRust ? '⚠️ CORROSION @ FRAME 38' : '🟢 NOMINAL BASELINE'}}
+                        </span>
+                    </div>
+                    <div style="position:relative; height:340px; background:#020617; display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="openModal('tank')">
+                        ${{tankImg ? `<img src="${{tankImg}}" alt="Real MSC Ballast Tank" style="width:100%; height:100%; object-fit:contain; display:block;" />` : '<div style=\"color:#64748b;\">No Image Available</div>'}}
+                        <div style="position:absolute; bottom:12px; left:12px; background:rgba(15, 23, 42, 0.9); padding:5px 12px; border-radius:6px; border:1px solid ${{rustColor}}; color:${{rustColor}}; font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800;">
+                            ${{isRust ? '🔴 CORROSION DETECTED: -1.8mm THICKNESS LOSS' : '⚓ INTACT STEEL & PROTECTIVE EPOXY'}}
+                        </div>
+                        <div style="position:absolute; top:12px; right:12px; background:rgba(15, 23, 42, 0.85); padding:4px 8px; border-radius:6px; color:#94a3b8; font-size:11px; font-family:'Barlow Semi Condensed',sans-serif; font-weight:700;">
+                            🔍 Click to Enlarge
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Virtual Digital Twin 3D CAD Mesh -->
+                <div style="background:#0f172a; border-radius:14px; border:2.5px solid ${{isRust ? '#ef4444' : '#38bdf8'}}; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 8px 24px rgba(0,0,0,0.3);">
+                    <div style="background:#1e293b; padding:10px 16px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155;">
+                        <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:13px; font-weight:800; color:#38bdf8;">🌐 DIGITAL TWIN: 3D CAD MESH &amp; TELEMETRY</span>
+                        <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; padding:3px 10px; border-radius:6px; background:${{isRust ? '#450a0a' : '#064e3b'}}; color:${{isRust ? '#f87171' : '#34d399'}}; border:1px solid ${{rustColor}};">
+                            ${{isRust ? '⚠️ ACTIVE RUST IN CAD MESH (HEALTH: 42%)' : '🟢 SYNCHRONIZED (HEALTH: 98%)'}}
+                        </span>
+                    </div>
+                    <div style="position:relative; height:340px; background:#020617; display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="openModal('twin')">
+                        ${{twinImg ? `<img src="${{twinImg}}" alt="Digital Twin 3D CAD Model" style="width:100%; height:100%; object-fit:contain; display:block;" />` : '<div style=\"color:#64748b;\">No Image Available</div>'}}
+                        <div style="position:absolute; bottom:12px; left:12px; background:rgba(15, 23, 42, 0.9); padding:5px 12px; border-radius:6px; border:1px solid ${{rustColor}}; color:${{rustColor}}; font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800;">
+                            ${{isRust ? '⚠️ CAD MESH REFLECTS -1.8mm LOSS @ FR 38' : '🟢 BULKHEAD NOMINAL (18.0mm)'}}
+                        </div>
+                        <div style="position:absolute; top:12px; right:12px; background:rgba(15, 23, 42, 0.85); padding:4px 8px; border-radius:6px; color:#94a3b8; font-size:11px; font-family:'Barlow Semi Condensed',sans-serif; font-weight:700;">
+                            🔍 Click to Enlarge
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Engineering Telemetry HUD Bar -->
+            <div style="background:#0f172a; border-radius:12px; border:1px solid #334155; padding:14px 20px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:16px;">
+                <div style="display:flex; flex-direction:column; gap:4px;">
+                    <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; color:#94a3b8; letter-spacing:1px;">SYNCHRONIZATION TELEMETRY</span>
+                    <span style="font-family:'Inter',sans-serif; font-size:13px; color:#f8fafc;">Real-time bidirectional sync &middot; Latency: <strong>&lt;180ms</strong> &middot; Model: <strong>MSC-TNK-B3-V2.1</strong></span>
+                </div>
+                <div style="display:flex; gap:24px;">
+                    <div style="display:flex; flex-direction:column; gap:2px;">
+                        <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; color:#94a3b8;">PLATE THICKNESS (FR 38)</span>
+                        <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:20px; font-weight:800; color:${{rustColor}};">${{thickness}}</span>
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:2px;">
+                        <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; color:#94a3b8;">STRUCTURAL INTEGRITY</span>
+                        <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:20px; font-weight:800; color:${{rustColor}};">${{isRust ? '42% (Degraded)' : '98% (Nominal)'}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}}
+
+/* Keyboard Navigation (Arrow Keys) */
+window.addEventListener('keydown', (e) => {{
+    if (e.target.closest && e.target.closest("button, [role=button], input")) return;
+    if (e.key === 'ArrowLeft' && currentPhase > 1) goToPhase(currentPhase - 1);
+    if (e.key === 'ArrowRight' && currentPhase < 4) goToPhase(currentPhase + 1);
+    if (e.key === 'Escape') {{
+        document.getElementById("modal-overlay").classList.remove("active");
+        if (selectedNode) selectNode(null);
+    }}
+}});
+
+// Startup
+initDiagram();
+goToPhase(1);
+</script>
+
+</body>
+</html>'''
+
+    import shutil
+    output_path = os.environ.get("OUTPUT_HTML_PATH") or os.path.join(os.path.dirname(os.path.abspath(__file__)), "digital_twin_story.html")
+    alt_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "dt-story.html")
+    brain_path = os.path.join(r"C:\Users\hruda\.gemini\antigravity-cli\brain\b51f71d1-147f-44d7-b87c-b1b7b9cac7f5", "digital_twin_story.html")
+
+    for p in (output_path, alt_path, brain_path):
+        try:
+            with open(p, "w", encoding="utf-8") as f:
+                f.write(html_content)
+            print(f"Wrote {p} ({os.path.getsize(p)} bytes)")
+        except Exception as e:
+            print(f"Notice writing {p}: {e}")
+
+    return output_path
+
+if __name__ == "__main__":
+    generate_html()
