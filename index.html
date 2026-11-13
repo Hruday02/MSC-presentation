@@ -1051,7 +1051,13 @@ function draw() {
         const x1 = pA.x, y1 = pA.y, x2 = pB.x, y2 = pB.y;
         const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
 
-        if (e.curve) {
+        if (e.a === "cms" && e.b === "vtl") {
+            // Clear, elegant arc below Digital Twin with 40px+ clearance so it touches nothing else
+            const sx = A.x - 30, sy = A.y + 31;
+            const ex = B.x, ey = B.y + 31;
+            const cx = (sx + ex) / 2, cy = 630;
+            e.path.setAttribute("d", `M ${sx} ${sy} Q ${cx} ${cy} ${ex} ${ey}`);
+        } else if (e.curve) {
             const dx = x2 - x1, dy = y2 - y1, d = Math.hypot(dx, dy) || 1;
             const nx = -dy / d, ny = dx / d;
             const cx = mx + nx * e.curve, cy = my + ny * e.curve;
