@@ -793,7 +793,7 @@ const SVG_NODES = {
     rgb:   { group: "sensors", label: "RGB/Video", sub: "visual images", shape: "rect", w: 116, h: 62, rx: 10, fill: "#ffffff", stroke: "#1e293b", name: "RGB & Video Camera", about: "High-resolution 4K optical camera stream capturing physical surface texture and visual coating condition.", gives: ["4K Video Feed", "Surface Orthophotos"] },
     hyp:   { group: "sensors", label: "Hyper", sub: "surface condition", shape: "rect", w: 116, h: 62, rx: 10, fill: "#ffffff", stroke: "#1e293b", name: "Hyperspectral Imager (Auto_000_1123.cu3s)", about: "Cubert VNIR hyperspectral scanner detecting chemical oxidation and coating degradation signatures.", gives: ["Spectral Tensors", "Fe₂O₃ Oxidation Maps"] },
     sac:   { group: "computation", label: "SAC", sub: "surface area", shape: "rect", w: 116, h: 62, rx: 10, fill: "#ffffff", stroke: "#1e293b", name: "Surface Area Engine (SAC)", about: "Computes 3D surface area Delaunay meshes and compares real-time scans against baseline CAD scantling.", gives: ["3D Mesh Model", "Surface Area Delta"] },
-    vtl:   { group: "computation", label: "VTL", sub: "technical library", shape: "rect", w: 116, h: 62, rx: 10, fill: "#ffffff", stroke: "#1e293b", name: "Virtual Technical Library (VTL)", about: "Stores vessel scantling plans, DNV-GL class records, and coating decay curves.", gives: ["Scantling Compliance", "Tank Records"] },
+    vtl:   { group: "computation", label: "VTL Prototype", sub: "technical library", shape: "rect", w: 130, h: 62, rx: 10, fill: "#ffffff", stroke: "#1e293b", name: "VTL Prototype: Virtual Technical Library", about: "Stores vessel scantling plans, DNV-GL class records, and coating decay curves.", gives: ["Scantling Compliance", "Tank Records"] },
     tank:  { group: "sensors", label: "Ballast Tank", sub: "", shape: "ellipse", rx: 65, ry: 38, fill: "#ffffff", stroke: "#1e293b", name: "MSC Ballast Tank B-3", about: "The physical cargo tank compartment on board the vessel.", gives: ["Physical Inspection Data", "Ultrasound Scantling"] },
     twin:  { group: "dtsync", label: "DT", sub: "digital twin", shape: "ellipse", rx: 59, ry: 38, fill: "#ffffff", stroke: "#1e293b", name: "Digital Twin (DT)", about: "A virtual 3D replica of the ballast tank kept continuously synchronized with the physical asset.", gives: ["Synchronized 3D Mesh", "Real-Time Telemetry"] },
     samm:  { group: "decision", label: "LRMS", sub: "Long Range Maintenance Schedule", shape: "rect", w: 126, h: 62, rx: 10, fill: "#0284c7", stroke: "#0369a1", name: "LRMS: Long Range Maintenance Schedule", about: "Condition-Based Maintenance policy engine that optimizes drydock work packs and repair ROI.", gives: ["Maintenance Schedule", "Repair Work Packs"] },
@@ -844,7 +844,8 @@ const SVG_EDGES = [
     { a: "tank", b: "twin", label: "sync", phases: [3, 4], bidirectional: true },
     { a: "vtl", b: "twin", label: "tank records", phases: [3, 4] },
     { a: "twin", b: "cms", label: "twin data", phases: [4] },
-    { a: "samm", b: "tank", label: "actions", phases: [4] }
+    { a: "samm", b: "tank", label: "actions", phases: [4] },
+    { a: "cms", b: "vtl", label: "", phases: [4], dashed: true, curve: -140 }
 ];
 
 const svgNS = "http://www.w3.org/2000/svg";
@@ -897,7 +898,7 @@ function initDiagram() {
 
     // 2. Build Edges
     SVG_EDGES.forEach(e => {
-        const eg = svgEl("g", { class: "edge" }, gEdges);
+        const eg = svgEl("g", { class: "edge" + (e.dashed ? " feedback" : "") }, gEdges);
         const path = svgEl("path", { class: "edge-path" }, eg);
         let bg = null, tx = null;
         if (e.label) {
@@ -918,7 +919,7 @@ function initDiagram() {
             if (bg) { bg.style.cursor = "pointer"; }
             if (tx) { tx.style.cursor = "pointer"; }
         }
-        edgeEls.push({ a: e.a, b: e.b, label: e.label, phases: e.phases, bidirectional: e.bidirectional, g: eg, path, bg, tx });
+        edgeEls.push({ a: e.a, b: e.b, label: e.label, phases: e.phases, curve: e.curve || 0, dashed: e.dashed, bidirectional: e.bidirectional, g: eg, path, bg, tx });
     });
 
     // 3. Build Nodes
@@ -1044,18 +1045,39 @@ function draw() {
         const pA = clipBoundary(A.x, A.y, B.x, B.y, nodeA);
         const pB = clipBoundary(B.x, B.y, A.x, A.y, nodeB);
 
-        const dPath = `M ${pA.x} ${pA.y} L ${pB.x} ${pB.y}`;
-        e.path.setAttribute("d", dPath);
-        e.path.setAttribute("marker-end", "url(#arrow)");
+        const x1 = pA.x, y1 = pA.y, x2 = pB.x, y2 = pB.y;
+        const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
 
-        if (e.tx) {
-            const mx = (pA.x + pB.x) / 2, my = (pA.y + pB.y) / 2;
-            e.tx.setAttribute("x", mx);
-            e.tx.setAttribute("y", my + 4);
-            const w = e.label.length * 6.8 + 12;
-            e.bg.setAttribute("x", mx - w / 2);
-            e.bg.setAttribute("y", my - 9);
-            e.bg.setAttribute("width", w);
+        if (e.curve) {
+            const dx = x2 - x1, dy = y2 - y1, d = Math.hypot(dx, dy) || 1;
+            const nx = -dy / d, ny = dx / d;
+            const cx = mx + nx * e.curve, cy = my + ny * e.curve;
+            e.path.setAttribute("d", `M ${x1} ${y1} Q ${cx} ${cy} ${x2} ${y2}`);
+            if (e.tx) {
+                e.tx.setAttribute("x", cx);
+                e.tx.setAttribute("y", cy + 4);
+                const tw = e.label.length * 6.8 + 12;
+                e.bg.setAttribute("x", cx - tw / 2);
+                e.bg.setAttribute("y", cy - 9);
+                e.bg.setAttribute("width", tw);
+            }
+        } else {
+            e.path.setAttribute("d", `M ${x1} ${y1} L ${x2} ${y2}`);
+            if (e.tx) {
+                e.tx.setAttribute("x", mx);
+                e.tx.setAttribute("y", my + 4);
+                const tw = e.label.length * 6.8 + 12;
+                e.bg.setAttribute("x", mx - tw / 2);
+                e.bg.setAttribute("y", my - 9);
+                e.bg.setAttribute("width", tw);
+            }
+        }
+
+        if (e.dashed) {
+            e.path.setAttribute("stroke-dasharray", "6 4");
+            e.path.setAttribute("marker-end", "url(#arrow-feedback)");
+        } else {
+            e.path.setAttribute("marker-end", "url(#arrow)");
         }
     });
 }
@@ -1137,7 +1159,11 @@ function highlight() {
         const hot = selectedNode && (e.a === selectedNode || e.b === selectedNode);
         e.g.classList.toggle("hot", !!hot);
         e.g.classList.toggle("dim", !!selectedNode && !hot);
-        e.path.setAttribute("marker-end", hot ? "url(#arrow-hot)" : "url(#arrow)");
+        if (e.dashed) {
+            e.path.setAttribute("marker-end", hot ? "url(#arrow-hot)" : "url(#arrow-feedback)");
+        } else {
+            e.path.setAttribute("marker-end", hot ? "url(#arrow-hot)" : "url(#arrow)");
+        }
     });
 }
 

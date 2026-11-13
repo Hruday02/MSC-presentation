@@ -143,7 +143,7 @@ CONTENT: Dict[str, Any] = {
             "provides": ["3D tank model", "Surface area", "Mesh calculations"],
         },
         "vtl": {
-            "label": "VTL",
+            "label": "VTL Prototype",
             "sublabel": "technical library",
             "group": "computation",
             "style": "project",
@@ -260,6 +260,7 @@ CONTENT: Dict[str, Any] = {
         # Phase 4: Beyond the Twin layer connections (DT -> HMS, LRMS -> Ballast Tank)
         {"source": "twin", "target": "cms", "label": "twin data", "phases": [4]},
         {"source": "samm", "target": "tank", "label": "actions", "phases": [4]},
+        {"source": "cms", "target": "vtl", "label": "", "phases": [4], "dashed": True, "style": "dashed"},
     ],
 
     # Phase 3 Ship & Tank Simulation Configuration
@@ -2232,7 +2233,7 @@ app.index_string = """
                 rgb:   { group: "sensors", label: "RGB/Video", sub: "visual images", shape: "rect", w: 116, h: 62, rx: 10, fill: "#ffffff", stroke: "#1e293b", text: "#0f172a" },
                 hyp:   { group: "sensors", label: "Hyper", sub: "surface condition", shape: "rect", w: 116, h: 62, rx: 10, fill: "#ffffff", stroke: "#1e293b", text: "#0f172a" },
                 sac:   { group: "computation", label: "SAC", sub: "surface area", shape: "rect", w: 116, h: 62, rx: 10, fill: "#ffffff", stroke: "#1e293b", text: "#0f172a" },
-                vtl:   { group: "computation", label: "VTL", sub: "technical library", shape: "rect", w: 116, h: 62, rx: 10, fill: "#ffffff", stroke: "#1e293b", text: "#0f172a" },
+                vtl:   { group: "computation", label: "VTL Prototype", sub: "technical library", shape: "rect", w: 116, h: 62, rx: 10, fill: "#ffffff", stroke: "#1e293b", text: "#0f172a" },
                 tank:  { group: "sensors", label: "Ballast Tank", sub: "", shape: "ellipse", rx: 65, ry: 38, fill: "#ffffff", stroke: "#1e293b", text: "#0f172a" },
                 twin:  { group: "dtsync", label: "DT", sub: "digital twin", shape: "ellipse", rx: 59, ry: 38, fill: "#ffffff", stroke: "#1e293b", text: "#0f172a" },
                 samm:  { group: "decision", label: "LRMS", sub: "Long Range Maintenance Schedule", shape: "rect", w: 126, h: 62, rx: 10, fill: "#0284c7", stroke: "#0369a1", text: "#ffffff" },
@@ -2287,7 +2288,8 @@ app.index_string = """
 
                 // Phase 4: Beyond the Twin layer
                 { a: "twin", b: "cms", label: "twin data", phases: [4] },
-                { a: "samm", b: "tank", label: "actions", phases: [4] }
+                { a: "samm", b: "tank", label: "actions", phases: [4] },
+                { a: "cms", b: "vtl", label: "", phases: [4], dashed: true, curve: -140 }
             ];
 
             let currentPhase = 1, selectedNode = null;
@@ -3658,7 +3660,7 @@ NODE_MODAL_METADATA = {
     },
     "vtl": {
         "super_title": "COMPUTATION · CLASS SOCIETY & SCANTLING DATABASE",
-        "title": "VTL: Virtual Technical Library & Scantling Records",
+        "title": "VTL Prototype: Virtual Technical Library & Scantling Records",
         "subtitle": "DNV-GL Class Registry · Steel Grade NV DH36 Scantling Plans · Historical coating decay curves",
         "clean_badge": "🟢 SCANTLING COMPLIANT: 18.0mm STEEL (MIN ALLOWABLE 14.5mm)",
         "clean_badge_style": {"backgroundColor": "#064e3b", "color": "#34d399", "border": "1.5px solid #10b981"},
