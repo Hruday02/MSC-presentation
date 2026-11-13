@@ -491,30 +491,106 @@ def generate_html():
             cursor: default;
         }}
 
-        /* Full Screen Modal Viewport */
+        /* Full Screen Modal Viewport with Smooth Physics Animation */
         .modal-overlay {{
-            display: none;
+            display: flex;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1);
             position: fixed;
             inset: 0;
             background: rgba(2, 6, 23, 0.88);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             z-index: 1000;
             justify-content: center;
             align-items: center;
             padding: 24px;
         }}
-        .modal-overlay.active {{ display: flex; }}
+        .modal-overlay.active {{
+            opacity: 1;
+            pointer-events: auto;
+        }}
         .modal-card {{
             background: #020617;
             border: 1.5px solid #334155;
             border-radius: 16px;
             width: 100%;
-            max-width: 1160px;
+            max-width: 1280px;
             max-height: 94vh;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
+            transform: scale(0.95) translateY(14px);
+            transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }}
+        .modal-overlay.active .modal-card {{
+            transform: scale(1) translateY(0);
+        }}
+
+        /* Smooth View Transitions */
+        .view-enter-anim {{
+            animation: viewFadeSlide 0.38s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }}
+        @keyframes viewFadeSlide {{
+            0% {{
+                opacity: 0;
+                transform: translateY(12px) scale(0.995);
+            }}
+            100% {{
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }}
+        }}
+
+        /* Notes Panel Slide In */
+        .panel-slide-anim {{
+            animation: panelSlideIn 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }}
+        @keyframes panelSlideIn {{
+            0% {{
+                opacity: 0;
+                transform: translateX(14px);
+            }}
+            100% {{
+                opacity: 1;
+                transform: translateX(0);
+            }}
+        }}
+
+        /* Laser Scanner Beam Sweep across Tank */
+        .scanner-beam {{
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.95), rgba(249, 115, 22, 0.95), transparent);
+            box-shadow: 0 0 16px rgba(56, 189, 248, 0.9), 0 0 32px rgba(249, 115, 22, 0.7);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 10;
+        }}
+        .active-sweep {{
+            animation: sweepAnimation 1.1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }}
+        .dt-active-sweep {{
+            animation: sweepAnimation 1.1s 0.22s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }}
+        @keyframes sweepAnimation {{
+            0% {{ top: 12%; opacity: 0; }}
+            20% {{ opacity: 0.95; }}
+            80% {{ opacity: 0.95; }}
+            100% {{ top: 88%; opacity: 0; }}
+        }}
+
+        /* Pulsing Alert Badge */
+        @keyframes alertPulseGlow {{
+            0%, 100% {{ box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }}
+            50% {{ box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }}
+        }}
+        .pulse-alert-badge {{
+            animation: alertPulseGlow 2s infinite ease-in-out;
         }}
         .modal-header {{
             background: #1e293b;
@@ -1026,17 +1102,47 @@ function draw() {{
     }});
 }}
 
-function goToPhase(p) {{
-    currentPhase = Math.max(1, Math.min(4, p));
-    if (selectedNode && !SVG_LAYOUT[currentPhase][selectedNode]) selectedNode = null;
-
-    for (const id in pos) {{
-        const t = SVG_LAYOUT[currentPhase][id];
-        pos[id].x = t ? t[0] : pos[id].x;
-        pos[id].y = t ? t[1] : pos[id].y;
-        pos[id].o = t ? 1 : 0;
+let anim = null;
+function goToPhase(targetPhase) {{
+    const p = Math.max(1, Math.min(4, targetPhase));
+    currentPhase = p;
+    if (selectedNode && !SVG_LAYOUT[p][selectedNode]) {{
+        selectedNode = null;
     }}
-    draw();
+
+    const from = {{}};
+    for (const id in pos) from[id] = {{ ...pos[id] }};
+    const to = {{}};
+    for (const id in pos) {{
+        const t = SVG_LAYOUT[p][id];
+        to[id] = t ? {{ x: t[0], y: t[1], o: 1 }} : {{ x: from[id].x, y: from[id].y, o: 0 }};
+        if (t && from[id].o < 0.02) {{
+            from[id].x = t[0];
+            from[id].y = t[1];
+        }}
+    }}
+
+    if (anim) cancelAnimationFrame(anim);
+    const dur = 650;
+    const t0 = performance.now();
+    // High-performance cubic ease-in-out curve
+    const ease = t => t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+
+    const step = function(now) {{
+        const k = Math.min(1, (now - t0) / dur);
+        const e = ease(k);
+        for (const id in pos) {{
+            pos[id].x = from[id].x + (to[id].x - from[id].x) * e;
+            pos[id].y = from[id].y + (to[id].y - from[id].y) * e;
+            pos[id].o = from[id].o + (to[id].o - from[id].o) * e;
+        }}
+        draw();
+        if (k < 1) {{
+            anim = requestAnimationFrame(step);
+        }}
+    }};
+    anim = requestAnimationFrame(step);
+
     renderTabs();
     highlight();
     renderNotes();
@@ -1079,6 +1185,9 @@ function highlight() {{
 
 function renderNotes() {{
     const box = document.getElementById("notes-panel");
+    box.classList.remove("panel-slide-anim");
+    void box.offsetWidth;
+    box.classList.add("panel-slide-anim");
     const P = PHASES[currentPhase];
     const nav = `
         <div class="footer-nav">
@@ -1582,11 +1691,17 @@ function switchViewMode(mode) {{
     if (mode === "sim") {{
         diagView.style.display = "none";
         simView.style.display = "flex";
+        simView.classList.remove("view-enter-anim");
+        void simView.offsetWidth;
+        simView.classList.add("view-enter-anim");
         btnGraph.classList.remove("active");
         btnSim.classList.add("active");
         renderSimSvg();
     }} else {{
         diagView.style.display = "block";
+        diagView.classList.remove("view-enter-anim");
+        void diagView.offsetWidth;
+        diagView.classList.add("view-enter-anim");
         simView.style.display = "none";
         btnGraph.classList.add("active");
         btnSim.classList.remove("active");
