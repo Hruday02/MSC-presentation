@@ -817,43 +817,63 @@ def generate_html():
 
         <!-- ========================================================= -->
         <!-- RIGHT TOP: SYSTEM NODES RUNTIME ARCHITECTURE               -->
-        <!-- NO LINK BETWEEN SAC AND VTL                               -->
+        <!-- Authentic match to user slide (top_right_zoom.png)         -->
+        <!-- All 3 sensors connect to Tank; SAC/VTL connect to DT       -->
         <!-- ========================================================= -->
         <g id="p45-runtime-nodes">
-            <!-- Connecting Paths -->
-            <!-- LIDAR -> SAC -->
-            <path d="M 584 92 L 584 108" fill="none" stroke="#64748b" stroke-width="1.5"/>
-            <polygon points="581,104 584,111 587,104" fill="#64748b"/>
+            <!-- ----------------------------------------------------- -->
+            <!-- 1. SENSOR INGESTION BUS INTO TANK                     -->
+            <!-- LIDAR, Hyper, RGB/Video all feed into Tank            -->
+            <!-- ----------------------------------------------------- -->
+            <!-- Vertical drops from each sensor to the horizontal bus -->
+            <line x1="584" y1="92" x2="584" y2="103" stroke="#2563eb" stroke-width="1.8"/>
+            <line x1="728" y1="92" x2="728" y2="103" stroke="#2563eb" stroke-width="1.8"/>
+            <line x1="872" y1="92" x2="872" y2="103" stroke="#2563eb" stroke-width="1.8"/>
+            <!-- Horizontal bus spanning across all 3 sensors -->
+            <line x1="584" y1="103" x2="872" y2="103" stroke="#2563eb" stroke-width="1.8"/>
+            <!-- Single combined drop from bus directly into Tank -->
+            <line x1="728" y1="103" x2="728" y2="111" stroke="#2563eb" stroke-width="1.8"/>
+            <polygon points="724,106 728,112 732,106" fill="#2563eb"/>
 
-            <!-- SAC -> DT (Direct connection, NO link between SAC and VTL!) -->
-            <path d="M 628 126 C 656 126, 656 181, 684 181" fill="none" stroke="#2563eb" stroke-width="1.5"/>
-            <polygon points="680,178 687,181 680,184" fill="#2563eb"/>
+            <!-- ----------------------------------------------------- -->
+            <!-- 2. LIDAR -> SAC (Pipeline from scanner to SAC)        -->
+            <!-- ----------------------------------------------------- -->
+            <path d="M 540 75 L 518 75 L 518 129 L 538 129" fill="none" stroke="#2563eb" stroke-width="1.6"/>
+            <polygon points="534,125 540,129 534,133" fill="#2563eb"/>
 
-            <!-- VTL -> DT (Direct connection) -->
-            <path d="M 628 181 L 684 181" fill="none" stroke="#2563eb" stroke-width="1.5"/>
-            <polygon points="680,178 687,181 680,184" fill="#2563eb"/>
+            <!-- ----------------------------------------------------- -->
+            <!-- 3. SAC -> DT & VTL -> DT (Direct connections to DT)   -->
+            <!-- NO link between SAC and VTL                           -->
+            <!-- ----------------------------------------------------- -->
+            <!-- SAC -> DT -->
+            <path d="M 628 129 C 656 129, 656 183, 682 183" fill="none" stroke="#2563eb" stroke-width="1.6"/>
+            <polygon points="678,179 684,183 678,187" fill="#2563eb"/>
 
-            <!-- Hyper -> Tank -->
-            <path d="M 728 92 L 728 108" fill="none" stroke="#64748b" stroke-width="1.5"/>
-            <polygon points="725,104 728,111 731,104" fill="#64748b"/>
+            <!-- VTL -> DT -->
+            <line x1="628" y1="183" x2="682" y2="183" stroke="#2563eb" stroke-width="1.6"/>
+            <polygon points="678,179 684,183 678,187" fill="#2563eb"/>
 
-            <!-- RGB/Video -> Tank -->
-            <path d="M 872 92 L 872 126 L 772 126" fill="none" stroke="#64748b" stroke-width="1.5"/>
-            <polygon points="776,123 768,126 776,129" fill="#64748b"/>
+            <!-- ----------------------------------------------------- -->
+            <!-- 4. TANK <==> DT BIDIRECTIONAL REAL-TIME SYNC          -->
+            <!-- ----------------------------------------------------- -->
+            <line x1="728" y1="147" x2="728" y2="165" stroke="#0284c7" stroke-width="2"/>
+            <polygon points="724,151 728,145 732,151" fill="#0284c7"/>
+            <polygon points="724,161 728,167 732,161" fill="#0284c7"/>
 
-            <!-- Tank <==> DT Bidirectional Sync -->
-            <line x1="728" y1="144" x2="728" y2="163" stroke="#0284c7" stroke-width="2"/>
-            <polygon points="724,148 728,141 732,148" fill="#0284c7"/>
-            <polygon points="724,159 728,166 732,159" fill="#0284c7"/>
+            <!-- ----------------------------------------------------- -->
+            <!-- 5. SAMM -> TANK & DT -> CMS                           -->
+            <!-- ----------------------------------------------------- -->
+            <!-- SAMM -> Tank (Maintenance feedback into physical tank) -->
+            <line x1="828" y1="129" x2="774" y2="129" stroke="#2563eb" stroke-width="1.6"/>
+            <polygon points="778,125 772,129 778,133" fill="#2563eb"/>
 
-            <!-- DT -> SAMM & DT -> CMS -->
-            <path d="M 772 181 L 805 181 L 805 126 L 828 126" fill="none" stroke="#64748b" stroke-width="1.5"/>
-            <polygon points="824,123 831,126 824,129" fill="#64748b"/>
+            <!-- DT -> CMS (Telemetry into CMS analytics) -->
+            <line x1="772" y1="183" x2="826" y2="183" stroke="#16a34a" stroke-width="1.6"/>
+            <polygon points="822,179 828,183 822,187" fill="#16a34a"/>
 
-            <path d="M 772 181 L 828 181" fill="none" stroke="#16a34a" stroke-width="1.5"/>
-            <polygon points="824,178 831,181 824,184" fill="#16a34a"/>
-
-            <!-- Nodes -->
+            <!-- ----------------------------------------------------- -->
+            <!-- 6. RUNTIME COMPONENT NODES                            -->
+            <!-- ----------------------------------------------------- -->
             <!-- LIDAR -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('lidar');">
                 <rect x="540" y="58" width="88" height="34" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1.6" />
@@ -874,41 +894,40 @@ def generate_html():
 
             <!-- SAC -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('sac');">
-                <rect x="540" y="110" width="88" height="34" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1.6" />
-                <text x="584" y="131" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">SAC</text>
+                <rect x="540" y="112" width="88" height="34" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1.6" />
+                <text x="584" y="133" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">SAC</text>
             </g>
 
-            <!-- Tank -->
+            <!-- Tank (Physical Tank Oval) -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('tank');">
-                <ellipse cx="728" cy="127" rx="44" ry="17" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" />
-                <text x="728" y="131" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">Tank</text>
+                <ellipse cx="728" cy="129" rx="44" ry="17" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" />
+                <text x="728" y="133" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">Tank</text>
             </g>
 
             <!-- SAMM (Solid Blue Box) -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('lrms');">
-                <rect x="828" y="110" width="88" height="34" rx="6" fill="#2563eb" stroke="#1d4ed8" stroke-width="1.5" />
-                <text x="872" y="131" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#ffffff" text-anchor="middle">SAMM</text>
+                <rect x="828" y="112" width="88" height="34" rx="6" fill="#2563eb" stroke="#1d4ed8" stroke-width="1.5" />
+                <text x="872" y="133" font-family="'Barlow Semi Condensed', sans-serif" font-size="11.5" font-weight="800" fill="#ffffff" text-anchor="middle">SAMM</text>
             </g>
 
             <!-- VTL -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('vtl');">
-                <rect x="540" y="164" width="88" height="34" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1.6" />
-                <text x="584" y="185" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">VTL</text>
+                <rect x="540" y="166" width="88" height="34" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1.6" />
+                <text x="584" y="187" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">VTL</text>
             </g>
 
-            <!-- DT (Oval) -->
+            <!-- DT (Virtual Twin Oval) -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('twin');">
-                <ellipse cx="728" cy="181" rx="44" ry="17" fill="#eff6ff" stroke="#2563eb" stroke-width="2" />
-                <text x="728" y="185" font-family="'Barlow Semi Condensed', sans-serif" font-size="12.5" font-weight="800" fill="#1d4ed8" text-anchor="middle">DT</text>
+                <ellipse cx="728" cy="183" rx="44" ry="17" fill="#eff6ff" stroke="#2563eb" stroke-width="2" />
+                <text x="728" y="187" font-family="'Barlow Semi Condensed', sans-serif" font-size="12.5" font-weight="800" fill="#1d4ed8" text-anchor="middle">DT</text>
             </g>
 
             <!-- CMS (Solid Green Box) -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('hms');">
-                <rect x="828" y="164" width="88" height="34" rx="6" fill="#16a34a" stroke="#15803d" stroke-width="1.5" />
-                <text x="872" y="185" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#ffffff" text-anchor="middle">CMS</text>
+                <rect x="828" y="166" width="88" height="34" rx="6" fill="#16a34a" stroke="#15803d" stroke-width="1.5" />
+                <text x="872" y="187" font-family="'Barlow Semi Condensed', sans-serif" font-size="11.5" font-weight="800" fill="#ffffff" text-anchor="middle">CMS</text>
             </g>
         </g>
-
         <!-- ========================================================= -->
         <!-- RIGHT BOTTOM: TRADITIONAL SYSML DIAGRAM TREE               -->
         <!-- Exact 9 diagrams and 3-color taxonomy from slide           -->

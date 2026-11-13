@@ -2503,97 +2503,96 @@ app.index_string = """
 
             <!-- ----------------------------------------------------- -->
             <!-- SUB-BLOCK: RUNTIME SENSORS & TWIN NODES (TOP)         -->
+            <!-- Authentic match to user slide (top_right_zoom.png)    -->
+            <!-- All 3 sensors connect to Tank; SAC/VTL connect to DT  -->
             <!-- ----------------------------------------------------- -->
-            <!-- Directed Runtime Connecting Paths -->
-            <path d="M 590 116 L 590 142" fill="none" stroke="#64748b" stroke-width="1.5"/>
-            <polygon points="587,138 590,145 593,138" fill="#64748b"/>
+            <!-- Vertical drops from each sensor to the horizontal bus -->
+            <line x1="584" y1="92" x2="584" y2="103" stroke="#2563eb" stroke-width="1.8"/>
+            <line x1="728" y1="92" x2="728" y2="103" stroke="#2563eb" stroke-width="1.8"/>
+            <line x1="872" y1="92" x2="872" y2="103" stroke="#2563eb" stroke-width="1.8"/>
+            <!-- Horizontal bus spanning across all 3 sensors -->
+            <line x1="584" y1="103" x2="872" y2="103" stroke="#2563eb" stroke-width="1.8"/>
+            <!-- Single combined drop from bus directly into Tank -->
+            <line x1="728" y1="103" x2="728" y2="111" stroke="#2563eb" stroke-width="1.8"/>
+            <polygon points="724,106 728,112 732,106" fill="#2563eb"/>
 
-            <path d="M 590 184 L 590 208" fill="none" stroke="#64748b" stroke-width="1.5"/>
-            <polygon points="587,204 590,211 593,204" fill="#64748b"/>
+            <!-- LIDAR -> SAC -->
+            <path d="M 540 75 L 518 75 L 518 129 L 538 129" fill="none" stroke="#2563eb" stroke-width="1.6"/>
+            <polygon points="534,125 540,129 534,133" fill="#2563eb"/>
 
-            <path d="M 640 228 L 685 228" fill="none" stroke="#2563eb" stroke-width="1.5"/>
-            <polygon points="682,225 689,228 682,231" fill="#2563eb"/>
+            <!-- SAC -> DT & VTL -> DT (Direct connections to DT, NO link between SAC and VTL) -->
+            <path d="M 628 129 C 656 129, 656 183, 682 183" fill="none" stroke="#2563eb" stroke-width="1.6"/>
+            <polygon points="678,179 684,183 678,187" fill="#2563eb"/>
 
-            <path d="M 735 116 L 735 142" fill="none" stroke="#64748b" stroke-width="1.5"/>
-            <polygon points="732,138 735,145 738,138" fill="#64748b"/>
+            <line x1="628" y1="183" x2="682" y2="183" stroke="#2563eb" stroke-width="1.6"/>
+            <polygon points="678,179 684,183 678,187" fill="#2563eb"/>
 
-            <path d="M 870 116 L 870 162 L 785 162" fill="none" stroke="#64748b" stroke-width="1.5"/>
-            <polygon points="788,159 781,162 788,165" fill="#64748b"/>
+            <!-- Tank <==> DT Bidirectional Real-Time Sync -->
+            <line x1="728" y1="147" x2="728" y2="165" stroke="#0284c7" stroke-width="2"/>
+            <polygon points="724,151 728,145 732,151" fill="#0284c7"/>
+            <polygon points="724,161 728,167 732,161" fill="#0284c7"/>
 
-            <!-- Tank <==> DT Bidirectional Sync -->
-            <line x1="735" y1="182" x2="735" y2="208" stroke="#0284c7" stroke-width="2"/>
-            <polygon points="731,186 735,178 739,186" fill="#0284c7"/>
-            <polygon points="731,204 735,212 739,204" fill="#0284c7"/>
+            <!-- SAMM -> Tank & DT -> CMS -->
+            <line x1="828" y1="129" x2="774" y2="129" stroke="#2563eb" stroke-width="1.6"/>
+            <polygon points="778,125 772,129 778,133" fill="#2563eb"/>
 
-            <!-- Tank -> SAMM & DT -> CMS -->
-            <path d="M 785 162 L 835 162" fill="none" stroke="#64748b" stroke-width="1.5"/>
-            <polygon points="832,159 839,162 832,165" fill="#64748b"/>
+            <line x1="772" y1="183" x2="826" y2="183" stroke="#16a34a" stroke-width="1.6"/>
+            <polygon points="822,179 828,183 822,187" fill="#16a34a"/>
 
-            <path d="M 785 228 L 835 228" fill="none" stroke="#16a34a" stroke-width="1.5"/>
-            <polygon points="832,225 839,228 832,231" fill="#16a34a"/>
-
-            <!-- Sensor Nodes (White boxes with dark borders) -->
+            <!-- Sensor Nodes -->
             <!-- LIDAR -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('lidar');">
-                <rect x="545" y="76" width="90" height="40" rx="8" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" />
-                <text x="590" y="94" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">LIDAR</text>
-                <text x="590" y="107" font-family="'Inter', sans-serif" font-size="9" font-weight="600" fill="#64748b" text-anchor="middle">3D laser scan</text>
+                <rect x="540" y="58" width="88" height="34" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1.6" />
+                <text x="584" y="79" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">LIDAR</text>
             </g>
 
             <!-- Hyper -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('hyp');">
-                <rect x="690" y="76" width="90" height="40" rx="8" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" />
-                <text x="735" y="94" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">Hyper</text>
-                <text x="735" y="107" font-family="'Inter', sans-serif" font-size="9" font-weight="600" fill="#64748b" text-anchor="middle">surface condition</text>
+                <rect x="684" y="58" width="88" height="34" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1.6" />
+                <text x="728" y="79" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">Hyper</text>
             </g>
 
             <!-- RGB/Video -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('rgb');">
-                <rect x="835" y="76" width="90" height="40" rx="8" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" />
-                <text x="880" y="94" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">RGB/Video</text>
-                <text x="880" y="107" font-family="'Inter', sans-serif" font-size="9" font-weight="600" fill="#64748b" text-anchor="middle">visual images</text>
+                <rect x="828" y="58" width="88" height="34" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1.6" />
+                <text x="872" y="79" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">RGB/Video</text>
             </g>
 
             <!-- SAC -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('sac');">
-                <rect x="545" y="144" width="90" height="40" rx="8" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" />
-                <text x="590" y="162" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">SAC</text>
-                <text x="590" y="175" font-family="'Inter', sans-serif" font-size="9" font-weight="600" fill="#64748b" text-anchor="middle">surface area</text>
+                <rect x="540" y="112" width="88" height="34" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1.6" />
+                <text x="584" y="133" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">SAC</text>
             </g>
 
-            <!-- Ballast Tank (Physical Oval) -->
+            <!-- Tank (Physical Tank Oval) -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('tank');">
-                <ellipse cx="735" cy="162" rx="46" ry="20" fill="#ffffff" stroke="#1e293b" stroke-width="2" />
-                <text x="735" y="166" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">Ballast Tank</text>
+                <ellipse cx="728" cy="129" rx="44" ry="17" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" />
+                <text x="728" y="133" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">Tank</text>
             </g>
 
-            <!-- SAMM -->
+            <!-- SAMM (Solid Blue Box) -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('lrms');">
-                <rect x="835" y="144" width="90" height="40" rx="8" fill="#2563eb" stroke="#1d4ed8" stroke-width="1.5" />
-                <text x="880" y="162" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#ffffff" text-anchor="middle">SAMM</text>
-                <text x="880" y="175" font-family="'Inter', sans-serif" font-size="9" font-weight="600" fill="#dbeafe" text-anchor="middle">maintenance</text>
+                <rect x="828" y="112" width="88" height="34" rx="6" fill="#2563eb" stroke="#1d4ed8" stroke-width="1.5" />
+                <text x="872" y="133" font-family="'Barlow Semi Condensed', sans-serif" font-size="11.5" font-weight="800" fill="#ffffff" text-anchor="middle">SAMM</text>
             </g>
 
-            <!-- VTL Prototype -->
+            <!-- VTL -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('vtl');">
-                <rect x="545" y="210" width="90" height="40" rx="8" fill="#ffffff" stroke="#1e293b" stroke-width="1.8" />
-                <text x="590" y="228" font-family="'Barlow Semi Condensed', sans-serif" font-size="11.5" font-weight="800" fill="#0f172a" text-anchor="middle">VTL prototype</text>
-                <text x="590" y="241" font-family="'Inter', sans-serif" font-size="9" font-weight="600" fill="#64748b" text-anchor="middle">technical library</text>
+                <rect x="540" y="166" width="88" height="34" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1.6" />
+                <text x="584" y="187" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">VTL</text>
             </g>
 
-            <!-- Digital Twin (Virtual Twin Oval) -->
+            <!-- DT (Virtual Twin Oval) -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('twin');">
-                <ellipse cx="735" cy="228" rx="46" ry="20" fill="#eff6ff" stroke="#2563eb" stroke-width="2.2" />
-                <text x="735" y="232" font-family="'Barlow Semi Condensed', sans-serif" font-size="12.5" font-weight="800" fill="#1d4ed8" text-anchor="middle">Digital Twin</text>
+                <ellipse cx="728" cy="183" rx="44" ry="17" fill="#eff6ff" stroke="#2563eb" stroke-width="2" />
+                <text x="728" y="187" font-family="'Barlow Semi Condensed', sans-serif" font-size="12.5" font-weight="800" fill="#1d4ed8" text-anchor="middle">DT</text>
             </g>
 
-            <!-- CMS -->
+            <!-- CMS (Solid Green Box) -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('hms');">
-                <rect x="835" y="210" width="90" height="40" rx="8" fill="#16a34a" stroke="#15803d" stroke-width="1.5" />
-                <text x="880" y="228" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#ffffff" text-anchor="middle">CMS</text>
-                <text x="880" y="241" font-family="'Inter', sans-serif" font-size="9" font-weight="600" fill="#dcfce7" text-anchor="middle">hull health</text>
+                <rect x="828" y="166" width="88" height="34" rx="6" fill="#16a34a" stroke="#15803d" stroke-width="1.5" />
+                <text x="872" y="187" font-family="'Barlow Semi Condensed', sans-serif" font-size="11.5" font-weight="800" fill="#ffffff" text-anchor="middle">CMS</text>
             </g>
-
             <!-- ----------------------------------------------------- -->
             <!-- SUB-BLOCK: SYSML 2.0 MBSE ARCHITECTURE TREE (BOTTOM) -->
             <!-- ----------------------------------------------------- -->
