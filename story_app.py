@@ -259,7 +259,6 @@ CONTENT: Dict[str, Any] = {
     "edges": [
         # Phase 2, 3, 4: Computation links (LiDAR -> SAC -> VTL) and direct DT connections (SAC -> DT, VTL -> DT)
         {"source": "lidar", "target": "sac", "label": "point cloud", "phases": [2, 3, 4]},
-        {"source": "sac", "target": "vtl", "label": "model + area", "phases": [2, 3, 4]},
         {"source": "sac", "target": "twin", "label": "area + model", "phases": [2, 3, 4]},
 
         # Phase 3 & 4: Sensor inputs to physical Ballast Tank (Bidirectional telemetry & control loop)
@@ -7060,50 +7059,32 @@ def update_notes_panel(current_phase, selected_node, view_mode, ship_scenario):
                     ],
                 ),
                 html.Div(
-                    style={"backgroundColor": "#fff7ed", "borderLeft": "4px solid #ea580c", "borderRadius": "0 8px 8px 0", "padding": "10px 12px", "display": "flex", "flexDirection": "column", "gap": "3px"},
+                    style={"backgroundColor": "#fff7ed", "borderLeft": "4px solid #ea580c", "borderRadius": "0 8px 8px 0", "padding": "10px 12px", "display": "flex", "flexDirection": "column", "gap": "4px"},
                     children=[
-                        html.Div(
-                            style={"display": "flex", "justifyContent": "space-between", "alignItems": "center"},
-                            children=[
-                                html.Span("1. ONTOLOGY SEMANTIC REPRESENTATION", style={"fontFamily": "'Barlow Semi Condensed', sans-serif", "fontSize": "12px", "fontWeight": "800", "color": "#c2410c"}),
-                                html.Span("WHAT EXISTS", style={"fontSize": "10px", "fontWeight": "700", "color": "#c2410c", "backgroundColor": "#ffedd5", "padding": "1px 6px", "borderRadius": "3px"}),
-                            ],
-                        ),
+                        html.Span("1. Ontology Semantic Representation", style={"fontFamily": "'Barlow Semi Condensed', sans-serif", "fontSize": "13px", "fontWeight": "800", "color": "#c2410c"}),
                         html.P(
-                            "Encodes system entities, constraints, and relationships in a formal semantic model. Answers: what exists in this system and how do system relationships connect?",
-                            style={"fontSize": "12px", "lineHeight": "1.4", "color": "#334155", "margin": "0"},
+                            "Encodes system entities, their relationships, and constraints in a formal semantic model. Answers the question: what exists in this system and how do system relationships, dependencies, and decision objectives connect to one another?",
+                            style={"fontSize": "12px", "lineHeight": "1.45", "color": "#334155", "margin": "0"},
                         ),
                     ],
                 ),
                 html.Div(
-                    style={"backgroundColor": "#f0f9ff", "borderLeft": "4px solid #0284c7", "borderRadius": "0 8px 8px 0", "padding": "10px 12px", "display": "flex", "flexDirection": "column", "gap": "3px"},
+                    style={"backgroundColor": "#f0f9ff", "borderLeft": "4px solid #0284c7", "borderRadius": "0 8px 8px 0", "padding": "10px 12px", "display": "flex", "flexDirection": "column", "gap": "4px"},
                     children=[
-                        html.Div(
-                            style={"display": "flex", "justifyContent": "space-between", "alignItems": "center"},
-                            children=[
-                                html.Span("2. TAXONOMY HIERARCHICAL CLASSIFICATION", style={"fontFamily": "'Barlow Semi Condensed', sans-serif", "fontSize": "12px", "fontWeight": "800", "color": "#0369a1"}),
-                                html.Span("CLASS INHERITANCE", style={"fontSize": "10px", "fontWeight": "700", "color": "#0369a1", "backgroundColor": "#e0f2fe", "padding": "1px 6px", "borderRadius": "3px"}),
-                            ],
-                        ),
+                        html.Span("2. Taxonomy Hierarchical Classification", style={"fontFamily": "'Barlow Semi Condensed', sans-serif", "fontSize": "13px", "fontWeight": "800", "color": "#0369a1"}),
                         html.P(
                             "Organizes system elements into typed classes with inheritance. Enables structured reasoning about failure modes, behaviors, and decision categories across levels of abstraction.",
-                            style={"fontSize": "12px", "lineHeight": "1.4", "color": "#334155", "margin": "0"},
+                            style={"fontSize": "12px", "lineHeight": "1.45", "color": "#334155", "margin": "0"},
                         ),
                     ],
                 ),
                 html.Div(
-                    style={"backgroundColor": "#f0fdfa", "borderLeft": "4px solid #00a3e0", "borderRadius": "0 8px 8px 0", "padding": "10px 12px", "display": "flex", "flexDirection": "column", "gap": "3px"},
+                    style={"backgroundColor": "#f0fdfa", "borderLeft": "4px solid #0d9488", "borderRadius": "0 8px 8px 0", "padding": "10px 12px", "display": "flex", "flexDirection": "column", "gap": "4px"},
                     children=[
-                        html.Div(
-                            style={"display": "flex", "justifyContent": "space-between", "alignItems": "center"},
-                            children=[
-                                html.Span("3. SCHEMA DATA STRUCTURE & RELATIONAL ENCODING", style={"fontFamily": "'Barlow Semi Condensed', sans-serif", "fontSize": "12px", "fontWeight": "800", "color": "#0f766e"}),
-                                html.Span("QUERYABLE DATA", style={"fontSize": "10px", "fontWeight": "700", "color": "#0f766e", "backgroundColor": "#ccfbf1", "padding": "1px 6px", "borderRadius": "3px"}),
-                            ],
-                        ),
+                        html.Span("3. Schema Data Structure and Relational Encoding", style={"fontFamily": "'Barlow Semi Condensed', sans-serif", "fontSize": "13px", "fontWeight": "800", "color": "#0f766e"}),
                         html.P(
-                            "Translates ontological and taxonomic knowledge into structured, queryable, and traceable data linked to system requirements and observed states.",
-                            style={"fontSize": "12px", "lineHeight": "1.4", "color": "#334155", "margin": "0"},
+                            "Translates ontological and taxonomic knowledge into structured, queryable, and traceable data linked to system requirements and observed states. Establishes traceability links between system states, requirements, and observations.",
+                            style={"fontSize": "12px", "lineHeight": "1.45", "color": "#334155", "margin": "0"},
                         ),
                     ],
                 ),
