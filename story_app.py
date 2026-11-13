@@ -217,10 +217,10 @@ CONTENT: Dict[str, Any] = {
     # - Right: Beyond the Twin layer [LRMS (820, 335), HMS (820, 475)]
     "positions": {
         1: {
-            "lidar": (400, 130),
-            "rgb": (520, 130),
-            "hyp": (640, 130),
-            "tank": (520, 265),
+            "lidar": (370, 230),
+            "rgb": (500, 230),
+            "hyp": (630, 230),
+            "tank": (500, 385),
         },
         2: {
             "lidar": (400, 130),
@@ -2261,8 +2261,8 @@ app.index_string = """
 
             const SVG_LAYOUT = {
                 1: {
-                    lidar: [400, 130], rgb: [520, 130], hyp: [640, 130],
-                    tank: [520, 265]
+                    lidar: [370, 230], rgb: [500, 230], hyp: [630, 230],
+                    tank: [500, 385]
                 },
                 2: {
                     lidar: [400, 130], rgb: [520, 130], hyp: [640, 130],
@@ -2341,90 +2341,90 @@ app.index_string = """
                         <g id="edges"></g>
                         <g id="nodes"></g>
                         <g id="phase45-placeholder" style="display:none; pointer-events:none;">
-                            <!-- Architecture Framework Blueprint Header -->
-                            <rect x="120" y="32" width="760" height="42" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
-                            <text x="145" y="58" font-family="'Barlow Semi Condensed', sans-serif" font-size="15" font-weight="800" fill="#0f172a" letter-spacing="0.8">MBSE &amp; ENTERPRISE DATA ARCHITECTURE FRAMEWORK</text>
-                            <rect x="745" y="42" width="120" height="22" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
-                            <text x="805" y="57" font-family="'Barlow Semi Condensed', sans-serif" font-size="10.5" font-weight="800" fill="#2563eb" text-anchor="middle">DIGITAL THREAD</text>
+                    <!-- Architecture Framework Blueprint Header -->
+                    <rect x="40" y="24" width="920" height="42" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
+                    <text x="65" y="50" font-family="'Barlow Semi Condensed', sans-serif" font-size="15" font-weight="800" fill="#0f172a" letter-spacing="0.8">MBSE &amp; ENTERPRISE DATA ARCHITECTURE FRAMEWORK</text>
+                    <rect x="735" y="34" width="205" height="22" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+                    <text x="837" y="49" font-family="'Barlow Semi Condensed', sans-serif" font-size="10.5" font-weight="800" fill="#2563eb" text-anchor="middle">DIGITAL THREAD SPECIFICATION</text>
 
-                            <!-- Layer 1: Edge & Telemetry Ingestion (Left) -->
-                            <rect x="120" y="88" width="230" height="490" rx="12" fill="rgba(248, 250, 252, 0.95)" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,5" />
-                            <rect x="135" y="102" width="200" height="28" rx="6" fill="#f1f5f9" />
-                            <text x="235" y="120" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#334155" text-anchor="middle">1. SENSORS &amp; PHYSICAL EDGE</text>
-                            
-                            <rect x="135" y="145" width="200" height="74" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
-                            <text x="150" y="170" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#0f172a">LiDAR / 3D Scanners</text>
-                            <text x="150" y="190" font-family="'Inter', sans-serif" font-size="11" fill="#64748b">1.2M pts/s point cloud (.e57)</text>
-                            <text x="150" y="206" font-family="'Inter', sans-serif" font-size="10.5" fill="#0284c7" font-weight="600">&bull; Poisson surface reconstruction</text>
+                    <!-- Layer 1: Edge & Telemetry Ingestion (Left) -->
+                    <rect x="40" y="78" width="286" height="518" rx="12" fill="rgba(248, 250, 252, 0.95)" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,5" />
+                    <rect x="54" y="92" width="258" height="28" rx="6" fill="#f1f5f9" />
+                    <text x="183" y="110" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#334155" text-anchor="middle">1. SENSORS &amp; PHYSICAL EDGE</text>
+                    
+                    <rect x="54" y="128" width="258" height="68" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+                    <text x="68" y="152" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#0f172a">LiDAR / 3D Laser Scanners</text>
+                    <text x="68" y="170" font-family="'Inter', sans-serif" font-size="11" fill="#64748b">1.2M pts/sec raw point cloud (.e57)</text>
+                    <text x="68" y="185" font-family="'Inter', sans-serif" font-size="10.5" fill="#0284c7" font-weight="600">&bull; Watertight Poisson reconstruction</text>
 
-                            <rect x="135" y="232" width="200" height="74" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
-                            <text x="150" y="257" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#0f172a">Optical &amp; Hyperspectral</text>
-                            <text x="150" y="277" font-family="'Inter', sans-serif" font-size="11" fill="#64748b">VNIR chemical oxidation tensors</text>
-                            <text x="150" y="293" font-family="'Inter', sans-serif" font-size="10.5" fill="#0284c7" font-weight="600">&bull; 4K surface orthophotos &amp; rust maps</text>
+                    <rect x="54" y="204" width="258" height="68" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+                    <text x="68" y="228" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#0f172a">Optical &amp; Hyperspectral</text>
+                    <text x="68" y="246" font-family="'Inter', sans-serif" font-size="11" fill="#64748b">VNIR oxidation tensors &amp; 4K video</text>
+                    <text x="68" y="261" font-family="'Inter', sans-serif" font-size="10.5" fill="#0284c7" font-weight="600">&bull; Surface orthophotos &amp; rust mapping</text>
 
-                            <rect x="135" y="318" width="200" height="74" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
-                            <text x="150" y="343" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#0f172a">Ballast Tank Asset B-3</text>
-                            <text x="150" y="363" font-family="'Inter', sans-serif" font-size="11" fill="#64748b">Compartment Frame 38 baseline</text>
-                            <text x="150" y="379" font-family="'Inter', sans-serif" font-size="10.5" fill="#0284c7" font-weight="600">&bull; Plate thickness nominal: 18.0mm</text>
+                    <rect x="54" y="280" width="258" height="68" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+                    <text x="68" y="304" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#0f172a">Ballast Tank Asset B-3</text>
+                    <text x="68" y="322" font-family="'Inter', sans-serif" font-size="11" fill="#64748b">Frame 38 structural compartment</text>
+                    <text x="68" y="337" font-family="'Inter', sans-serif" font-size="10.5" fill="#0284c7" font-weight="600">&bull; Nominal plate thickness: 18.0 mm</text>
 
-                            <rect x="135" y="404" width="200" height="158" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
-                            <text x="150" y="428" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#1e40af">EDGE NORMALIZATION</text>
-                            <text x="150" y="452" font-family="'Inter', sans-serif" font-size="11" fill="#1e3a8a">&bull; Point cloud coordinate registration</text>
-                            <text x="150" y="474" font-family="'Inter', sans-serif" font-size="11" fill="#1e3a8a">&bull; Watertight polygon mesh meshing</text>
-                            <text x="150" y="496" font-family="'Inter', sans-serif" font-size="11" fill="#1e3a8a">&bull; Cubert VNIR signature validation</text>
-                            <text x="150" y="518" font-family="'Inter', sans-serif" font-size="11" fill="#1e3a8a">&bull; Zero-latency broker transmission</text>
-                            <text x="150" y="540" font-family="'Inter', sans-serif" font-size="11" fill="#1e3a8a">&bull; Confidence threshold &gt; 0.83</text>
+                    <rect x="54" y="356" width="258" height="152" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+                    <text x="68" y="380" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#1e40af">EDGE NORMALIZATION PIPELINE</text>
+                    <text x="68" y="402" font-family="'Inter', sans-serif" font-size="10.5" fill="#1e3a8a">&bull; 3D point coordinate registration</text>
+                    <text x="68" y="423" font-family="'Inter', sans-serif" font-size="10.5" fill="#1e3a8a">&bull; Watertight polygon reconstruction</text>
+                    <text x="68" y="444" font-family="'Inter', sans-serif" font-size="10.5" fill="#1e3a8a">&bull; Cubert VNIR signature validation</text>
+                    <text x="68" y="465" font-family="'Inter', sans-serif" font-size="10.5" fill="#1e3a8a">&bull; Real-time broker transmission</text>
+                    <text x="68" y="486" font-family="'Inter', sans-serif" font-size="10.5" fill="#1e3a8a">&bull; Acceptance rule: Confidence &gt; 0.83</text>
 
-                            <!-- Layer 2: MBSE Architecture & Central Data Fabric (Center) -->
-                            <rect x="375" y="88" width="250" height="490" rx="12" fill="rgba(240, 249, 255, 0.85)" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="5,5" />
-                            <rect x="390" y="102" width="220" height="28" rx="6" fill="#e0f2fe" />
-                            <text x="500" y="120" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0369a1" text-anchor="middle">2. MBSE &amp; DATA STACK</text>
+                    <!-- Layer 2: MBSE Architecture & Central Data Fabric (Center) -->
+                    <rect x="357" y="78" width="286" height="518" rx="12" fill="rgba(240, 249, 255, 0.85)" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="5,5" />
+                    <rect x="371" y="92" width="258" height="28" rx="6" fill="#e0f2fe" />
+                    <text x="500" y="110" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0369a1" text-anchor="middle">2. MBSE &amp; DATA STACK</text>
 
-                            <rect x="390" y="145" width="220" height="110" rx="8" fill="#ffffff" stroke="#bae6fd" stroke-width="1.5"/>
-                            <text x="405" y="170" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#0369a1">SysML MBSE Architecture</text>
-                            <text x="405" y="192" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Functional &amp; physical block definitions</text>
-                            <text x="405" y="212" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; DNV-GL rule requirement verification</text>
-                            <text x="405" y="232" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Sensor-to-hull parameter traceability</text>
+                    <rect x="371" y="128" width="258" height="110" rx="8" fill="#ffffff" stroke="#bae6fd" stroke-width="1.5"/>
+                    <text x="385" y="152" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#0369a1">SysML MBSE Architecture</text>
+                    <text x="385" y="174" font-family="'Inter', sans-serif" font-size="10.5" fill="#475569">&bull; Functional &amp; physical block models</text>
+                    <text x="385" y="194" font-family="'Inter', sans-serif" font-size="10.5" fill="#475569">&bull; DNV-GL class requirement mapping</text>
+                    <text x="385" y="214" font-family="'Inter', sans-serif" font-size="10.5" fill="#475569">&bull; Sensor-to-hull parameter traceability</text>
 
-                            <rect x="390" y="268" width="220" height="135" rx="8" fill="#ffffff" stroke="#bae6fd" stroke-width="1.5"/>
-                            <text x="405" y="293" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#0369a1">Marine Data Fabric (Lakehouse)</text>
-                            <text x="405" y="315" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Ingestion pipeline for 3D coordinate point sets</text>
-                            <text x="405" y="335" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Multi-temporal mesh revision store</text>
-                            <text x="405" y="355" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Bidirectional live DT synchronization bus</text>
-                            <text x="405" y="375" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Central REST &amp; WebSocket endpoint</text>
+                    <rect x="371" y="246" width="258" height="130" rx="8" fill="#ffffff" stroke="#bae6fd" stroke-width="1.5"/>
+                    <text x="385" y="270" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#0369a1">Marine Data Fabric (Lakehouse)</text>
+                    <text x="385" y="292" font-family="'Inter', sans-serif" font-size="10.5" fill="#475569">&bull; Ingestion of 3D point cloud sets</text>
+                    <text x="385" y="312" font-family="'Inter', sans-serif" font-size="10.5" fill="#475569">&bull; Multi-temporal mesh revision store</text>
+                    <text x="385" y="332" font-family="'Inter', sans-serif" font-size="10.5" fill="#475569">&bull; Bidirectional DT telemetry sync bus</text>
+                    <text x="385" y="352" font-family="'Inter', sans-serif" font-size="10.5" fill="#475569">&bull; Central REST &amp; WebSocket endpoint</text>
 
-                            <rect x="390" y="415" width="220" height="147" rx="8" fill="#ffffff" stroke="#bae6fd" stroke-width="1.5"/>
-                            <text x="405" y="440" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#0369a1">Virtual Technical Library (VTL)</text>
-                            <text x="405" y="462" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; As-built CAD scantling models</text>
-                            <text x="405" y="482" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Steel thickness decay degradation curves</text>
-                            <text x="405" y="502" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Class certificate &amp; thickness gauging ledger</text>
-                            <text x="405" y="522" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Real-time mesh-to-CAD deviation map</text>
+                    <rect x="371" y="384" width="258" height="130" rx="8" fill="#ffffff" stroke="#bae6fd" stroke-width="1.5"/>
+                    <text x="385" y="408" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#0369a1">Virtual Technical Library (VTL)</text>
+                    <text x="385" y="430" font-family="'Inter', sans-serif" font-size="10.5" fill="#475569">&bull; As-built CAD scantling models</text>
+                    <text x="385" y="450" font-family="'Inter', sans-serif" font-size="10.5" fill="#475569">&bull; Steel thickness degradation curves</text>
+                    <text x="385" y="470" font-family="'Inter', sans-serif" font-size="10.5" fill="#475569">&bull; Class certificate &amp; gauging ledger</text>
+                    <text x="385" y="490" font-family="'Inter', sans-serif" font-size="10.5" fill="#475569">&bull; Real-time CAD deviation tracking</text>
 
-                            <!-- Layer 3: Enterprise Decision Systems (Right) -->
-                            <rect x="650" y="88" width="230" height="490" rx="12" fill="rgba(245, 243, 255, 0.85)" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="5,5" />
-                            <rect x="665" y="102" width="200" height="28" rx="6" fill="#ede9fe" />
-                            <text x="765" y="120" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#6d28d9" text-anchor="middle">3. FLEET DECISION ENGINES</text>
+                    <!-- Layer 3: Enterprise Decision Systems (Right) -->
+                    <rect x="674" y="78" width="286" height="518" rx="12" fill="rgba(245, 243, 255, 0.85)" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="5,5" />
+                    <rect x="688" y="92" width="258" height="28" rx="6" fill="#ede9fe" />
+                    <text x="817" y="110" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#6d28d9" text-anchor="middle">3. FLEET DECISION ENGINES</text>
 
-                            <rect x="665" y="145" width="200" height="135" rx="8" fill="#ffffff" stroke="#ddd6fe" stroke-width="1.5"/>
-                            <text x="680" y="170" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#6d28d9">HMS Predictive Analytics</text>
-                            <text x="680" y="192" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Hull Health Index (HHI) engine</text>
-                            <text x="680" y="212" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Remaining Useful Life (RUL) modeling</text>
-                            <text x="680" y="232" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Fleet corrosion benchmark registry</text>
-                            <text x="680" y="252" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Automated survey compliance audit</text>
+                    <rect x="688" y="128" width="258" height="126" rx="8" fill="#ffffff" stroke="#ddd6fe" stroke-width="1.5"/>
+                    <text x="702" y="152" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#6d28d9">HMS Predictive Analytics</text>
+                    <text x="702" y="174" font-family="'Inter', sans-serif" font-size="10.5" fill="#475569">&bull; Hull Health Index (HHI) engine</text>
+                    <text x="702" y="194" font-family="'Inter', sans-serif" font-size="10.5" fill="#475569">&bull; Remaining Useful Life (RUL) models</text>
+                    <text x="702" y="214" font-family="'Inter', sans-serif" font-size="10.5" fill="#475569">&bull; Fleet corrosion benchmark data</text>
+                    <text x="702" y="234" font-family="'Inter', sans-serif" font-size="10.5" fill="#475569">&bull; Automated survey compliance audit</text>
 
-                            <rect x="665" y="293" width="200" height="135" rx="8" fill="#ffffff" stroke="#ddd6fe" stroke-width="1.5"/>
-                            <text x="680" y="318" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#6d28d9">LRMS Maintenance Planning</text>
-                            <text x="680" y="340" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Drydock work pack generator</text>
-                            <text x="680" y="360" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Steel replacement cost optimizer</text>
-                            <text x="680" y="380" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Re-coating intervention ROI models</text>
-                            <text x="680" y="400" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Condition-Based Maintenance policy</text>
+                    <rect x="688" y="262" width="258" height="126" rx="8" fill="#ffffff" stroke="#ddd6fe" stroke-width="1.5"/>
+                    <text x="702" y="286" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#6d28d9">LRMS Maintenance Planning</text>
+                    <text x="702" y="308" font-family="'Inter', sans-serif" font-size="10.5" fill="#475569">&bull; Drydock work pack generator</text>
+                    <text x="702" y="328" font-family="'Inter', sans-serif" font-size="10.5" fill="#475569">&bull; Steel replacement cost optimizer</text>
+                    <text x="702" y="348" font-family="'Inter', sans-serif" font-size="10.5" fill="#475569">&bull; Re-coating intervention ROI</text>
+                    <text x="702" y="368" font-family="'Inter', sans-serif" font-size="10.5" fill="#475569">&bull; Condition-Based Maintenance</text>
 
-                            <rect x="665" y="440" width="200" height="122" rx="8" fill="#fdf4ff" stroke="#f0abfc" stroke-width="1.5"/>
-                            <text x="680" y="465" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#a21caf">CLOSED-LOOP ACTIONS</text>
-                            <text x="680" y="487" font-family="'Inter', sans-serif" font-size="11" fill="#c026d3">&bull; Automated work order dispatch</text>
-                            <text x="680" y="507" font-family="'Inter', sans-serif" font-size="11" fill="#c026d3">&bull; Feedback loops to physical tank</text>
-                            <text x="680" y="527" font-family="'Inter', sans-serif" font-size="11" fill="#c026d3">&bull; Continuous class verification</text>
-                        </g>
+                    <rect x="688" y="396" width="258" height="106" rx="8" fill="#fdf4ff" stroke="#f0abfc" stroke-width="1.5"/>
+                    <text x="702" y="420" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#a21caf">CLOSED-LOOP ACTIONS</text>
+                    <text x="702" y="442" font-family="'Inter', sans-serif" font-size="10.5" fill="#c026d3">&bull; Work order automated dispatch</text>
+                    <text x="702" y="462" font-family="'Inter', sans-serif" font-size="10.5" fill="#c026d3">&bull; Direct feedback to physical tank</text>
+                    <text x="702" y="482" font-family="'Inter', sans-serif" font-size="10.5" fill="#c026d3">&bull; Automated class verification</text>
+                </g>
                     </svg>
                 `;
 
