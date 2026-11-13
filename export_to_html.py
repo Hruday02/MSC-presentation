@@ -1625,64 +1625,7 @@ function renderNotes() {{
                 </button>
             </div>` : ""}}
 
-                        ${{currentPhase === 4.5 ? `
-            <div style="margin-top:14px; background:#ffffff; border:1px solid #cbd5e1; border-radius:12px; padding:16px; box-shadow:0 1px 3px rgba(0,0,0,0.04); display:flex; flex-direction:column; gap:12px;">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:12px; font-weight:800; color:#0f172a; letter-spacing:0.8px;">AST SYSTEM MODEL &bull; ARCHITECTURE TIERS</span>
-                    <span style="font-size:10.5px; font-weight:800; color:#2563eb; background:#eff6ff; padding:2px 8px; border-radius:4px; border:1px solid #bfdbfe;">MBSE FOUNDATION</span>
-                </div>
-
-                ${{IMAGE_AST_SLIDE ? `
-                <div style="background:#0f172a; border-radius:8px; overflow:hidden; border:1.5px solid #38bdf8; position:relative; cursor:pointer;" onclick="openModal('ast_system_model');" title="Click to inspect original slide in HD">
-                    <img src="${{IMAGE_AST_SLIDE}}" alt="AST System Model Slide" style="width:100%; height:140px; object-fit:contain; display:block;" />
-                    <div style="position:absolute; bottom:6px; right:8px; background:rgba(15,23,42,0.85); color:#38bdf8; font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:4px; border:1px solid #0284c7;">
-                        🔍 View Full-Res Slide
-                    </div>
-                </div>` : ''}}
-
-                <div style="background:#fff7ed; border-left:4px solid #ea580c; border-radius:0 8px 8px 0; padding:10px 12px; display:flex; flex-direction:column; gap:4px;">
-                    <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:12.5px; font-weight:800; color:#c2410c;">1. Ontology Semantic Representation</span>
-                    <div style="font-size:11.5px; color:#334155; line-height:1.45;">
-                        Encodes system entities, their relationships, and constraints in a formal semantic model. Answers the question: what exists in this system and how do system relationships, dependencies, and decision objectives connect to one another?
-                    </div>
-                </div>
-
-                <div style="background:#f0f9ff; border-left:4px solid #0284c7; border-radius:0 8px 8px 0; padding:10px 12px; display:flex; flex-direction:column; gap:4px;">
-                    <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:12.5px; font-weight:800; color:#0369a1;">2. Taxonomy Hierarchical Classification</span>
-                    <div style="font-size:11.5px; color:#334155; line-height:1.45;">
-                        Organizes system elements into typed classes with inheritance. Enables structured reasoning about failure modes, behaviors, and decision categories across levels of abstraction.
-                    </div>
-                </div>
-
-                <div style="background:#f0fdfa; border-left:4px solid #0d9488; border-radius:0 8px 8px 0; padding:10px 12px; display:flex; flex-direction:column; gap:4px;">
-                    <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:12.5px; font-weight:800; color:#0f766e;">3. Schema Data Structure and Relational Encoding</span>
-                    <div style="font-size:11.5px; color:#334155; line-height:1.45;">
-                        Translates ontological and taxonomic knowledge into structured, queryable, and traceable data linked to system requirements and observed states. Establishes traceability links between system states, requirements, and observations.
-                    </div>
-                </div>
-
-                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px 12px; display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-                    <div>
-                        <div style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; color:#0e3a53;">&darr; PERSISTENCE</div>
-                        <div style="font-size:10.5px; color:#64748b; margin-top:2px;">Downward multi-temporal revision storage across vessel service life.</div>
-                    </div>
-                    <div>
-                        <div style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; color:#0e3a53;">&uarr; ALGEDONIC FEEDBACK</div>
-                        <div style="font-size:10.5px; color:#64748b; margin-top:2px;">Upward cybernetic signals alerting when states deviate from safety rules.</div>
-                    </div>
-                </div>
-
-                <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:10px 12px; display:flex; flex-direction:column; gap:4px;">
-                    <div style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11.5px; font-weight:800; color:#15803d;">
-                        🔄 SYSML 2.0 DIGITAL THREAD &rarr; DIGITAL TWIN (DT)
-                    </div>
-                    <div style="font-size:11px; color:#334155; line-height:1.4;">
-                        Bidirectional semantic link connects formal MBSE models (Behavior, Requirements, Structure) into live runtime execution within the operational Digital Twin.
-                    </div>
-                </div>
-            </div>` : ""}}
-
-            ${{nav}}`;
+                        ${{nav}}`;
     }} else {{
         const n = SVG_NODES[selectedNode];
         let previewImg = SENSOR_IMAGES[selectedNode];
