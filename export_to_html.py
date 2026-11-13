@@ -770,6 +770,7 @@ const IMAGE_HYP = "{img_data.get('hyp', '') or img_data.get('hyperspectral_cuber
 
 // Place SAC (Surface Area Calculation) image here
 const IMAGE_SAC = "{img_data.get('sac', '')}";
+const IMAGE_BLENDER = "{img_data.get('blender_remesh', '') or img_data.get('blender', '')}";
 
 // Place VTL (Virtual Technical Library) image here
 const IMAGE_VTL = "{img_data.get('vtl', '')}";
@@ -795,6 +796,8 @@ const SENSOR_IMAGES = {{
     rgb: IMAGE_RGB,
     hyp: IMAGE_HYP,
     sac: IMAGE_SAC,
+    blender: IMAGE_BLENDER,
+    blender_remesh: IMAGE_BLENDER,
     vtl: IMAGE_VTL,
     lrms: IMAGE_LRMS,
     samm: IMAGE_LRMS,
@@ -1484,10 +1487,28 @@ function openPointCloudModal() {{
                             PROCESSED MODEL
                         </span>
                     </div>
-                    <div style="position:relative; height:200px; background:#020617; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+                    <div style="position:relative; height:185px; background:#020617; display:flex; align-items:center; justify-content:center; overflow:hidden;">
                         ${{IMAGE_SAC ? `<img src="${{IMAGE_SAC}}" alt="SAC Reconstructed Mesh" style="width:100%; height:100%; object-fit:contain; display:block;" />` : '<div style="color:#64748b; font-size:13px;">SAC Image Slot</div>'}}
                         <div style="position:absolute; bottom:6px; left:8px; background:rgba(15, 23, 42, 0.9); padding:3px 8px; border-radius:4px; border:1px solid #10b981; color:#34d399; font-family:'Barlow Semi Condensed',sans-serif; font-size:10.5px; font-weight:700;">
-                            Blender 4.5 · Voxel Remesh: 0.15m · Watertight Manifold
+                            Poisson Mesh · Octree Depth 10/11 · Watertight Shell
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image 3: Blender 4.5 Voxel Remesh & Interior Mesh -->
+                <div style="background:#0f172a; border-radius:12px; border:2px solid #8b5cf6; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 4px 14px rgba(0,0,0,0.25);">
+                    <div style="background:#1e293b; padding:8px 14px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155;">
+                        <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:12.5px; font-weight:800; color:#c084fc;">
+                            🧊 STEP 3: BLENDER 4.5 VOXEL REMESH (0.15m)
+                        </span>
+                        <span style="font-size:10.5px; font-family:'Barlow Semi Condensed',sans-serif; font-weight:800; padding:2px 7px; border-radius:4px; background:#4c1d95; color:#e9d5ff;">
+                            MANIFOLD CAVITY
+                        </span>
+                    </div>
+                    <div style="position:relative; height:185px; background:#020617; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+                        ${{IMAGE_BLENDER ? `<img src="${{IMAGE_BLENDER}}" alt="Blender Voxel Remesh Interior" style="width:100%; height:100%; object-fit:contain; display:block;" />` : '<div style="color:#64748b; font-size:13px;">Blender Remesh Image Slot</div>'}}
+                        <div style="position:absolute; bottom:6px; left:8px; background:rgba(15, 23, 42, 0.9); padding:3px 8px; border-radius:4px; border:1px solid #8b5cf6; color:#c084fc; font-family:'Barlow Semi Condensed',sans-serif; font-size:10.5px; font-weight:700;">
+                            Blender 4.5 &middot; Interior Compartment &middot; Watertight Manifold Topology
                         </div>
                     </div>
                 </div>

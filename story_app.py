@@ -1208,6 +1208,7 @@ IMAGE_PATH_HYP: Optional[str] = str(ASSETS_DIR / "hyperspectral.jpg") if (ASSETS
 
 # Place SAC (Surface Area Calculation) image here
 IMAGE_PATH_SAC: Optional[str] = str(UPLOADS_DIR / "sac.jpg") if (UPLOADS_DIR / "sac.jpg").is_file() else None
+IMAGE_PATH_BLENDER: Optional[str] = str(UPLOADS_DIR / "blender_remesh.jpg") if (UPLOADS_DIR / "blender_remesh.jpg").is_file() else None
 
 # Place VTL (Virtual Technical Library) image here
 IMAGE_PATH_VTL: Optional[str] = None  # e.g. r"C:\path\to\vtl_scantling_record.jpg"
@@ -1231,6 +1232,8 @@ IMAGE_PATHS: Dict[str, Optional[str]] = {
     "rgb": IMAGE_PATH_RGB,
     "hyp": IMAGE_PATH_HYP,
     "sac": IMAGE_PATH_SAC,
+    "blender": IMAGE_PATH_BLENDER,
+    "blender_remesh": IMAGE_PATH_BLENDER,
     "vtl": IMAGE_PATH_VTL,
     "lrms": IMAGE_PATH_LRMS,
     "samm": IMAGE_PATH_SAMM,
@@ -5316,7 +5319,8 @@ def build_point_cloud_pipeline_dialog() -> html.Div:
     from sac_manual import build_point_cloud_pipeline_component
     lidar_img = IMAGE_DATA.get("lidar", "")
     sac_img = IMAGE_DATA.get("sac", "")
-    return build_point_cloud_pipeline_component(lidar_img, sac_img)
+    remesh_img = IMAGE_DATA.get("blender_remesh") or IMAGE_DATA.get("blender", "")
+    return build_point_cloud_pipeline_component(lidar_img, sac_img, remesh_img)
 
 
 # 2c. Update Full-Screen Modal Header Titles, Status Badge, and Body Contents

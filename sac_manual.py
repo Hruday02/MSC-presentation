@@ -6,7 +6,7 @@ Layout: 2-column side-by-side (Images on one side, short & brief summary on the 
 from typing import Optional
 from dash import html
 
-def build_point_cloud_pipeline_component(img_lidar: str = "", img_sac: str = "") -> html.Div:
+def build_point_cloud_pipeline_component(img_lidar: str = "", img_sac: str = "", img_remesh: str = "") -> html.Div:
     """Generate the compact 2-column native Dash component tree for the LiDAR -> SAC Pipeline."""
     return html.Div(
         style={
@@ -169,7 +169,7 @@ def build_point_cloud_pipeline_component(img_lidar: str = "", img_sac: str = "")
                                         style={"width": "100%", "height": "100%", "objectFit": "contain", "display": "block"},
                                     ) if img_sac else html.Div("SAC Image Slot", style={"color": "#64748b", "fontSize": "13px"}),
                                     html.Div(
-                                        "Blender 4.5 · Voxel Remesh: 0.15m · Watertight Manifold",
+                                        "Poisson Mesh · Octree Depth 10/11 · Watertight Shell",
                                         style={
                                             "position": "absolute",
                                             "bottom": "6px",
@@ -179,6 +179,88 @@ def build_point_cloud_pipeline_component(img_lidar: str = "", img_sac: str = "")
                                             "borderRadius": "4px",
                                             "border": "1px solid #10b981",
                                             "color": "#34d399",
+                                            "fontFamily": "'Barlow Semi Condensed', sans-serif",
+                                            "fontSize": "10.5px",
+                                            "fontWeight": "700",
+                                        },
+                                    ),
+                                ],
+                            ),
+                        ],
+                    ),
+
+                    # Image 3: Blender 4.5 Voxel Remesh & Interior Mesh
+                    html.Div(
+                        style={
+                            "backgroundColor": "#0f172a",
+                            "borderRadius": "12px",
+                            "border": "2px solid #8b5cf6",
+                            "overflow": "hidden",
+                            "display": "flex",
+                            "flexDirection": "column",
+                            "boxShadow": "0 4px 14px rgba(0,0,0,0.25)",
+                        },
+                        children=[
+                            html.Div(
+                                style={
+                                    "backgroundColor": "#1e293b",
+                                    "padding": "8px 14px",
+                                    "display": "flex",
+                                    "justifyContent": "space-between",
+                                    "alignItems": "center",
+                                    "borderBottom": "1px solid #334155",
+                                },
+                                children=[
+                                    html.Span(
+                                        "🧊 STEP 3: BLENDER 4.5 VOXEL REMESH (0.15m)",
+                                        style={
+                                            "fontFamily": "'Barlow Semi Condensed', sans-serif",
+                                            "fontSize": "12.5px",
+                                            "fontWeight": "800",
+                                            "color": "#c084fc",
+                                        },
+                                    ),
+                                    html.Span(
+                                        "MANIFOLD CAVITY",
+                                        style={
+                                            "fontSize": "10.5px",
+                                            "fontFamily": "'Barlow Semi Condensed', sans-serif",
+                                            "fontWeight": "800",
+                                            "padding": "2px 7px",
+                                            "borderRadius": "4px",
+                                            "backgroundColor": "#4c1d95",
+                                            "color": "#e9d5ff",
+                                        },
+                                    ),
+                                ],
+                            ),
+                            html.Div(
+                                style={
+                                    "position": "relative",
+                                    "height": "185px",
+                                    "backgroundColor": "#020617",
+                                    "display": "flex",
+                                    "alignItems": "center",
+                                    "justifyContent": "center",
+                                    "overflow": "hidden",
+                                },
+                                children=[
+                                    html.Img(
+                                        src=img_remesh,
+                                        alt="Blender Voxel Remesh Interior",
+                                        style={"width": "100%", "height": "100%", "objectFit": "contain", "display": "block"},
+                                    ) if img_remesh else html.Div("Blender Remesh Image Slot", style={"color": "#64748b", "fontSize": "13px"}),
+                                    html.Div(
+                                        "Blender 4.5 · Interior Compartment · Watertight Manifold Topology",
+                                        style={
+                                            "position": "absolute",
+                                            "bottom": "6px",
+                                            "left": "8px",
+                                            "backgroundColor": "rgba(15, 23, 42, 0.9)",
+                                            "padding": "3px 8px",
+                                            "borderRadius": "4px",
+                                            "border": "1px solid #8b5cf6",
+                                            "color": "#c084fc",
                                             "fontFamily": "'Barlow Semi Condensed', sans-serif",
                                             "fontSize": "10.5px",
                                             "fontWeight": "700",
@@ -322,7 +404,7 @@ def build_point_cloud_pipeline_component(img_lidar: str = "", img_sac: str = "")
     )
 
 
-def generate_point_cloud_modal_html(img_lidar: str = "", img_sac: str = "") -> str:
+def generate_point_cloud_modal_html(img_lidar: str = "", img_sac: str = "", img_remesh: str = "") -> str:
     """Generate the short & brief 2-column HTML modal string for export_to_html.py."""
     return f"""
     <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(360px, 1fr)); gap:18px; width:100%; max-height:calc(88vh - 80px); overflow-y:auto; padding:4px; color:#1e293b; box-sizing:border-box;">
