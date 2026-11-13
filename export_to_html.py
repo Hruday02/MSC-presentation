@@ -711,10 +711,89 @@ def generate_html():
                 <g id="edges"></g>
                 <g id="nodes"></g>
                 <g id="phase45-placeholder" style="display:none; pointer-events:none;">
-                    <rect x="240" y="150" width="520" height="280" rx="16" fill="rgba(248, 250, 252, 0.85)" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6,6" />
-                    <text x="500" y="255" text-anchor="middle" font-family="'Barlow Semi Condensed', sans-serif" font-size="24" font-weight="800" fill="#1e293b" letter-spacing="0.8">PHASE 4.5 &middot; MBSE &amp; DATA STACK</text>
-                    <text x="500" y="295" text-anchor="middle" font-family="'Inter', sans-serif" font-size="14" font-weight="600" fill="#64748b">Model-Based Systems Engineering &amp; Enterprise Data Foundation</text>
-                    <text x="500" y="335" text-anchor="middle" font-family="'Inter', sans-serif" font-size="13" font-style="italic" fill="#94a3b8">Architecture canvas reserved &bull; Blank stage for future diagrams</text>
+                    <!-- Architecture Framework Blueprint Header -->
+                    <rect x="120" y="32" width="760" height="42" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
+                    <text x="145" y="58" font-family="'Barlow Semi Condensed', sans-serif" font-size="15" font-weight="800" fill="#0f172a" letter-spacing="0.8">MBSE &amp; ENTERPRISE DATA ARCHITECTURE FRAMEWORK</text>
+                    <rect x="745" y="42" width="120" height="22" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+                    <text x="805" y="57" font-family="'Barlow Semi Condensed', sans-serif" font-size="10.5" font-weight="800" fill="#2563eb" text-anchor="middle">DIGITAL THREAD</text>
+
+                    <!-- Layer 1: Edge & Telemetry Ingestion (Left) -->
+                    <rect x="120" y="88" width="230" height="490" rx="12" fill="rgba(248, 250, 252, 0.95)" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,5" />
+                    <rect x="135" y="102" width="200" height="28" rx="6" fill="#f1f5f9" />
+                    <text x="235" y="120" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#334155" text-anchor="middle">1. SENSORS &amp; PHYSICAL EDGE</text>
+                    
+                    <rect x="135" y="145" width="200" height="74" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+                    <text x="150" y="170" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#0f172a">LiDAR / 3D Scanners</text>
+                    <text x="150" y="190" font-family="'Inter', sans-serif" font-size="11" fill="#64748b">1.2M pts/s point cloud (.e57)</text>
+                    <text x="150" y="206" font-family="'Inter', sans-serif" font-size="10.5" fill="#0284c7" font-weight="600">&bull; Poisson surface reconstruction</text>
+
+                    <rect x="135" y="232" width="200" height="74" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+                    <text x="150" y="257" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#0f172a">Optical &amp; Hyperspectral</text>
+                    <text x="150" y="277" font-family="'Inter', sans-serif" font-size="11" fill="#64748b">VNIR chemical oxidation tensors</text>
+                    <text x="150" y="293" font-family="'Inter', sans-serif" font-size="10.5" fill="#0284c7" font-weight="600">&bull; 4K surface orthophotos &amp; rust maps</text>
+
+                    <rect x="135" y="318" width="200" height="74" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+                    <text x="150" y="343" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#0f172a">Ballast Tank Asset B-3</text>
+                    <text x="150" y="363" font-family="'Inter', sans-serif" font-size="11" fill="#64748b">Compartment Frame 38 baseline</text>
+                    <text x="150" y="379" font-family="'Inter', sans-serif" font-size="10.5" fill="#0284c7" font-weight="600">&bull; Plate thickness nominal: 18.0mm</text>
+
+                    <rect x="135" y="404" width="200" height="158" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+                    <text x="150" y="428" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#1e40af">EDGE NORMALIZATION</text>
+                    <text x="150" y="452" font-family="'Inter', sans-serif" font-size="11" fill="#1e3a8a">&bull; Point cloud coordinate registration</text>
+                    <text x="150" y="474" font-family="'Inter', sans-serif" font-size="11" fill="#1e3a8a">&bull; Watertight polygon mesh meshing</text>
+                    <text x="150" y="496" font-family="'Inter', sans-serif" font-size="11" fill="#1e3a8a">&bull; Cubert VNIR signature validation</text>
+                    <text x="150" y="518" font-family="'Inter', sans-serif" font-size="11" fill="#1e3a8a">&bull; Zero-latency broker transmission</text>
+                    <text x="150" y="540" font-family="'Inter', sans-serif" font-size="11" fill="#1e3a8a">&bull; Confidence threshold &gt; 0.83</text>
+
+                    <!-- Layer 2: MBSE Architecture & Central Data Fabric (Center) -->
+                    <rect x="375" y="88" width="250" height="490" rx="12" fill="rgba(240, 249, 255, 0.85)" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="5,5" />
+                    <rect x="390" y="102" width="220" height="28" rx="6" fill="#e0f2fe" />
+                    <text x="500" y="120" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0369a1" text-anchor="middle">2. MBSE &amp; DATA STACK</text>
+
+                    <rect x="390" y="145" width="220" height="110" rx="8" fill="#ffffff" stroke="#bae6fd" stroke-width="1.5"/>
+                    <text x="405" y="170" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#0369a1">SysML MBSE Architecture</text>
+                    <text x="405" y="192" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Functional &amp; physical block definitions</text>
+                    <text x="405" y="212" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; DNV-GL rule requirement verification</text>
+                    <text x="405" y="232" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Sensor-to-hull parameter traceability</text>
+
+                    <rect x="390" y="268" width="220" height="135" rx="8" fill="#ffffff" stroke="#bae6fd" stroke-width="1.5"/>
+                    <text x="405" y="293" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#0369a1">Marine Data Fabric (Lakehouse)</text>
+                    <text x="405" y="315" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Ingestion pipeline for 3D coordinate point sets</text>
+                    <text x="405" y="335" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Multi-temporal mesh revision store</text>
+                    <text x="405" y="355" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Bidirectional live DT synchronization bus</text>
+                    <text x="405" y="375" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Central REST &amp; WebSocket endpoint</text>
+
+                    <rect x="390" y="415" width="220" height="147" rx="8" fill="#ffffff" stroke="#bae6fd" stroke-width="1.5"/>
+                    <text x="405" y="440" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#0369a1">Virtual Technical Library (VTL)</text>
+                    <text x="405" y="462" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; As-built CAD scantling models</text>
+                    <text x="405" y="482" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Steel thickness decay degradation curves</text>
+                    <text x="405" y="502" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Class certificate &amp; thickness gauging ledger</text>
+                    <text x="405" y="522" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Real-time mesh-to-CAD deviation map</text>
+
+                    <!-- Layer 3: Enterprise Decision Systems (Right) -->
+                    <rect x="650" y="88" width="230" height="490" rx="12" fill="rgba(245, 243, 255, 0.85)" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="5,5" />
+                    <rect x="665" y="102" width="200" height="28" rx="6" fill="#ede9fe" />
+                    <text x="765" y="120" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#6d28d9" text-anchor="middle">3. FLEET DECISION ENGINES</text>
+
+                    <rect x="665" y="145" width="200" height="135" rx="8" fill="#ffffff" stroke="#ddd6fe" stroke-width="1.5"/>
+                    <text x="680" y="170" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#6d28d9">HMS Predictive Analytics</text>
+                    <text x="680" y="192" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Hull Health Index (HHI) engine</text>
+                    <text x="680" y="212" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Remaining Useful Life (RUL) modeling</text>
+                    <text x="680" y="232" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Fleet corrosion benchmark registry</text>
+                    <text x="680" y="252" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Automated survey compliance audit</text>
+
+                    <rect x="665" y="293" width="200" height="135" rx="8" fill="#ffffff" stroke="#ddd6fe" stroke-width="1.5"/>
+                    <text x="680" y="318" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#6d28d9">LRMS Maintenance Planning</text>
+                    <text x="680" y="340" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Drydock work pack generator</text>
+                    <text x="680" y="360" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Steel replacement cost optimizer</text>
+                    <text x="680" y="380" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Re-coating intervention ROI models</text>
+                    <text x="680" y="400" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Condition-Based Maintenance policy</text>
+
+                    <rect x="665" y="440" width="200" height="122" rx="8" fill="#fdf4ff" stroke="#f0abfc" stroke-width="1.5"/>
+                    <text x="680" y="465" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#a21caf">CLOSED-LOOP ACTIONS</text>
+                    <text x="680" y="487" font-family="'Inter', sans-serif" font-size="11" fill="#c026d3">&bull; Automated work order dispatch</text>
+                    <text x="680" y="507" font-family="'Inter', sans-serif" font-size="11" fill="#c026d3">&bull; Feedback loops to physical tank</text>
+                    <text x="680" y="527" font-family="'Inter', sans-serif" font-size="11" fill="#c026d3">&bull; Continuous class verification</text>
                 </g>
             </svg>
             <div class="hint">Tap a node for details &middot; Arrow keys change phase</div>
@@ -839,7 +918,7 @@ const PHASES = {{
         name: "Phase 4.5",
         title: "MBSE & Data Stack",
         subtitle: "Model-Based Systems Engineering & Enterprise Data Foundation",
-        description: "Placeholder for MBSE (Model-Based Systems Engineering) architecture and enterprise data stack integration. Canvas currently blank."
+        description: "Establishes the enterprise-level Model-Based Systems Engineering (MBSE) architecture and digital thread. Unifies physical sensor telemetry, 3D scantling geometry, and class compliance records into an integrated data platform supporting fleet-scale decision systems."
     }}
 }};
 
@@ -1277,7 +1356,7 @@ function renderNotes() {{
             <div>
                 <div style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; color:#64748b; letter-spacing:1px; margin-bottom:6px;">ACTIVE NODES IN THIS PHASE (${{visibleIds.length}})</div>
                 <div class="pill-group">
-                    ${{visibleIds.length > 0 ? visibleIds.map(id => `<button class="node-pill" onclick="selectNode('${{id}}'); openModal('${{id}}');">${{SVG_NODES[id].name}}</button>`).join("") : '<span style="color:#64748b; font-size:12.5px; font-style:italic; padding:4px 0;">Blank canvas / Future architecture stage</span>'}}
+                    ${{visibleIds.length > 0 ? visibleIds.map(id => `<button class="node-pill" onclick="selectNode('${{id}}'); openModal('${{id}}');">${{SVG_NODES[id].name}}</button>`).join("") : '<span style="color:#2563eb; font-size:12px; font-weight:700; background:#eff6ff; border:1px solid #bfdbfe; padding:4px 10px; border-radius:6px;">Architectural Framework Stage &middot; 3 Tiers Defined</span>'}}
                 </div>
             </div>
 
@@ -1343,12 +1422,24 @@ function renderNotes() {{
             </div>` : ""}}
 
             ${{currentPhase === 4.5 ? `
-            <div style="margin-top:14px; background:#f8fafc; border:2px dashed #94a3b8; border-radius:12px; padding:20px 16px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:8px;">
-                <span style="font-size:32px;">📐</span>
-                <span style="font-family:'Barlow Semi Condensed',sans-serif; font-weight:800; font-size:15px; color:#1e293b; letter-spacing:0.5px;">MBSE & Enterprise Data Stack</span>
-                <p style="font-size:12.5px; color:#64748b; margin:0; max-width:320px; line-height:1.4;">
-                    This stage is reserved for Model-Based Systems Engineering (MBSE) architecture and enterprise data stack integration. Canvas currently blank.
+            <div style="margin-top:14px; background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:16px; box-shadow:0 1px 3px rgba(0,0,0,0.04); display:flex; flex-direction:column; gap:12px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; color:#475569; letter-spacing:1px;">ENTERPRISE ARCHITECTURE FRAMEWORK</span>
+                    <span style="font-size:10.5px; font-weight:800; color:#2563eb; background:#eff6ff; padding:2px 8px; border-radius:4px; border:1px solid #bfdbfe;">IN DEFINITION</span>
+                </div>
+                <p style="font-size:12.5px; color:#334155; margin:0; line-height:1.45;">
+                    Connects shipboard edge sensing (LiDAR, Video, Hyperspectral) through formal SysML model boundaries to enterprise data pipelines, technical libraries (VTL), and maintenance planning (LRMS &amp; HMS).
                 </p>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px;">
+                        <div style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11.5px; font-weight:800; color:#0f172a;">MBSE DIGITAL THREAD</div>
+                        <div style="font-size:11px; color:#64748b; margin-top:2px;">Functional &amp; physical system requirements traceability from sensor to hull life cycle.</div>
+                    </div>
+                    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px;">
+                        <div style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11.5px; font-weight:800; color:#0f172a;">DATA STACK INTEGRATION</div>
+                        <div style="font-size:11px; color:#64748b; margin-top:2px;">Unified data schema federating 3D point clouds, scantling models, and fleet telemetry.</div>
+                    </div>
+                </div>
             </div>` : ""}}
 
             ${{nav}}`;
@@ -1387,10 +1478,30 @@ function renderNotes() {{
                     </div>
                 </div>
             </div>` : `
-            <div style="border:2px dashed #cbd5e1; border-radius:12px; padding:24px 16px; text-align:center; background:#f8fafc; margin-top:8px; display:flex; flex-direction:column; align-items:center; gap:6px;">
-                <span style="font-size:36px;">📷</span>
-                <span style="font-family:'Barlow Semi Condensed',sans-serif; font-weight:800; font-size:14px; color:#334155;">${{n.name}} Image Slot</span>
-                <span style="font-size:12px; color:#64748b;">Ready to receive inspection image for ${{n.name}}</span>
+            <div style="background:#0f172a; border-radius:12px; border:1.5px solid #334155; overflow:hidden; display:flex; flex-direction:column; margin-top:8px; box-shadow:0 4px 14px rgba(0,0,0,0.25);">
+                <div style="background:#1e293b; padding:8px 12px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155;">
+                    <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11.5px; font-weight:800; color:#38bdf8; letter-spacing:0.8px;">
+                        ${{selectedNode === "rgb" ? "4K OPTICAL STREAM &amp; TEXTURE HUD" : (selectedNode === "vtl" ? "DNV-GL SCANTLING &amp; CAD BASELINE" : (selectedNode === "samm" ? "LRMS MAINTENANCE POLICY ENGINE" : "HMS FLEET PREDICTIVE RUL"))}}
+                    </span>
+                    <span style="font-size:10.5px; font-family:'Barlow Semi Condensed',sans-serif; font-weight:800; color:#34d399; background:#064e3b; padding:2px 6px; border-radius:4px;">
+                        ONLINE
+                    </span>
+                </div>
+                <div style="padding:18px 16px; background:#020617; display:flex; flex-direction:column; gap:10px; cursor:pointer;" onclick="openModal('${{selectedNode}}')" title="Click to view full technical specification">
+                    <div style="font-family:'Barlow Semi Condensed',sans-serif; font-size:16px; font-weight:800; color:#f8fafc;">
+                        ${{n.name}}
+                    </div>
+                    <div style="font-size:12px; color:#94a3b8; line-height:1.4;">
+                        ${{n.about}}
+                    </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:4px;">
+                        ${{n.gives.map(g => `<div style="background:#1e293b; color:#38bdf8; padding:5px 8px; border-radius:6px; font-size:11px; font-weight:700; border:1px solid #334155; text-align:center;">${{g}}</div>`).join("")}}
+                    </div>
+                    <div style="margin-top:6px; display:flex; justify-content:space-between; align-items:center; font-size:11px; color:#64748b; border-top:1px solid #1e293b; padding-top:8px;">
+                        <span>Protocol: <strong>JSON / WebSocket</strong></span>
+                        <span style="color:#38bdf8; font-weight:700;">Open Technical Spec &rarr;</span>
+                    </div>
+                </div>
             </div>`;
 
         box.innerHTML = `
@@ -1738,20 +1849,288 @@ function openModal(nodeId) {{
         badge.style.border = "1.5px solid #10b981";
         badge.textContent = "🟢 COMPONENT ONLINE & SYNCHRONIZED";
 
-        const varName = nodeId === "samm" ? "LRMS" : nodeId === "cms" ? "HMS" : nodeId.toUpperCase();
-        body.innerHTML = `
-            <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding:48px 24px; width:100%;">
-                <div class="image-slot-container" style="max-width:680px; width:100%; border:2px dashed #334155; border-radius:16px; padding:48px 32px; display:flex; flex-direction:column; align-items:center; text-align:center; background:#0f172a;">
-                    <span style="font-size: 52px; margin-bottom:12px;">📷</span>
-                    <h3 style="font-family:'Barlow Semi Condensed',sans-serif; font-size:22px; color:#f8fafc; margin-bottom:8px;">${{n.name}}</h3>
-                    <p style="color:#94a3b8; font-size:13.5px; line-height:1.5; margin-bottom:18px;">${{n.about}}</p>
-                    <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-bottom:16px;">
-                        ${{n.gives.map(g => `<span style="background:#1e293b; color:#38bdf8; padding:4px 10px; border-radius:6px; font-size:11px; font-weight:700; border:1px solid #334155;">${{g}}</span>`).join('')}}
+        if (nodeId === "rgb") {{
+            superTitle.textContent = "OPTICAL EDGE SENSOR · 4K VIDEO INSPECTION";
+            superTitle.style.color = "#38bdf8";
+            titleText.textContent = "RGB & High-Resolution Video Camera";
+            subtitle.textContent = "Tank Dome Ceiling Mount · 3840×2160 UHD @ 60 FPS · IP68 Submersible · Real-Time Optical Texture Stream";
+            badge.style.display = "inline-block";
+            badge.style.backgroundColor = isRust ? "#450a0a" : "#064e3b";
+            badge.style.color = isRust ? "#f87171" : "#34d399";
+            badge.style.border = `1.5px solid ${{isRust ? '#ef4444' : '#10b981'}}`;
+            badge.textContent = isRust ? "⚠️ SURFACE DEFECT DETECTED: OXIDATION & BLISTERING" : "🟢 OPTICAL STREAM NOMINAL · PROTECTIVE COATING INTACT";
+
+            body.innerHTML = `
+                <div style="display:flex; flex-direction:column; width:100%; color:#f8fafc;">
+                    <div style="background:#1e293b; padding:12px 24px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; flex-wrap:wrap; gap:12px;">
+                        <div>
+                            <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11.5px; font-weight:800; letter-spacing:1px; color:#94a3b8;">OPTICAL TELEMETRY STREAM: </span>
+                            <strong style="color:${{isRust ? '#f87171' : '#34d399'}}; font-family:'Barlow Semi Condensed',sans-serif; font-size:13px;">${{isRust ? '⚠️ RUST CHROMATICITY DETECTED' : '🟢 CLEAR OPTICAL BASELINE'}}</strong>
+                        </div>
+                        <div style="font-family:monospace; font-size:11.5px; color:#38bdf8; background:#020617; padding:4px 12px; border-radius:6px; border:1px solid #334155;">
+                            STREAM: 4K UHD 60fps &middot; BITRATE: 45 Mbps
+                        </div>
                     </div>
-                    <div class="code-badge" style="background:#020617; border:1px solid #334155; padding:6px 14px; border-radius:6px; font-family:monospace; color:#38bdf8; font-size:12px;">Data Feed: Active &middot; Protocol: JSON/WebSocket</div>
+                    <div style="position:relative; height:460px; background:#020617; display:flex; align-items:center; justify-content:center; overflow:hidden; padding:24px;">
+                        <!-- Camera Telemetry Viewport -->
+                        <div style="width:100%; max-width:820px; height:100%; border:1.5px solid #38bdf8; border-radius:12px; background:radial-gradient(ellipse at center, #0f172a 0%, #020617 100%); position:relative; display:flex; flex-direction:column; justify-content:space-between; padding:20px; box-sizing:border-box;">
+                            <!-- Top HUD Bar -->
+                            <div style="display:flex; justify-content:space-between; align-items:center; font-family:'Barlow Semi Condensed',sans-serif; font-size:12px; color:#38bdf8;">
+                                <span>[CAM-01: TANK B-3 BULKHEAD]</span>
+                                <span>REC &bull; 00:42:18:04</span>
+                                <span>ISO 400 &middot; F/2.8 &middot; 1/250s</span>
+                            </div>
+                            <!-- Crosshair Center -->
+                            <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); pointer-events:none; text-align:center;">
+                                <div style="width:80px; height:80px; border:1px solid rgba(56, 189, 248, 0.4); border-radius:50%; margin:0 auto; display:flex; align-items:center; justify-content:center;">
+                                    <div style="width:8px; height:8px; background:${{isRust ? '#ef4444' : '#10b981'}}; border-radius:50%;"></div>
+                                </div>
+                                <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; color:${{isRust ? '#fca5a5' : '#6ee7b7'}}; margin-top:6px; display:block;">
+                                    ${{isRust ? '⚠️ CHROMATIC SHIFT: 18.4° (OXIDIZED OCHRE #b91c1c)' : '🟢 SURFACE HUE: 142.1° (COATING EPOXY NOMINAL)'}}
+                                </span>
+                            </div>
+                            <!-- Bottom HUD Specs -->
+                            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; background:rgba(15, 23, 42, 0.85); padding:12px; border-radius:8px; border:1px solid #334155;">
+                                <div>
+                                    <span style="font-size:10px; color:#94a3b8; display:block;">SURFACE TEXTURE</span>
+                                    <strong style="color:#f8fafc; font-size:12.5px;">${{isRust ? 'Rough / Exfoliating' : 'Smooth / High-Gloss'}}</strong>
+                                </div>
+                                <div>
+                                    <span style="font-size:10px; color:#94a3b8; display:block;">COATING COVERAGE</span>
+                                    <strong style="color:${{isRust ? '#f87171' : '#34d399'}}; font-size:12.5px;">${{isRust ? '84.2% (Degraded)' : '99.4% (Nominal)'}}</strong>
+                                </div>
+                                <div>
+                                    <span style="font-size:10px; color:#94a3b8; display:block;">ORTHOPHOTO MAP</span>
+                                    <strong style="color:#38bdf8; font-size:12.5px;">Geo-Referenced to Tank CAD</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background:#0f172a; padding:14px 24px; border-top:1px solid #334155; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+                        <span style="color:#94a3b8; font-size:12.5px;">Lens: <strong>Wide-Angle Marine Sapphire Glass (110° FoV)</strong> &middot; Sensor: <strong>Sony IMX Exmor 1/1.8"</strong></span>
+                        <span style="color:#38bdf8; font-family:'Barlow Semi Condensed',sans-serif; font-size:13px; font-weight:800;">Feeds to: SAC Mesh Texture &amp; Operator Verification</span>
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
+        }} else if (nodeId === "vtl") {{
+            superTitle.textContent = "TECHNICAL DATABASE · SCANTLING & CLASS RECORDS";
+            superTitle.style.color = "#34d399";
+            titleText.textContent = "VTL Prototype: Virtual Technical Library";
+            subtitle.textContent = "DNV-GL Class Registry · Scantling Baseline Plans · Steel Degradation Models · Compartment Frame 38";
+            badge.style.display = "inline-block";
+            badge.style.backgroundColor = "#064e3b";
+            badge.style.color = "#34d399";
+            badge.style.border = "1.5px solid #10b981";
+            badge.textContent = "🟢 CLASS REGISTRY COMPLIANT &middot; DNV-GL CERTIFIED";
+
+            body.innerHTML = `
+                <div style="display:flex; flex-direction:column; width:100%; color:#f8fafc;">
+                    <div style="background:#1e293b; padding:12px 24px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; flex-wrap:wrap; gap:12px;">
+                        <div>
+                            <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11.5px; font-weight:800; letter-spacing:1px; color:#94a3b8;">VTL SPECIFICATION DOSSIER: </span>
+                            <strong style="color:#38bdf8; font-family:'Barlow Semi Condensed',sans-serif; font-size:13px;">DNV-GL SHIP RULES PT.3 CH.3</strong>
+                        </div>
+                        <div style="font-family:monospace; font-size:11.5px; color:#34d399; background:#020617; padding:4px 12px; border-radius:6px; border:1px solid #334155;">
+                            DOC ID: VTL-MSC-TNK-B3-REV4
+                        </div>
+                    </div>
+                    <div style="position:relative; min-height:460px; background:#020617; display:flex; align-items:center; justify-content:center; padding:24px;">
+                        <!-- Scantling Blueprint Panel -->
+                        <div style="width:100%; max-width:820px; border:1.5px solid #334155; border-radius:12px; background:#0b1120; padding:24px; display:flex; flex-direction:column; gap:16px;">
+                            <div style="border-bottom:1px solid #1e293b; padding-bottom:12px; display:flex; justify-content:space-between; align-items:flex-end;">
+                                <div>
+                                    <span style="font-size:11px; color:#38bdf8; font-family:'Barlow Semi Condensed',sans-serif; font-weight:800; letter-spacing:1px;">STRUCTURAL SCANTLING SPECIFICATION</span>
+                                    <h3 style="font-size:20px; font-family:'Barlow Semi Condensed',sans-serif; font-weight:800; color:#f8fafc; margin-top:2px;">Cargo Tank Compartment B-3 (Frame 36–42)</h3>
+                                </div>
+                                <span style="font-size:12px; color:#94a3b8;">Classification: <strong>DNV-GL NV DH36</strong></span>
+                            </div>
+
+                            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px;">
+                                <div style="background:#0f172a; padding:12px; border-radius:8px; border:1px solid #1e293b;">
+                                    <span style="font-size:11px; color:#94a3b8;">NOMINAL SCANTLING THICKNESS</span>
+                                    <div style="font-size:18px; font-weight:800; color:#38bdf8; font-family:'Barlow Semi Condensed',sans-serif; margin-top:2px;">18.0 mm</div>
+                                    <span style="font-size:11px; color:#64748b;">Design as-built plan thickness</span>
+                                </div>
+                                <div style="background:#0f172a; padding:12px; border-radius:8px; border:1px solid #1e293b;">
+                                    <span style="font-size:11px; color:#94a3b8;">CORROSION DIMINUTION LIMIT</span>
+                                    <div style="font-size:18px; font-weight:800; color:#f59e0b; font-family:'Barlow Semi Condensed',sans-serif; margin-top:2px;">15.5 mm (-2.5 mm Max)</div>
+                                    <span style="font-size:11px; color:#64748b;">DNV-GL mandatory steel renewal limit</span>
+                                </div>
+                                <div style="background:#0f172a; padding:12px; border-radius:8px; border:1px solid #1e293b;">
+                                    <span style="font-size:11px; color:#94a3b8;">PROTECTIVE COATING SYSTEM</span>
+                                    <div style="font-size:18px; font-weight:800; color:#34d399; font-family:'Barlow Semi Condensed',sans-serif; margin-top:2px;">2 &times; 160 &mu;m Pure Epoxy</div>
+                                    <span style="font-size:11px; color:#64748b;">IMO PSPC Compliant Marine Barrier</span>
+                                </div>
+                            </div>
+
+                            <div style="background:#0f172a; border-radius:8px; padding:14px; border:1px solid #1e293b; display:flex; flex-direction:column; gap:8px;">
+                                <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:12px; font-weight:800; color:#94a3b8; letter-spacing:0.8px;">DIGITAL TWIN INTEGRATION ROLE</span>
+                                <p style="font-size:12.5px; color:#cbd5e1; margin:0; line-height:1.5;">
+                                    The VTL provides the formal baseline CAD geometry against which LiDAR Delaunay surface reconstructions (SAC) are continuously compared. 
+                                    When surface loss exceeds 1.8mm at Frame 38, VTL flags the condition and feeds technical structural compliance records directly to the Digital Twin and HMS.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background:#0f172a; padding:14px 24px; border-top:1px solid #334155; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+                        <span style="color:#94a3b8; font-size:12.5px;">CAD Registry: <strong>STEP / IGES / IFC Marine Standard</strong> &middot; Survey Cycle: <strong>5-Year Special Survey</strong></span>
+                        <span style="color:#34d399; font-family:'Barlow Semi Condensed',sans-serif; font-size:13px; font-weight:800;">Synchronized to Digital Twin CAD Core</span>
+                    </div>
+                </div>
+            `;
+        }} else if (nodeId === "samm" || nodeId === "lrms") {{
+            superTitle.textContent = "FLEET DECISION LAYER · MAINTENANCE OPTIMIZATION";
+            superTitle.style.color = "#38bdf8";
+            titleText.textContent = "LRMS: Long Range Maintenance Schedule";
+            subtitle.textContent = "Condition-Based Maintenance (CBM) Policy Engine · Drydock Work Pack Optimization · Repair ROI Modeling";
+            badge.style.display = "inline-block";
+            badge.style.backgroundColor = isRust ? "#450a0a" : "#064e3b";
+            badge.style.color = isRust ? "#f87171" : "#34d399";
+            badge.style.border = `1.5px solid ${{isRust ? '#ef4444' : '#10b981'}}`;
+            badge.textContent = isRust ? "⚠️ ACTION DISPATCHED: DRYDOCK WORK PACK #4092 GENERATED" : "🟢 LRMS POLICY NOMINAL &middot; NO IMMEDIATE STEEL INTERVENTION";
+
+            body.innerHTML = `
+                <div style="display:flex; flex-direction:column; width:100%; color:#f8fafc;">
+                    <div style="background:#1e293b; padding:12px 24px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; flex-wrap:wrap; gap:12px;">
+                        <div>
+                            <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11.5px; font-weight:800; letter-spacing:1px; color:#94a3b8;">CBM POLICY STATUS: </span>
+                            <strong style="color:${{isRust ? '#f87171' : '#34d399'}}; font-family:'Barlow Semi Condensed',sans-serif; font-size:13px;">${{isRust ? '⚠️ WORK PACK WP-B3-2026 DISPATCHED' : '🟢 MAINTENANCE SCHEDULE ON TRACK'}}</strong>
+                        </div>
+                        <div style="font-family:monospace; font-size:11.5px; color:#38bdf8; background:#020617; padding:4px 12px; border-radius:6px; border:1px solid #334155;">
+                            POLICY: CONDITION-BASED MAINTENANCE (CBM)
+                        </div>
+                    </div>
+                    <div style="position:relative; min-height:460px; background:#020617; display:flex; align-items:center; justify-content:center; padding:24px;">
+                        <!-- Maintenance Operations Panel -->
+                        <div style="width:100%; max-width:820px; border:1.5px solid #334155; border-radius:12px; background:#0b1120; padding:24px; display:flex; flex-direction:column; gap:16px;">
+                            <div style="border-bottom:1px solid #1e293b; padding-bottom:12px; display:flex; justify-content:space-between; align-items:flex-end;">
+                                <div>
+                                    <span style="font-size:11px; color:#38bdf8; font-family:'Barlow Semi Condensed',sans-serif; font-weight:800; letter-spacing:1px;">DRYDOCK &amp; VOYAGE INTERVENTION PLANNER</span>
+                                    <h3 style="font-size:20px; font-family:'Barlow Semi Condensed',sans-serif; font-weight:800; color:#f8fafc; margin-top:2px;">Tank B-3 Condition-Based Work Schedule</h3>
+                                </div>
+                                <span style="font-size:12px; color:#94a3b8;">Schedule Window: <strong>Next Drydock (Q3 2026)</strong></span>
+                            </div>
+
+                            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px;">
+                                <div style="background:#0f172a; padding:12px; border-radius:8px; border:1px solid #1e293b;">
+                                    <span style="font-size:11px; color:#94a3b8;">RECOMMENDED INTERVENTION</span>
+                                    <div style="font-size:16px; font-weight:800; color:${{isRust ? '#ef4444' : '#34d399'}}; font-family:'Barlow Semi Condensed',sans-serif; margin-top:2px;">
+                                        ${{isRust ? 'Sa 2.5 Hydro-Blast &amp; Recoat' : 'Routine Spot Inspection Only'}}
+                                    </div>
+                                    <span style="font-size:11px; color:#64748b;">Targeted Frame 38 repair pack</span>
+                                </div>
+                                <div style="background:#0f172a; padding:12px; border-radius:8px; border:1px solid #1e293b;">
+                                    <span style="font-size:11px; color:#94a3b8;">DRYDOCK COST AVOIDANCE</span>
+                                    <div style="font-size:16px; font-weight:800; color:#38bdf8; font-family:'Barlow Semi Condensed',sans-serif; margin-top:2px;">68% Cost Savings</div>
+                                    <span style="font-size:11px; color:#64748b;">Vs emergency plate cropping &amp; renewal</span>
+                                </div>
+                                <div style="background:#0f172a; padding:12px; border-radius:8px; border:1px solid #1e293b;">
+                                    <span style="font-size:11px; color:#94a3b8;">BIDIRECTIONAL LINK</span>
+                                    <div style="font-size:16px; font-weight:800; color:#a855f7; font-family:'Barlow Semi Condensed',sans-serif; margin-top:2px;">Direct to HMS &amp; Tank</div>
+                                    <span style="font-size:11px; color:#64748b;">Actions flow directly to ballast asset</span>
+                                </div>
+                            </div>
+
+                            <div style="background:#0f172a; border-radius:8px; padding:14px; border:1px solid #1e293b; display:flex; flex-direction:column; gap:8px;">
+                                <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:12px; font-weight:800; color:#94a3b8; letter-spacing:0.8px;">OPERATIONAL IMPACT SUMMARY</span>
+                                <p style="font-size:12.5px; color:#cbd5e1; margin:0; line-height:1.5;">
+                                    LRMS acts as the decision-making counterpart to the Digital Twin. While the Digital Twin visualizes and monitors the physical state in real time, 
+                                    LRMS translates defect telemetry into concrete drydock maintenance work packs, preventing catastrophic steel wastage and optimizing vessel operational uptime.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background:#0f172a; padding:14px 24px; border-top:1px solid #334155; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+                        <span style="color:#94a3b8; font-size:12.5px;">Integration: <strong>Enterprise ERP / Drydock Work Management System</strong></span>
+                        <span style="color:#38bdf8; font-family:'Barlow Semi Condensed',sans-serif; font-size:13px; font-weight:800;">Bidirectional Maintenance &amp; Hull Loop</span>
+                    </div>
+                </div>
+            `;
+        }} else if (nodeId === "cms" || nodeId === "hms") {{
+            superTitle.textContent = "FLEET PREDICTIVE LAYER · HULL HEALTH ANALYTICS";
+            superTitle.style.color = "#34d399";
+            titleText.textContent = "HMS: Hull Maintenance System";
+            subtitle.textContent = "Fleet-Wide Predictive Analytics · Remaining Useful Life (RUL) Modeling · Structural Degradation Forecasting";
+            badge.style.display = "inline-block";
+            badge.style.backgroundColor = isRust ? "#450a0a" : "#064e3b";
+            badge.style.color = isRust ? "#f87171" : "#34d399";
+            badge.style.border = `1.5px solid ${{isRust ? '#ef4444' : '#10b981'}}`;
+            badge.textContent = isRust ? "⚠️ RUL UPDATED: EXPEDITE LOCALIZED COATING REPAIR" : "🟢 FLEET HULL HEALTH INDEX (HHI): 94.2 / 100 NOMINAL";
+
+            body.innerHTML = `
+                <div style="display:flex; flex-direction:column; width:100%; color:#f8fafc;">
+                    <div style="background:#1e293b; padding:12px 24px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; flex-wrap:wrap; gap:12px;">
+                        <div>
+                            <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11.5px; font-weight:800; letter-spacing:1px; color:#94a3b8;">FLEET ANALYTICS STREAM: </span>
+                            <strong style="color:${{isRust ? '#f87171' : '#34d399'}}; font-family:'Barlow Semi Condensed',sans-serif; font-size:13px;">${{isRust ? '⚠️ STRUCTURAL DEGRADATION DETECTED' : '🟢 FLEET LEADING HEALTH PROFILE'}}</strong>
+                        </div>
+                        <div style="font-family:monospace; font-size:11.5px; color:#34d399; background:#020617; padding:4px 12px; border-radius:6px; border:1px solid #334155;">
+                            CORROSION MODEL: MODIFIED POWER-LAW
+                        </div>
+                    </div>
+                    <div style="position:relative; min-height:460px; background:#020617; display:flex; align-items:center; justify-content:center; padding:24px;">
+                        <!-- Fleet Analytics Dashboard Panel -->
+                        <div style="width:100%; max-width:820px; border:1.5px solid #334155; border-radius:12px; background:#0b1120; padding:24px; display:flex; flex-direction:column; gap:16px;">
+                            <div style="border-bottom:1px solid #1e293b; padding-bottom:12px; display:flex; justify-content:space-between; align-items:flex-end;">
+                                <div>
+                                    <span style="font-size:11px; color:#34d399; font-family:'Barlow Semi Condensed',sans-serif; font-weight:800; letter-spacing:1px;">FLEET INTEGRITY MANAGEMENT</span>
+                                    <h3 style="font-size:20px; font-family:'Barlow Semi Condensed',sans-serif; font-weight:800; color:#f8fafc; margin-top:2px;">Hull Maintenance System (HMS) Analytics</h3>
+                                </div>
+                                <span style="font-size:12px; color:#94a3b8;">Vessel Asset: <strong>MSC Ballast Tank B-3</strong></span>
+                            </div>
+
+                            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px;">
+                                <div style="background:#0f172a; padding:12px; border-radius:8px; border:1px solid #1e293b;">
+                                    <span style="font-size:11px; color:#94a3b8;">HULL HEALTH INDEX (HHI)</span>
+                                    <div style="font-size:18px; font-weight:800; color:${{isRust ? '#f87171' : '#34d399'}}; font-family:'Barlow Semi Condensed',sans-serif; margin-top:2px;">
+                                        ${{isRust ? '64.8 / 100' : '94.2 / 100'}}
+                                    </div>
+                                    <span style="font-size:11px; color:#64748b;">Fleet median: 91.0 / 100</span>
+                                </div>
+                                <div style="background:#0f172a; padding:12px; border-radius:8px; border:1px solid #1e293b;">
+                                    <span style="font-size:11px; color:#94a3b8;">REMAINING USEFUL LIFE (RUL)</span>
+                                    <div style="font-size:18px; font-weight:800; color:${{isRust ? '#f59e0b' : '#38bdf8'}}; font-family:'Barlow Semi Condensed',sans-serif; margin-top:2px;">
+                                        ${{isRust ? '8.4 Years (Accelerated)' : '14.8 Years (Nominal)'}}
+                                    </div>
+                                    <span style="font-size:11px; color:#64748b;">Calibrated against Cubert VNIR &amp; LiDAR</span>
+                                </div>
+                                <div style="background:#0f172a; padding:12px; border-radius:8px; border:1px solid #1e293b;">
+                                    <span style="font-size:11px; color:#94a3b8;">CLASS COMPLIANCE FORECAST</span>
+                                    <div style="font-size:18px; font-weight:800; color:#34d399; font-family:'Barlow Semi Condensed',sans-serif; margin-top:2px;">100% Survey Ready</div>
+                                    <span style="font-size:11px; color:#64748b;">Zero class conditions of survey</span>
+                                </div>
+                            </div>
+
+                            <div style="background:#0f172a; border-radius:8px; padding:14px; border:1px solid #1e293b; display:flex; flex-direction:column; gap:8px;">
+                                <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:12px; font-weight:800; color:#94a3b8; letter-spacing:0.8px;">ENTERPRISE EXPANSION &amp; FLEET FEDERATION</span>
+                                <p style="font-size:12.5px; color:#cbd5e1; margin:0; line-height:1.5;">
+                                    HMS ingests the 3D Digital Twin mesh data to evaluate long-term wear curves across all identical sister vessels in the fleet. 
+                                    By cross-referencing paint condition data from VTL with real-time sensor streams, HMS enables proactive drydock procurement months in advance.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background:#0f172a; padding:14px 24px; border-top:1px solid #334155; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+                        <span style="color:#94a3b8; font-size:12.5px;">Analytics Engine: <strong>Predictive Hull Degradation Neural Model</strong> &middot; Data Scope: <strong>Fleet-Wide</strong></span>
+                        <span style="color:#34d399; font-family:'Barlow Semi Condensed',sans-serif; font-size:13px; font-weight:800;">Enterprise DT Telemetry Integrated</span>
+                    </div>
+                </div>
+            `;
+        }} else {{
+            const varName = nodeId === "samm" ? "LRMS" : nodeId === "cms" ? "HMS" : nodeId.toUpperCase();
+            body.innerHTML = `
+                <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding:48px 24px; width:100%;">
+                    <div class="image-slot-container" style="max-width:680px; width:100%; border:1.5px solid #334155; border-radius:16px; padding:40px 32px; display:flex; flex-direction:column; align-items:center; text-align:center; background:#0f172a;">
+                        <h3 style="font-family:'Barlow Semi Condensed',sans-serif; font-size:22px; color:#f8fafc; margin-bottom:8px;">${{n.name}}</h3>
+                        <p style="color:#94a3b8; font-size:13.5px; line-height:1.5; margin-bottom:18px;">${{n.about}}</p>
+                        <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-bottom:16px;">
+                            ${{n.gives.map(g => `<span style="background:#1e293b; color:#38bdf8; padding:4px 10px; border-radius:6px; font-size:11px; font-weight:700; border:1px solid #334155;">${{g}}</span>`).join('')}}
+                        </div>
+                        <div class="code-badge" style="background:#020617; border:1px solid #334155; padding:6px 14px; border-radius:6px; font-family:monospace; color:#38bdf8; font-size:12px;">Telemetry Stream: Synchronized &middot; Interface: REST / WebSocket API</div>
+                    </div>
+                </div>
+            `;
+        }}
     }}
 
     modal.classList.add("active");

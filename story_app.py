@@ -73,8 +73,9 @@ CONTENT: Dict[str, Any] = {
             "title": "MBSE & Data Stack",
             "subtitle": "Model-Based Systems Engineering & Enterprise Data Foundation",
             "description": (
-                "Placeholder for MBSE (Model-Based Systems Engineering) architecture and enterprise data stack integration. "
-                "Canvas currently blank."
+                "Establishes the enterprise-level Model-Based Systems Engineering (MBSE) architecture and digital thread. "
+                "Unifies physical sensor telemetry, 3D scantling geometry, and class compliance records into an integrated "
+                "data platform supporting fleet-scale decision systems."
             ),
         },
     },
@@ -2340,10 +2341,89 @@ app.index_string = """
                         <g id="edges"></g>
                         <g id="nodes"></g>
                         <g id="phase45-placeholder" style="display:none; pointer-events:none;">
-                            <rect x="240" y="150" width="520" height="280" rx="16" fill="rgba(248, 250, 252, 0.85)" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6,6" />
-                            <text x="500" y="255" text-anchor="middle" font-family="'Barlow Semi Condensed', sans-serif" font-size="24" font-weight="800" fill="#1e293b" letter-spacing="0.8">PHASE 4.5 &middot; MBSE &amp; DATA STACK</text>
-                            <text x="500" y="295" text-anchor="middle" font-family="'Inter', sans-serif" font-size="14" font-weight="600" fill="#64748b">Model-Based Systems Engineering &amp; Enterprise Data Foundation</text>
-                            <text x="500" y="335" text-anchor="middle" font-family="'Inter', sans-serif" font-size="13" font-style="italic" fill="#94a3b8">Architecture canvas reserved &bull; Blank stage for future diagrams</text>
+                            <!-- Architecture Framework Blueprint Header -->
+                            <rect x="120" y="32" width="760" height="42" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
+                            <text x="145" y="58" font-family="'Barlow Semi Condensed', sans-serif" font-size="15" font-weight="800" fill="#0f172a" letter-spacing="0.8">MBSE &amp; ENTERPRISE DATA ARCHITECTURE FRAMEWORK</text>
+                            <rect x="745" y="42" width="120" height="22" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+                            <text x="805" y="57" font-family="'Barlow Semi Condensed', sans-serif" font-size="10.5" font-weight="800" fill="#2563eb" text-anchor="middle">DIGITAL THREAD</text>
+
+                            <!-- Layer 1: Edge & Telemetry Ingestion (Left) -->
+                            <rect x="120" y="88" width="230" height="490" rx="12" fill="rgba(248, 250, 252, 0.95)" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,5" />
+                            <rect x="135" y="102" width="200" height="28" rx="6" fill="#f1f5f9" />
+                            <text x="235" y="120" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#334155" text-anchor="middle">1. SENSORS &amp; PHYSICAL EDGE</text>
+                            
+                            <rect x="135" y="145" width="200" height="74" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+                            <text x="150" y="170" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#0f172a">LiDAR / 3D Scanners</text>
+                            <text x="150" y="190" font-family="'Inter', sans-serif" font-size="11" fill="#64748b">1.2M pts/s point cloud (.e57)</text>
+                            <text x="150" y="206" font-family="'Inter', sans-serif" font-size="10.5" fill="#0284c7" font-weight="600">&bull; Poisson surface reconstruction</text>
+
+                            <rect x="135" y="232" width="200" height="74" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+                            <text x="150" y="257" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#0f172a">Optical &amp; Hyperspectral</text>
+                            <text x="150" y="277" font-family="'Inter', sans-serif" font-size="11" fill="#64748b">VNIR chemical oxidation tensors</text>
+                            <text x="150" y="293" font-family="'Inter', sans-serif" font-size="10.5" fill="#0284c7" font-weight="600">&bull; 4K surface orthophotos &amp; rust maps</text>
+
+                            <rect x="135" y="318" width="200" height="74" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+                            <text x="150" y="343" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#0f172a">Ballast Tank Asset B-3</text>
+                            <text x="150" y="363" font-family="'Inter', sans-serif" font-size="11" fill="#64748b">Compartment Frame 38 baseline</text>
+                            <text x="150" y="379" font-family="'Inter', sans-serif" font-size="10.5" fill="#0284c7" font-weight="600">&bull; Plate thickness nominal: 18.0mm</text>
+
+                            <rect x="135" y="404" width="200" height="158" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+                            <text x="150" y="428" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#1e40af">EDGE NORMALIZATION</text>
+                            <text x="150" y="452" font-family="'Inter', sans-serif" font-size="11" fill="#1e3a8a">&bull; Point cloud coordinate registration</text>
+                            <text x="150" y="474" font-family="'Inter', sans-serif" font-size="11" fill="#1e3a8a">&bull; Watertight polygon mesh meshing</text>
+                            <text x="150" y="496" font-family="'Inter', sans-serif" font-size="11" fill="#1e3a8a">&bull; Cubert VNIR signature validation</text>
+                            <text x="150" y="518" font-family="'Inter', sans-serif" font-size="11" fill="#1e3a8a">&bull; Zero-latency broker transmission</text>
+                            <text x="150" y="540" font-family="'Inter', sans-serif" font-size="11" fill="#1e3a8a">&bull; Confidence threshold &gt; 0.83</text>
+
+                            <!-- Layer 2: MBSE Architecture & Central Data Fabric (Center) -->
+                            <rect x="375" y="88" width="250" height="490" rx="12" fill="rgba(240, 249, 255, 0.85)" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="5,5" />
+                            <rect x="390" y="102" width="220" height="28" rx="6" fill="#e0f2fe" />
+                            <text x="500" y="120" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0369a1" text-anchor="middle">2. MBSE &amp; DATA STACK</text>
+
+                            <rect x="390" y="145" width="220" height="110" rx="8" fill="#ffffff" stroke="#bae6fd" stroke-width="1.5"/>
+                            <text x="405" y="170" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#0369a1">SysML MBSE Architecture</text>
+                            <text x="405" y="192" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Functional &amp; physical block definitions</text>
+                            <text x="405" y="212" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; DNV-GL rule requirement verification</text>
+                            <text x="405" y="232" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Sensor-to-hull parameter traceability</text>
+
+                            <rect x="390" y="268" width="220" height="135" rx="8" fill="#ffffff" stroke="#bae6fd" stroke-width="1.5"/>
+                            <text x="405" y="293" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#0369a1">Marine Data Fabric (Lakehouse)</text>
+                            <text x="405" y="315" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Ingestion pipeline for 3D coordinate point sets</text>
+                            <text x="405" y="335" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Multi-temporal mesh revision store</text>
+                            <text x="405" y="355" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Bidirectional live DT synchronization bus</text>
+                            <text x="405" y="375" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Central REST &amp; WebSocket endpoint</text>
+
+                            <rect x="390" y="415" width="220" height="147" rx="8" fill="#ffffff" stroke="#bae6fd" stroke-width="1.5"/>
+                            <text x="405" y="440" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#0369a1">Virtual Technical Library (VTL)</text>
+                            <text x="405" y="462" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; As-built CAD scantling models</text>
+                            <text x="405" y="482" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Steel thickness decay degradation curves</text>
+                            <text x="405" y="502" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Class certificate &amp; thickness gauging ledger</text>
+                            <text x="405" y="522" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Real-time mesh-to-CAD deviation map</text>
+
+                            <!-- Layer 3: Enterprise Decision Systems (Right) -->
+                            <rect x="650" y="88" width="230" height="490" rx="12" fill="rgba(245, 243, 255, 0.85)" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="5,5" />
+                            <rect x="665" y="102" width="200" height="28" rx="6" fill="#ede9fe" />
+                            <text x="765" y="120" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#6d28d9" text-anchor="middle">3. FLEET DECISION ENGINES</text>
+
+                            <rect x="665" y="145" width="200" height="135" rx="8" fill="#ffffff" stroke="#ddd6fe" stroke-width="1.5"/>
+                            <text x="680" y="170" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#6d28d9">HMS Predictive Analytics</text>
+                            <text x="680" y="192" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Hull Health Index (HHI) engine</text>
+                            <text x="680" y="212" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Remaining Useful Life (RUL) modeling</text>
+                            <text x="680" y="232" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Fleet corrosion benchmark registry</text>
+                            <text x="680" y="252" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Automated survey compliance audit</text>
+
+                            <rect x="665" y="293" width="200" height="135" rx="8" fill="#ffffff" stroke="#ddd6fe" stroke-width="1.5"/>
+                            <text x="680" y="318" font-family="'Barlow Semi Condensed', sans-serif" font-size="13" font-weight="800" fill="#6d28d9">LRMS Maintenance Planning</text>
+                            <text x="680" y="340" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Drydock work pack generator</text>
+                            <text x="680" y="360" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Steel replacement cost optimizer</text>
+                            <text x="680" y="380" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Re-coating intervention ROI models</text>
+                            <text x="680" y="400" font-family="'Inter', sans-serif" font-size="11" fill="#475569">&bull; Condition-Based Maintenance policy</text>
+
+                            <rect x="665" y="440" width="200" height="122" rx="8" fill="#fdf4ff" stroke="#f0abfc" stroke-width="1.5"/>
+                            <text x="680" y="465" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#a21caf">CLOSED-LOOP ACTIONS</text>
+                            <text x="680" y="487" font-family="'Inter', sans-serif" font-size="11" fill="#c026d3">&bull; Automated work order dispatch</text>
+                            <text x="680" y="507" font-family="'Inter', sans-serif" font-size="11" fill="#c026d3">&bull; Feedback loops to physical tank</text>
+                            <text x="680" y="527" font-family="'Inter', sans-serif" font-size="11" fill="#c026d3">&bull; Continuous class verification</text>
                         </g>
                     </svg>
                 `;
@@ -4290,9 +4370,11 @@ def encode_svg_to_data_uri(svg_code: str) -> str:
 
 
 def render_image_slot(node_id: str, meta: Dict[str, Any]) -> html.Div:
-    """Render a clean, focused image placeholder slot when no custom image has been provided yet."""
+    """Render a clean, focused technical specification and telemetry panel for active nodes."""
     title_display = meta.get('title') or ('LRMS' if node_id == 'samm' else 'HMS' if node_id == 'cms' else node_id.upper())
-    var_name = 'LRMS' if node_id == 'samm' else 'HMS' if node_id == 'cms' else node_id.upper()
+    desc_display = meta.get('desc') or "Active component in digital twin architecture."
+    outputs = meta.get('gives', [])
+
     return html.Div(
         style={
             "display": "flex",
@@ -4300,7 +4382,7 @@ def render_image_slot(node_id: str, meta: Dict[str, Any]) -> html.Div:
             "justifyContent": "center",
             "alignItems": "center",
             "backgroundColor": "#020617",
-            "padding": "48px 24px",
+            "padding": "32px 24px",
             "width": "100%",
             "minHeight": "480px",
             "overflow": "hidden",
@@ -4308,46 +4390,50 @@ def render_image_slot(node_id: str, meta: Dict[str, Any]) -> html.Div:
         children=[
             html.Div(
                 style={
-                    "border": "2px dashed #334155",
+                    "border": "1.5px solid #334155",
                     "borderRadius": "16px",
-                    "padding": "56px 36px",
+                    "padding": "36px 32px",
                     "display": "flex",
                     "flexDirection": "column",
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                    "gap": "16px",
-                    "backgroundColor": "#0b0f19",
-                    "maxWidth": "720px",
+                    "gap": "18px",
+                    "backgroundColor": "#0b1120",
+                    "maxWidth": "780px",
                     "width": "100%",
-                    "textAlign": "center",
+                    "boxShadow": "0 10px 30px rgba(0,0,0,0.5)",
                 },
                 children=[
-                    html.Span("📷", style={"fontSize": "52px"}),
-                    html.H3(
-                        f"{title_display} Image Slot",
-                        style={
-                            "fontSize": "22px",
-                            "fontWeight": "800",
-                            "color": "#f8fafc",
-                            "margin": "0",
-                            "fontFamily": "'Barlow Semi Condensed', sans-serif",
-                        },
+                    html.Div(
+                        style={"display": "flex", "justifyContent": "space-between", "alignItems": "center", "borderBottom": "1px solid #1e293b", "paddingBottom": "14px"},
+                        children=[
+                            html.Div(
+                                children=[
+                                    html.Span("DIGITAL TWIN TELEMETRY COMPONENT", style={"fontSize": "11px", "fontWeight": "800", "color": "#38bdf8", "letterSpacing": "1px", "fontFamily": "'Barlow Semi Condensed', sans-serif"}),
+                                    html.H3(title_display, style={"fontSize": "22px", "fontWeight": "800", "color": "#f8fafc", "margin": "2px 0 0 0", "fontFamily": "'Barlow Semi Condensed', sans-serif"}),
+                                ],
+                            ),
+                            html.Span("🟢 COMPONENT ONLINE", style={"fontSize": "11px", "fontWeight": "800", "color": "#34d399", "backgroundColor": "#064e3b", "padding": "4px 10px", "borderRadius": "6px", "border": "1px solid #10b981"}),
+                        ],
                     ),
-                    html.P(
-                        f"No image configured yet for {title_display}. Enter file path in story_app.py under IMAGE_PATH_{var_name}.",
-                        style={"fontSize": "13.5px", "color": "#94a3b8", "maxWidth": "500px", "margin": "0"},
+                    html.P(desc_display, style={"fontSize": "13.5px", "color": "#cbd5e1", "lineHeight": "1.5", "margin": "0"}),
+                    html.Div(
+                        style={"display": "flex", "flexDirection": "column", "gap": "6px"},
+                        children=[
+                            html.Span("OUTPUT DATA FEEDS & PIPELINE INTERFACES", style={"fontSize": "10.5px", "fontWeight": "800", "color": "#94a3b8", "letterSpacing": "0.8px", "fontFamily": "'Barlow Semi Condensed', sans-serif"}),
+                            html.Div(
+                                style={"display": "flex", "flexWrap": "wrap", "gap": "8px"},
+                                children=[
+                                    html.Span(g, style={"fontSize": "11.5px", "fontWeight": "700", "color": "#38bdf8", "backgroundColor": "#0f172a", "padding": "5px 12px", "borderRadius": "6px", "border": "1px solid #1e293b"})
+                                    for g in outputs
+                                ],
+                            ),
+                        ],
                     ),
                     html.Div(
-                        f"IMAGE_PATH_{var_name} = r\"C:\\path\\to\\your_image.jpg\"",
-                        style={
-                            "fontSize": "12px",
-                            "fontFamily": "monospace",
-                            "backgroundColor": "#030712",
-                            "color": "#38bdf8",
-                            "padding": "10px 20px",
-                            "borderRadius": "8px",
-                            "border": "1px solid #1e293b",
-                        },
+                        style={"display": "flex", "justifyContent": "space-between", "alignItems": "center", "borderTop": "1px solid #1e293b", "paddingTop": "12px", "fontSize": "11.5px", "color": "#64748b"},
+                        children=[
+                            html.Span("Interface: REST / WebSocket Event Bus"),
+                            html.Span("Status: Synchronized with Digital Twin", style={"color": "#34d399", "fontWeight": "700"}),
+                        ],
                     ),
                 ],
             ),
@@ -6652,23 +6738,46 @@ def update_notes_panel(current_phase, selected_node, view_mode, ship_scenario):
     if phase == 4.5:
         phase4_5_special_card = html.Div(
             style={
-                "backgroundColor": "#f8fafc",
+                "backgroundColor": "#ffffff",
                 "borderRadius": "12px",
-                "border": "2px dashed #94a3b8",
-                "padding": "20px 16px",
+                "border": "1px solid #e2e8f0",
+                "padding": "16px",
                 "display": "flex",
                 "flexDirection": "column",
-                "alignItems": "center",
-                "textAlign": "center",
-                "gap": "8px",
+                "gap": "10px",
                 "marginTop": "8px",
+                "boxShadow": "0 1px 3px rgba(0,0,0,0.04)",
             },
             children=[
-                html.Span("📐", style={"fontSize": "32px"}),
-                html.Span("MBSE & Enterprise Data Stack", style={"fontSize": "15px", "fontWeight": "800", "color": "#1e293b", "fontFamily": "'Barlow Semi Condensed', sans-serif"}),
+                html.Div(
+                    style={"display": "flex", "justifyContent": "space-between", "alignItems": "center"},
+                    children=[
+                        html.Span("ENTERPRISE ARCHITECTURE FRAMEWORK", style={"fontSize": "11px", "fontWeight": "800", "letterSpacing": "1.2px", "color": "#475569", "fontFamily": "'Barlow Semi Condensed', sans-serif"}),
+                        html.Span("IN DEFINITION", style={"fontSize": "10.5px", "fontWeight": "800", "color": "#2563eb", "backgroundColor": "#eff6ff", "padding": "2px 8px", "borderRadius": "4px", "border": "1px solid #bfdbfe"}),
+                    ],
+                ),
                 html.P(
-                    "This stage is reserved for Model-Based Systems Engineering (MBSE) architecture and enterprise data stack integration. Canvas currently blank.",
-                    style={"fontSize": "13px", "lineHeight": "1.4", "color": "#64748b", "margin": "0", "maxWidth": "320px"},
+                    "Connects shipboard edge sensing (LiDAR, Video, Hyperspectral) through formal SysML model boundaries to enterprise data pipelines, technical libraries (VTL), and maintenance planning (LRMS & HMS).",
+                    style={"fontSize": "13px", "lineHeight": "1.45", "color": "#334155", "margin": "0"},
+                ),
+                html.Div(
+                    style={"display": "grid", "gridTemplateColumns": "1fr 1fr", "gap": "8px"},
+                    children=[
+                        html.Div(
+                            style={"backgroundColor": "#f8fafc", "border": "1px solid #e2e8f0", "borderRadius": "8px", "padding": "10px"},
+                            children=[
+                                html.Div("MBSE DIGITAL THREAD", style={"fontFamily": "'Barlow Semi Condensed', sans-serif", "fontSize": "11.5px", "fontWeight": "800", "color": "#0f172a"}),
+                                html.Div("Functional & physical system requirements traceability from sensor to hull life cycle.", style={"fontSize": "11px", "color": "#64748b", "marginTop": "2px"}),
+                            ],
+                        ),
+                        html.Div(
+                            style={"backgroundColor": "#f8fafc", "border": "1px solid #e2e8f0", "borderRadius": "8px", "padding": "10px"},
+                            children=[
+                                html.Div("DATA STACK INTEGRATION", style={"fontFamily": "'Barlow Semi Condensed', sans-serif", "fontSize": "11.5px", "fontWeight": "800", "color": "#0f172a"}),
+                                html.Div("Unified data schema federating 3D point clouds, scantling models, and fleet telemetry.", style={"fontSize": "11px", "color": "#64748b", "marginTop": "2px"}),
+                            ],
+                        ),
+                    ],
                 ),
             ],
         )
@@ -6860,8 +6969,8 @@ def update_notes_panel(current_phase, selected_node, view_mode, ship_scenario):
                         style={"display": "flex", "flexDirection": "column", "gap": "8px"},
                         children=[
                             html.Div(
-                                "Blank canvas / Future architecture stage",
-                                style={"fontSize": "13px", "fontStyle": "italic", "color": "#64748b", "padding": "6px 0"}
+                                "Architectural Framework Stage · 3 Tiers Defined",
+                                style={"fontSize": "12px", "fontWeight": "700", "color": "#2563eb", "backgroundColor": "#eff6ff", "border": "1px solid #bfdbfe", "padding": "6px 12px", "borderRadius": "6px"}
                             )
                         ] if len(visible_node_ids) == 0 else [
                             html.Button(
