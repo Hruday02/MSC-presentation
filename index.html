@@ -660,8 +660,10 @@
             <svg id="svg" viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet">
                 <defs>
                     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9 z" fill="#2563eb"/></marker>
+                    <marker id="arrow-start" viewBox="0 0 10 10" refX="1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 9 1 L 0 5 L 9 9 z" fill="#2563eb"/></marker>
                     <marker id="arrow-feedback" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9 z" fill="#94a3b8"/></marker>
                     <marker id="arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9 z" fill="#d97706"/></marker>
+                    <marker id="arrow-start-hot" viewBox="0 0 10 10" refX="1" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 9 1 L 0 5 L 9 9 z" fill="#d97706"/></marker>
                 </defs>
                 <g id="groups"></g>
                 <g id="edges"></g>
@@ -845,7 +847,8 @@ const SVG_EDGES = [
     { a: "vtl", b: "twin", label: "tank records", phases: [3, 4] },
     { a: "twin", b: "cms", label: "twin data", phases: [4] },
     { a: "samm", b: "tank", label: "actions", phases: [4] },
-    { a: "cms", b: "vtl", label: "", phases: [4], dashed: true, curve: -140 }
+    { a: "cms", b: "vtl", label: "", phases: [4], dashed: true, curve: -140 },
+    { a: "samm", b: "cms", label: "", phases: [4], bidirectional: true }
 ];
 
 const svgNS = "http://www.w3.org/2000/svg";
@@ -1073,11 +1076,16 @@ function draw() {
             }
         }
 
-        if (e.dashed) {
+        if (e.bidirectional) {
+            e.path.setAttribute("marker-start", "url(#arrow-start)");
+            e.path.setAttribute("marker-end", "url(#arrow)");
+        } else if (e.dashed) {
             e.path.setAttribute("stroke-dasharray", "6 4");
             e.path.setAttribute("marker-end", "url(#arrow-feedback)");
+            e.path.removeAttribute("marker-start");
         } else {
             e.path.setAttribute("marker-end", "url(#arrow)");
+            e.path.removeAttribute("marker-start");
         }
     });
 }
@@ -1159,10 +1167,15 @@ function highlight() {
         const hot = selectedNode && (e.a === selectedNode || e.b === selectedNode);
         e.g.classList.toggle("hot", !!hot);
         e.g.classList.toggle("dim", !!selectedNode && !hot);
-        if (e.dashed) {
+        if (e.bidirectional) {
+            e.path.setAttribute("marker-start", hot ? "url(#arrow-start-hot)" : "url(#arrow-start)");
+            e.path.setAttribute("marker-end", hot ? "url(#arrow-hot)" : "url(#arrow)");
+        } else if (e.dashed) {
             e.path.setAttribute("marker-end", hot ? "url(#arrow-hot)" : "url(#arrow-feedback)");
+            e.path.removeAttribute("marker-start");
         } else {
             e.path.setAttribute("marker-end", hot ? "url(#arrow-hot)" : "url(#arrow)");
+            e.path.removeAttribute("marker-start");
         }
     });
 }

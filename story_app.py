@@ -261,6 +261,7 @@ CONTENT: Dict[str, Any] = {
         {"source": "twin", "target": "cms", "label": "twin data", "phases": [4]},
         {"source": "samm", "target": "tank", "label": "actions", "phases": [4]},
         {"source": "cms", "target": "vtl", "label": "", "phases": [4], "dashed": True, "style": "dashed"},
+        {"source": "samm", "target": "cms", "label": "", "phases": [4], "bidirectional": True},
     ],
 
     # Phase 3 Ship & Tank Simulation Configuration
@@ -2289,7 +2290,8 @@ app.index_string = """
                 // Phase 4: Beyond the Twin layer
                 { a: "twin", b: "cms", label: "twin data", phases: [4] },
                 { a: "samm", b: "tank", label: "actions", phases: [4] },
-                { a: "cms", b: "vtl", label: "", phases: [4], dashed: true, curve: -140 }
+                { a: "cms", b: "vtl", label: "", phases: [4], dashed: true, curve: -140 },
+                { a: "samm", b: "cms", label: "", phases: [4], bidirectional: true }
             ];
 
             let currentPhase = 1, selectedNode = null;
