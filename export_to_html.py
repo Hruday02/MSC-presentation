@@ -1064,19 +1064,17 @@ def generate_html():
 
 
         <!-- ========================================================= -->
-        <!-- SYSML 2.0 DIGITAL THREAD CONNECTOR LINE (Matching User Drawing) -->
-        <!-- Originates at SysML structure (Y=350), ascends past HMS   -->
-        <!-- Curving smoothly into LRMS at top (Y=129) with arrowhead   -->
+        <!-- SYSML 2.0 DIGITAL THREAD LINE (Exact Match to User Black Drawing) -->
+        <!-- Starts where the black line starts (Y=124), ends where it ends (Y=345) -->
+        <!-- Clean stroke, zero arrowhead, nothing more               -->
         <!-- ========================================================= -->
         <g id="p45-digital-thread-arrow" style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
             <!-- White Knockout Halo for contrast -->
-            <path d="M 770 350 L 934 350 Q 946 350 946 338 L 946 141 Q 946 129 934 129 L 916 129" 
+            <path d="M 930 124 C 950 124, 960 136, 960 155 L 957 230 C 957 270, 963 310, 974 330 C 976 338, 970 345, 946 345" 
                   fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-            <!-- Digital Thread Line -->
-            <path d="M 770 350 L 934 350 Q 946 350 946 338 L 946 141 Q 946 129 934 129 L 916 129" 
-                  fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <!-- Arrowhead pointing into LRMS -->
-            <polygon points="924,124 916,129 924,134" fill="#16a34a"/>
+            <!-- Exact Line as Drawn by User in Black -->
+            <path d="M 930 124 C 950 124, 960 136, 960 155 L 957 230 C 957 270, 963 310, 974 330 C 976 338, 970 345, 946 345" 
+                  fill="none" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
         </g>
 
         <!-- ========================================================= -->
