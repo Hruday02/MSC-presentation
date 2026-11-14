@@ -2722,19 +2722,17 @@ app.index_string = """
 
 
         <!-- ========================================================= -->
-        <!-- SYSML 2.0 DIGITAL THREAD ARROW (Polished Vector Arrow)    -->
-        <!-- Starts where user drew (Y=345), curves gracefully along X=962 -->
-        <!-- Connects directly into LRMS at (916, 129) with clean arrowhead -->
+        <!-- SYSML 2.0 DIGITAL THREAD BLOCK ARROW (Matching Reference) -->
+        <!-- Follows user black trajectory, authentic green block arrow -->
+        <!-- Points directly into LRMS with identical style to double arrow -->
         <!-- ========================================================= -->
         <g id="p45-digital-thread-arrow" style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
             <!-- White Knockout Halo for contrast -->
-            <path d="M 946 345 C 965 345, 968 335, 965 315 L 960 160 C 960 140, 950 129, 926 129" 
-                  fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-            <!-- Polished Digital Thread Arrow Line -->
-            <path d="M 946 345 C 965 345, 968 335, 965 315 L 960 160 C 960 140, 950 129, 926 129" 
-                  fill="none" stroke="#16a34a" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-            <!-- Crisp Arrowhead pointing into LRMS -->
-            <polygon points="926,123 916,129 926,135" fill="#16a34a" stroke="#15803d" stroke-width="0.8"/>
+            <path d="M 946 340 C 952 340, 956 333, 956 325 L 956 144 C 956 138, 952 134, 946 134 L 926 134 L 926 139 L 916 129 L 926 119 L 926 124 L 946 124 C 957 124, 966 133, 966 144 L 966 325 C 966 339, 957 350, 946 350 Z" 
+                  fill="#ffffff" stroke="#ffffff" stroke-width="4" stroke-linejoin="round"/>
+            <!-- Authentic Green Block Arrow matching user reference -->
+            <path d="M 946 340 C 952 340, 956 333, 956 325 L 956 144 C 956 138, 952 134, 946 134 L 926 134 L 926 139 L 916 129 L 926 119 L 926 124 L 946 124 C 957 124, 966 133, 966 144 L 966 325 C 966 339, 957 350, 946 350 Z" 
+                  fill="#86efac" stroke="#15803d" stroke-width="1.5" stroke-linejoin="round"/>
         </g>
 
             <!-- Legend -->
