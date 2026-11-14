@@ -1182,6 +1182,7 @@ const PHASES = {
     },
     4.5: {
         name: "Phase 4.5",
+        tabTitle: "AST",
         title: "Authoritative Source of Truth",
         subtitle: "",
         description: ""
@@ -1568,7 +1569,7 @@ function renderTabs() {
         const p = PHASES[pKey];
         const btn = document.createElement("button");
         btn.className = "phase-tab-btn" + (pKey === currentPhase ? " active" : "");
-        btn.innerHTML = `<span class="p-num">${p.name}</span><span class="p-title">${p.title}</span>`;
+        btn.innerHTML = `<span class="p-num">${p.name}</span><span class="p-title">${p.tabTitle || p.title}</span>`;
         btn.addEventListener("click", () => goToPhase(pKey));
         bar.appendChild(btn);
     });

@@ -70,6 +70,7 @@ CONTENT: Dict[str, Any] = {
         },
         4.5: {
         "name": "Phase 4.5",
+        "tab_title": "AST",
         "title": "Authoritative Source of Truth",
         "subtitle": "",
         "description": "",
@@ -3380,7 +3381,7 @@ def create_layout() -> html.Div:
                                 },
                             ),
                             html.Span(
-                                CONTENT["phases"][p]["title"],
+                                CONTENT["phases"][p].get("tab_title") or CONTENT["phases"][p]["title"],
                                 style={
                                     "fontSize": "15px",
                                     "fontWeight": "700",
