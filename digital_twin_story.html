@@ -1021,25 +1021,26 @@
         </g>
 
 
-        <!-- SYSML 2.0 DIGITAL THREAD BENT ARROW (Matching Initial Photo)-->
-        <!-- Originates from the structure as a whole at bottom (Y=514)  -->
-        <!-- Shaft rises alongside the entire architecture to DT (Y=193) -->
-        <!-- Solid green fill; zero text; zero dotted lines              -->
+        <!-- ========================================================= -->
+        <!-- SYSML 2.0 DIGITAL THREAD CONNECTOR LINE (Matching User Drawing) -->
+        <!-- Originates at SysML structure (Y=350), ascends past HMS   -->
+        <!-- Curving smoothly into LRMS at top (Y=129) with arrowhead   -->
         <!-- ========================================================= -->
         <g id="p45-digital-thread-arrow" style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
-            <!-- Background Knockout Halo -->
-            <path d="M 655 514 L 920 514 L 920 216 L 910 216 L 929 193 L 948 216 L 938 216 L 938 532 L 655 532 Z" 
-                  fill="#ffffff" stroke="#ffffff" stroke-width="4" stroke-linejoin="round"/>
-            
-            <!-- Authentic Green Bent Arrow (Embraces structure as a whole, points UP to DT) -->
-            <path d="M 655 514 L 920 514 L 920 216 L 910 216 L 929 193 L 948 216 L 938 216 L 938 532 L 655 532 Z" 
-                  fill="#86efac" stroke="#15803d" stroke-width="1.5" stroke-linejoin="round"/>
+            <!-- White Knockout Halo for contrast -->
+            <path d="M 770 350 L 934 350 Q 946 350 946 338 L 946 141 Q 946 129 934 129 L 916 129" 
+                  fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Digital Thread Line -->
+            <path d="M 770 350 L 934 350 Q 946 350 946 338 L 946 141 Q 946 129 934 129 L 916 129" 
+                  fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Arrowhead pointing into LRMS -->
+            <polygon points="924,124 916,129 924,134" fill="#16a34a"/>
         </g>
 
         <!-- ========================================================= -->
         <!-- SYSML LEGEND (Exact 3 categories from user reference)     -->
         <!-- ========================================================= -->
-        <g id="p45-legend" transform="translate(535, 548)">
+        <g id="p45-legend" transform="translate(535, 532)">
             <!-- New Diagram Type -->
             <rect x="0" y="0" width="124" height="24" rx="5" fill="#fff1f2" stroke="#fda4af" stroke-width="1"/>
             <circle cx="12" cy="12" r="4.5" fill="#f43f5e"/>
