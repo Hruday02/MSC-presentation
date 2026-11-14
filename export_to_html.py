@@ -1063,38 +1063,25 @@ def generate_html():
         </g>
 
         <!-- ========================================================= -->
-        <!-- DIGITAL THREAD: ENTIRE SYSML STRUCTURE -> DIGITAL TWIN (DT) -->
-        <!-- Multi-pillar convergence connecting Behavior,             -->
-        <!-- Requirements, and Structure models as a unified conduit    -->
-                <!-- ========================================================= -->
-        <!-- DIGITAL THREAD: ENTIRE SYSML STRUCTURE -> DIGITAL TWIN (DT) -->
-        <!-- Multi-pillar architectural thread connecting Structure,   -->
-        <!-- Requirements, and Behavior models directly into DT         -->
+        <!-- SYSML 2.0 DIGITAL THREAD BENT ARROW (Exact match Image 4) -->
+        <!-- Authentic PowerPoint Bent Arrow on right of SysML diagram -->
+        <!-- Frames entire SysML architecture; zero line collision     -->
         <!-- ========================================================= -->
         <g id="p45-digital-thread-arrow" style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
-            <!-- Background Knockout Halos for zero visual collision -->
-            <!-- Structure -> Requirement Conduit Halo -->
-            <path d="M 725 433 L 725 387" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round"/>
-            <!-- Requirement -> Behavior Conduit Halo -->
-            <path d="M 725 347 L 725 280" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round"/>
-            <!-- Behavior -> DT Ascending Arrow Halo -->
-            <path d="M 725 240 C 725 218, 742 210, 748 199" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round"/>
-
-            <!-- Green Digital Thread Bus (Structure -> Requirement -> Behavior -> DT) -->
-            <!-- 1. Structure to Requirement -->
-            <path d="M 725 433 L 725 387" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round"/>
-            <!-- 2. Requirement to Behavior -->
-            <path d="M 725 347 L 725 280" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round"/>
-            <!-- 3. Behavior to Digital Twin (DT) Curved Arrow -->
-            <path d="M 725 240 C 725 218, 742 210, 748 199" fill="none" stroke="#16a34a" stroke-width="3.5" stroke-linecap="round"/>
-            <polygon points="743,207 748,197 753,207" fill="#16a34a"/>
-
-            <!-- Connection Junction Nodes uniting each architectural pillar -->
-            <circle cx="725" cy="433" r="3.5" fill="#16a34a" stroke="#ffffff" stroke-width="1.2"/>
-            <circle cx="725" cy="387" r="3.5" fill="#16a34a" stroke="#ffffff" stroke-width="1.2"/>
-            <circle cx="725" cy="347" r="3.5" fill="#16a34a" stroke="#ffffff" stroke-width="1.2"/>
-            <circle cx="725" cy="280" r="3.5" fill="#16a34a" stroke="#ffffff" stroke-width="1.2"/>
-            <circle cx="725" cy="240" r="3.5" fill="#16a34a" stroke="#ffffff" stroke-width="1.2"/>
+            <!-- Background Knockout Halo -->
+            <path d="M 770 346 L 920 346 L 920 216 L 910 216 L 929 193 L 948 216 L 938 216 L 938 364 L 770 364 Z" 
+                  fill="#ffffff" stroke="#ffffff" stroke-width="4" stroke-linejoin="round"/>
+            
+            <!-- Authentic Green Bent Arrow (Frames entire SysML model, points UP to DT) -->
+            <path d="M 770 346 L 920 346 L 920 216 L 910 216 L 929 193 L 948 216 L 938 216 L 938 364 L 770 364 Z" 
+                  fill="#86efac" stroke="#15803d" stroke-width="1.5" stroke-linejoin="round"/>
+            
+            <!-- Digital Thread text inside shaft -->
+            <text x="929" y="290" font-family="'Barlow Semi Condensed', sans-serif" font-size="9" font-weight="800" fill="#14532d" text-anchor="middle" transform="rotate(-90 929 290)" letter-spacing="1.5">DIGITAL THREAD</text>
+            
+            <!-- Connection from arrow tip to DT bottom-right -->
+            <path d="M 929 193 C 929 184, 780 184, 748 197" fill="none" stroke="#16a34a" stroke-width="2" stroke-dasharray="3 3"/>
+            <polygon points="744,202 748,197 753,202" fill="#16a34a"/>
         </g>
 
         <!-- ========================================================= -->
