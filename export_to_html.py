@@ -711,17 +711,17 @@ def generate_html():
                 <g id="edges"></g>
                 <g id="nodes"></g>
                 <!-- ======================================================== -->
-                <!-- PHASE 4.5: AST SYSTEM MODEL & MBSE ARCHITECTURE BLUEPRINT -->
+                <!-- PHASE 4.5: AUTHORITATIVE SOURCE OF TRUTH (AST) & BLUEPRINT -->
                 <!-- Scaled & Compacted to fit strictly within Y <= 504        -->
                 <!-- ======================================================== -->
     <!-- ======================================================== -->
-    <!-- PHASE 4.5: AST SYSTEM MODEL                                -->
-    <!-- Direct, authentic visualization of the AST System Model    -->
+    <!-- PHASE 4.5: AUTHORITATIVE SOURCE OF TRUTH (AST)          -->
+    <!-- Direct, authentic visualization of the AST                 -->
     <!-- No fabricated details; no link between SAC and VTL        -->
     <!-- ======================================================== -->
     <g id="phase45-placeholder" style="display:none;">
         <!-- Canvas Title -->
-        <text x="36" y="38" font-family="'Barlow Semi Condensed', sans-serif" font-size="26" font-weight="800" fill="#0f172a">AST System Model</text>
+        <text x="36" y="38" font-family="'Barlow Semi Condensed', sans-serif" font-size="26" font-weight="800" fill="#0f172a">Authoritative Source of Truth</text>
 
         <!-- ========================================================= -->
         <!-- LEFT: THREE TIERS WITH PERSISTENCE & ALGEDONIC BUSES       -->
@@ -1224,7 +1224,7 @@ const PHASES = {{
     }},
     4.5: {{
         name: "Phase 4.5",
-        title: "AST System Model",
+        title: "AST",
         subtitle: "",
         description: ""
     }}
@@ -1666,7 +1666,7 @@ function renderNotes() {{
             <div>
                 <div style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; color:#64748b; letter-spacing:1px; margin-bottom:6px;">ACTIVE NODES IN THIS PHASE (${{visibleIds.length}})</div>
                 <div class="pill-group">
-                    ${{visibleIds.length > 0 ? visibleIds.map(id => `<button class="node-pill" onclick="selectNode('${{id}}'); openModal('${{id}}');">${{SVG_NODES[id].name}}</button>`).join("") : (currentPhase === 4.5 ? '<span style="color:#2563eb; font-size:12px; font-weight:700; background:#eff6ff; border:1px solid #bfdbfe; padding:4px 10px; border-radius:6px;">AST System Model &middot; 3 Tiers &amp; SysML Digital Thread</span>' : '<span style="color:#94a3b8; font-size:12px; font-style:italic;">None</span>')}}
+                    ${{visibleIds.length > 0 ? visibleIds.map(id => `<button class="node-pill" onclick="selectNode('${{id}}'); openModal('${{id}}');">${{SVG_NODES[id].name}}</button>`).join("") : (currentPhase === 4.5 ? '<span style="color:#2563eb; font-size:12px; font-weight:700; background:#eff6ff; border:1px solid #bfdbfe; padding:4px 10px; border-radius:6px;">Authoritative Source of Truth &middot; 3 Tiers &amp; SysML Digital Thread</span>' : '<span style="color:#94a3b8; font-size:12px; font-style:italic;">None</span>')}}
                 </div>
             </div>
 
@@ -1975,18 +1975,18 @@ function openModal(nodeId) {{
     if (nodeId === "ast_system_model" || nodeId === "ast_slide") {{
         superTitle.textContent = "PHASE 4.5";
         superTitle.style.color = "#2563eb";
-        titleText.textContent = "AST System Model";
+        titleText.textContent = "Authoritative Source of Truth";
         subtitle.textContent = "";
         badge.style.display = "inline-block";
         badge.style.backgroundColor = "#eff6ff";
         badge.style.color = "#2563eb";
         badge.style.border = "1.5px solid #bfdbfe";
-        badge.textContent = "SYSTEM MODEL";
+        badge.textContent = "AUTHORITATIVE SOURCE OF TRUTH";
 
         body.innerHTML = `
             <div style="display:flex; flex-direction:column; width:100%; gap:14px; max-height:calc(88vh - 80px); overflow-y:auto; padding:8px;">
                 <div style="background:#0f172a; border-radius:12px; border:2px solid #2563eb; overflow:hidden; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 14px rgba(0,0,0,0.25); min-height:450px;">
-                    <img src="${{IMAGE_AST_SLIDE}}" alt="AST System Model" style="width:100%; height:auto; max-height:560px; object-fit:contain; display:block;" />
+                    <img src="${{IMAGE_AST_SLIDE}}" alt="Authoritative Source of Truth" style="width:100%; height:auto; max-height:560px; object-fit:contain; display:block;" />
                 </div>
                 <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:14px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
                     <div style="background:#fff7ed; border-left:3.5px solid #ea580c; padding:10px 12px; border-radius:0 6px 6px 0;">

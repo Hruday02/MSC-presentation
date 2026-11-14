@@ -70,7 +70,7 @@ CONTENT: Dict[str, Any] = {
         },
         4.5: {
         "name": "Phase 4.5",
-        "title": "AST System Model",
+        "title": "AST",
         "subtitle": "",
         "description": "",
     },
@@ -2346,16 +2346,16 @@ app.index_string = """
                         <g id="edges"></g>
                         <g id="nodes"></g>
                         <!-- ======================================================== -->
-    <!-- PHASE 4.5: AST SYSTEM MODEL & MBSE ARCHITECTURE BLUEPRINT -->
+    <!-- PHASE 4.5: AUTHORITATIVE SOURCE OF TRUTH (AST) & BLUEPRINT -->
     <!-- ======================================================== -->
     <!-- ======================================================== -->
-    <!-- PHASE 4.5: AST SYSTEM MODEL & MBSE ARCHITECTURE BLUEPRINT -->
+    <!-- PHASE 4.5: AUTHORITATIVE SOURCE OF TRUTH (AST) & BLUEPRINT -->
     <!-- Styled in the presentation's native design language       -->
     <!-- ======================================================== -->
     <g id="phase45-placeholder" style="display:none;">
         <!-- Top Canvas Title Bar -->
         <g id="p45-header">
-            <text x="32" y="38" font-family="'Barlow Semi Condensed', sans-serif" font-size="24" font-weight="800" fill="#0f172a" letter-spacing="0.5">AST System Model</text>
+            <text x="32" y="38" font-family="'Barlow Semi Condensed', sans-serif" font-size="24" font-weight="800" fill="#0f172a" letter-spacing="0.5">Authoritative Source of Truth</text>
             
             <rect x="745" y="16" width="225" height="26" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.2"/>
             <text x="857" y="33" font-family="'Barlow Semi Condensed', sans-serif" font-size="11" font-weight="800" fill="#2563eb" text-anchor="middle" letter-spacing="0.8">PHASE 4.5 &middot; DIGITAL THREAD</text>
@@ -5756,7 +5756,7 @@ def update_modal_content(scenario, phase, selected_node, user_dropped=None):
     if target in ("ast_system_model", "ast_slide"):
         titles = [
             html.Span("MBSE & DATA STACK ARCHITECTURE", style={"fontSize": "11px", "fontWeight": "800", "letterSpacing": "1.2px", "color": "#2563eb", "fontFamily": "'Barlow Semi Condensed', sans-serif"}),
-            html.H2("AST System Model: Formal Systems Engineering & Enterprise Data Stack", style={"fontSize": "22px", "fontWeight": "800", "color": "#ffffff", "margin": "2px 0 0 0", "fontFamily": "'Barlow Semi Condensed', sans-serif"}),
+            html.H2("Authoritative Source of Truth: Formal Systems Engineering & Enterprise Data Stack", style={"fontSize": "22px", "fontWeight": "800", "color": "#ffffff", "margin": "2px 0 0 0", "fontFamily": "'Barlow Semi Condensed', sans-serif"}),
             html.Span("Ontological Semantics · Taxonomic Classification · Relational Schema · SysML 2.0 Digital Thread · Algedonic Closed-Loop", style={"fontSize": "12px", "color": "#94a3b8"}),
         ]
         badge_text = "📐 MBSE ARCHITECTURE SPECIFICATION"
@@ -5768,7 +5768,7 @@ def update_modal_content(scenario, phase, selected_node, user_dropped=None):
                 html.Div(
                     style={"backgroundColor": "#0f172a", "borderRadius": "12px", "border": "2px solid #2563eb", "overflow": "hidden", "display": "flex", "alignItems": "center", "justifyContent": "center", "boxShadow": "0 4px 14px rgba(0,0,0,0.25)", "minHeight": "450px"},
                     children=[
-                        html.Img(src=ast_img_src, style={"width": "100%", "height": "auto", "maxHeight": "560px", "objectFit": "contain", "display": "block"}) if ast_img_src else html.Div("AST System Model", style={"color": "#64748b", "padding": "20px"}),
+                        html.Img(src=ast_img_src, style={"width": "100%", "height": "auto", "maxHeight": "560px", "objectFit": "contain", "display": "block"}) if ast_img_src else html.Div("Authoritative Source of Truth", style={"color": "#64748b", "padding": "20px"}),
                     ],
                 ),
             ],
@@ -7272,7 +7272,7 @@ def update_notes_panel(current_phase, selected_node, view_mode, ship_scenario):
                         style={"display": "flex", "flexDirection": "column", "gap": "8px"},
                         children=[
                             html.Div(
-                                "AST System Model · 3 Tiers & SysML Digital Thread",
+                                "Authoritative Source of Truth · 3 Tiers & SysML Digital Thread",
                                 style={"fontSize": "12px", "fontWeight": "700", "color": "#2563eb", "backgroundColor": "#eff6ff", "border": "1px solid #bfdbfe", "padding": "6px 12px", "borderRadius": "6px"}
                             ) if phase == 4.5 else html.Span(
                                 "None",
