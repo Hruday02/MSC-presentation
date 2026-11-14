@@ -861,13 +861,13 @@ def generate_html():
             <polygon points="724,161 728,167 732,161" fill="#0284c7"/>
 
             <!-- ----------------------------------------------------- -->
-            <!-- 5. SAMM -> TANK & DT -> CMS                           -->
+            <!-- 5. LRMS -> TANK & DT -> HMS                           -->
             <!-- ----------------------------------------------------- -->
-            <!-- SAMM -> Tank (Maintenance feedback into physical tank) -->
+            <!-- LRMS -> Tank (Maintenance feedback into physical tank) -->
             <line x1="828" y1="129" x2="774" y2="129" stroke="#2563eb" stroke-width="1.6"/>
             <polygon points="778,125 772,129 778,133" fill="#2563eb"/>
 
-            <!-- DT -> CMS (Telemetry into CMS analytics) -->
+            <!-- DT -> HMS (Telemetry into HMS analytics) -->
             <line x1="772" y1="183" x2="826" y2="183" stroke="#16a34a" stroke-width="1.6"/>
             <polygon points="822,179 828,183 822,187" fill="#16a34a"/>
 
@@ -904,10 +904,10 @@ def generate_html():
                 <text x="728" y="133" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">Tank</text>
             </g>
 
-            <!-- SAMM (Solid Blue Box) -->
+            <!-- LRMS (Solid Blue Box) -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('lrms');">
                 <rect x="828" y="112" width="88" height="34" rx="6" fill="#2563eb" stroke="#1d4ed8" stroke-width="1.5" />
-                <text x="872" y="133" font-family="'Barlow Semi Condensed', sans-serif" font-size="11.5" font-weight="800" fill="#ffffff" text-anchor="middle">SAMM</text>
+                <text x="872" y="133" font-family="'Barlow Semi Condensed', sans-serif" font-size="11.5" font-weight="800" fill="#ffffff" text-anchor="middle">LRMS</text>
             </g>
 
             <!-- VTL -->
@@ -922,10 +922,10 @@ def generate_html():
                 <text x="728" y="187" font-family="'Barlow Semi Condensed', sans-serif" font-size="12.5" font-weight="800" fill="#1d4ed8" text-anchor="middle">DT</text>
             </g>
 
-            <!-- CMS (Solid Green Box) -->
+            <!-- HMS (Solid Green Box) -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('hms');">
                 <rect x="828" y="166" width="88" height="34" rx="6" fill="#16a34a" stroke="#15803d" stroke-width="1.5" />
-                <text x="872" y="187" font-family="'Barlow Semi Condensed', sans-serif" font-size="11.5" font-weight="800" fill="#ffffff" text-anchor="middle">CMS</text>
+                <text x="872" y="187" font-family="'Barlow Semi Condensed', sans-serif" font-size="11.5" font-weight="800" fill="#ffffff" text-anchor="middle">HMS</text>
             </g>
         </g>
         <!-- ========================================================= -->
@@ -1062,32 +1062,26 @@ def generate_html():
             </g>
         </g>
 
-        <!-- ========================================================= -->
-        <!-- SYSML 2.0 DIGITAL THREAD BENT ARROW (Exact match Image 4) -->
-        <!-- Authentic PowerPoint Bent Arrow on right of SysML diagram -->
-        <!-- Frames entire SysML architecture; zero line collision     -->
+
+        <!-- SYSML 2.0 DIGITAL THREAD BENT ARROW (Matching Initial Photo)-->
+        <!-- Originates from the structure as a whole at bottom (Y=514)  -->
+        <!-- Shaft rises alongside the entire architecture to DT (Y=193) -->
+        <!-- Solid green fill; zero text; zero dotted lines              -->
         <!-- ========================================================= -->
         <g id="p45-digital-thread-arrow" style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
             <!-- Background Knockout Halo -->
-            <path d="M 770 346 L 920 346 L 920 216 L 910 216 L 929 193 L 948 216 L 938 216 L 938 364 L 770 364 Z" 
+            <path d="M 655 514 L 920 514 L 920 216 L 910 216 L 929 193 L 948 216 L 938 216 L 938 532 L 655 532 Z" 
                   fill="#ffffff" stroke="#ffffff" stroke-width="4" stroke-linejoin="round"/>
             
-            <!-- Authentic Green Bent Arrow (Frames entire SysML model, points UP to DT) -->
-            <path d="M 770 346 L 920 346 L 920 216 L 910 216 L 929 193 L 948 216 L 938 216 L 938 364 L 770 364 Z" 
+            <!-- Authentic Green Bent Arrow (Embraces structure as a whole, points UP to DT) -->
+            <path d="M 655 514 L 920 514 L 920 216 L 910 216 L 929 193 L 948 216 L 938 216 L 938 532 L 655 532 Z" 
                   fill="#86efac" stroke="#15803d" stroke-width="1.5" stroke-linejoin="round"/>
-            
-            <!-- Digital Thread text inside shaft -->
-            <text x="929" y="290" font-family="'Barlow Semi Condensed', sans-serif" font-size="9" font-weight="800" fill="#14532d" text-anchor="middle" transform="rotate(-90 929 290)" letter-spacing="1.5">DIGITAL THREAD</text>
-            
-            <!-- Connection from arrow tip to DT bottom-right -->
-            <path d="M 929 193 C 929 184, 780 184, 748 197" fill="none" stroke="#16a34a" stroke-width="2" stroke-dasharray="3 3"/>
-            <polygon points="744,202 748,197 753,202" fill="#16a34a"/>
         </g>
 
         <!-- ========================================================= -->
         <!-- SYSML LEGEND (Exact 3 categories from user reference)     -->
         <!-- ========================================================= -->
-        <g id="p45-legend" transform="translate(535, 528)">
+        <g id="p45-legend" transform="translate(535, 548)">
             <!-- New Diagram Type -->
             <rect x="0" y="0" width="124" height="24" rx="5" fill="#fff1f2" stroke="#fda4af" stroke-width="1"/>
             <circle cx="12" cy="12" r="4.5" fill="#f43f5e"/>
