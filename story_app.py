@@ -2595,117 +2595,165 @@ app.index_string = """
             <!-- Authentic match to user slide (uploaded_media_1794606972675.png) -->
             <!-- ----------------------------------------------------- -->
             <!-- Connecting Tree Lines & Generalization Triangles -->
+            <!-- ----------------------------------------------------- -->
+            <!-- CONNECTING TREE LINES & GENERALIZATION TRIANGLES      -->
+            <!-- ----------------------------------------------------- -->
             <!-- Root to Level 1 spine -->
-            <path d="M 626 350 L 638 350 L 638 259 L 644 259" fill="none" stroke="#334155" stroke-width="1.2"/>
-            <path d="M 626 365 L 632 365" fill="none" stroke="#334155" stroke-width="1.2"/>
-            <path d="M 626 380 L 638 380 L 638 453 L 644 453" fill="none" stroke="#334155" stroke-width="1.2"/>
+            <path d="M 626 350 L 642 350 L 642 260 L 655 260" fill="none" stroke="#334155" stroke-width="1.2"/>
+            <path d="M 626 365 L 655 365" fill="none" stroke="#334155" stroke-width="1.2"/>
+            <path d="M 626 380 L 642 380 L 642 453 L 655 453" fill="none" stroke="#334155" stroke-width="1.2"/>
 
             <!-- Generalization Triangles pointing into Root (SysML Diagram) -->
             <polygon points="626,350 634,346 634,354" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
             <polygon points="626,365 634,361 634,369" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
             <polygon points="626,380 634,376 634,384" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
 
-            <!-- Behavior Diagram to 4 children spine (Broken at X=747..761 with clean corridor for Digital Thread Arrow) -->
-            <path d="M 730 248 L 747 248 M 761 248 L 772 248 L 772 217 L 782 217" fill="none" stroke="#334155" stroke-width="1.2"/>
-            <path d="M 730 256 L 747 256 M 761 256 L 772 256 L 772 244 L 782 244" fill="none" stroke="#334155" stroke-width="1.2"/>
-            <path d="M 730 264 L 747 264 M 761 264 L 772 264 L 772 271 L 782 271" fill="none" stroke="#334155" stroke-width="1.2"/>
-            <path d="M 730 272 L 747 272 M 761 272 L 772 272 L 772 298 L 782 298" fill="none" stroke="#334155" stroke-width="1.2"/>
+            <!-- Behavior Diagram to 4 children spine (Continuous, original structure) -->
+            <path d="M 753 248 L 766 248 L 766 217 L 778 217" fill="none" stroke="#334155" stroke-width="1.2"/>
+            <path d="M 753 256 L 766 256 L 766 244 L 778 244" fill="none" stroke="#334155" stroke-width="1.2"/>
+            <path d="M 753 264 L 766 264 L 766 271 L 778 271" fill="none" stroke="#334155" stroke-width="1.2"/>
+            <path d="M 753 272 L 766 272 L 766 298 L 778 298" fill="none" stroke="#334155" stroke-width="1.2"/>
 
             <!-- Generalization Triangles pointing into Behavior Diagram -->
-            <polygon points="730,248 736,245 736,251" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
-            <polygon points="730,256 736,253 736,259" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
-            <polygon points="730,264 736,261 736,267" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
-            <polygon points="730,272 736,269 736,275" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
+            <polygon points="753,248 760,245 760,251" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
+            <polygon points="753,256 760,253 760,259" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
+            <polygon points="753,264 760,261 760,267" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
+            <polygon points="753,272 760,269 760,275" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
 
-            <!-- Structure Diagram to 3 children spine -->
-            <path d="M 730 444 L 772 444 L 772 405 L 782 405" fill="none" stroke="#334155" stroke-width="1.2"/>
-            <path d="M 730 453 L 772 453 L 772 432 L 782 432" fill="none" stroke="#334155" stroke-width="1.2"/>
-            <path d="M 730 462 L 772 462 L 772 459 L 782 459" fill="none" stroke="#334155" stroke-width="1.2"/>
+            <!-- Structure Diagram to 3 children spine (Continuous, original structure) -->
+            <path d="M 753 444 L 766 444 L 766 405 L 778 405" fill="none" stroke="#334155" stroke-width="1.2"/>
+            <path d="M 753 453 L 766 453 L 766 432 L 778 432" fill="none" stroke="#334155" stroke-width="1.2"/>
+            <path d="M 753 462 L 766 462 L 766 459 L 778 459" fill="none" stroke="#334155" stroke-width="1.2"/>
 
             <!-- Generalization Triangles pointing into Structure Diagram -->
-            <polygon points="730,444 736,441 736,447" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
-            <polygon points="730,453 736,450 736,456" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
-            <polygon points="730,462 736,459 736,465" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
+            <polygon points="753,444 760,441 760,447" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
+            <polygon points="753,453 760,450 760,456" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
+            <polygon points="753,462 760,459 760,465" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
 
             <!-- Internal Block Diagram to Parametric Diagram (Vertical drop) -->
-            <line x1="847" y1="470" x2="847" y2="484" stroke="#334155" stroke-width="1.2"/>
-            <polygon points="847,470 843,476 851,476" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
+            <line x1="845" y1="470" x2="845" y2="483" stroke="#334155" stroke-width="1.2"/>
+            <polygon points="845,470 841,476 849,476" fill="#ffffff" stroke="#334155" stroke-width="1.2"/>
 
-            <!-- Root Box -->
+            <!-- ----------------------------------------------------- -->
+            <!-- NODES: LEVEL 0 (ROOT)                                 -->
+            <!-- ----------------------------------------------------- -->
+            <!-- SysML Diagram -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
                 <rect x="530" y="343" width="96" height="44" rx="4" fill="#ffffff" stroke="#1e293b" stroke-width="1.5" />
                 <text x="578" y="369" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">SysML Diagram</text>
             </g>
 
-            <!-- Branches -->
-            <!-- Behavior Diagram (Comfortably clear of arrow at X=754) -->
+            <!-- ----------------------------------------------------- -->
+            <!-- NODES: LEVEL 1 (PRIMARY BRANCHES - UNIFORM 98px WIDTH)-->
+            <!-- ----------------------------------------------------- -->
+            <!-- Behavior Diagram -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
-                <rect x="644" y="240" width="86" height="38" rx="4" fill="#ffffff" stroke="#1e293b" stroke-width="1.4" />
-                <text x="687" y="263" font-family="'Barlow Semi Condensed', sans-serif" font-size="11" font-weight="800" fill="#0f172a" text-anchor="middle">Behavior Diagram</text>
+                <rect x="655" y="240" width="98" height="40" rx="4" fill="#ffffff" stroke="#1e293b" stroke-width="1.4" />
+                <text x="704" y="264" font-family="'Barlow Semi Condensed', sans-serif" font-size="11.5" font-weight="800" fill="#0f172a" text-anchor="middle">Behavior Diagram</text>
             </g>
 
-            <!-- Requirement Diagram (Widened to 124px to eliminate text overflow) -->
+            <!-- Requirement Diagram (Preserved 98px width, perfectly centered) -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
-                <rect x="632" y="347" width="124" height="36" rx="4" fill="#fff1f2" stroke="#fda4af" stroke-width="1.5" />
-                <text x="694" y="369" font-family="'Barlow Semi Condensed', sans-serif" font-size="10.5" font-weight="800" fill="#be123c" text-anchor="middle">Requirement Diagram</text>
+                <rect x="655" y="347" width="98" height="40" rx="4" fill="#fff1f2" stroke="#fda4af" stroke-width="1.5" />
+                <text x="704" y="371" font-family="'Barlow Semi Condensed', sans-serif" font-size="10" font-weight="800" fill="#be123c" text-anchor="middle">Requirement Diagram</text>
             </g>
 
             <!-- Structure Diagram -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
-                <rect x="644" y="433" width="86" height="40" rx="4" fill="#ffffff" stroke="#1e293b" stroke-width="1.4" />
-                <text x="687" y="457" font-family="'Barlow Semi Condensed', sans-serif" font-size="11" font-weight="800" fill="#0f172a" text-anchor="middle">Structure Diagram</text>
+                <rect x="655" y="433" width="98" height="40" rx="4" fill="#ffffff" stroke="#1e293b" stroke-width="1.4" />
+                <text x="704" y="457" font-family="'Barlow Semi Condensed', sans-serif" font-size="11.5" font-weight="800" fill="#0f172a" text-anchor="middle">Structure Diagram</text>
             </g>
 
-            <!-- Behavior Leaves -->
+            <!-- ----------------------------------------------------- -->
+            <!-- NODES: LEVEL 2 (BEHAVIOR LEAVES)                      -->
+            <!-- ----------------------------------------------------- -->
+            <!-- 1. Use Case Diagram (Same as UML 2.0 / Purple) -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
-                <rect x="782" y="206" width="130" height="22" rx="3" fill="#faf5ff" stroke="#c084fc" stroke-width="1.2" />
-                <text x="847" y="221" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#6b21a8" text-anchor="middle">Use Case Diagram</text>
+                <rect x="778" y="206" width="136" height="22" rx="3" fill="#faf5ff" stroke="#c084fc" stroke-width="1.2" />
+                <text x="846" y="221" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#6b21a8" text-anchor="middle">Use Case Diagram</text>
             </g>
 
+            <!-- 2. State Machine Diagram (Same as UML 2.0 / Purple) -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
-                <rect x="782" y="233" width="130" height="22" rx="3" fill="#faf5ff" stroke="#c084fc" stroke-width="1.2" />
-                <text x="847" y="248" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#6b21a8" text-anchor="middle">State Machine Diagram</text>
+                <rect x="778" y="233" width="136" height="22" rx="3" fill="#faf5ff" stroke="#c084fc" stroke-width="1.2" />
+                <text x="846" y="248" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#6b21a8" text-anchor="middle">State Machine Diagram</text>
             </g>
 
+            <!-- 3. Sequence Diagram (Same as UML 2.0 / Purple) -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
-                <rect x="782" y="260" width="130" height="22" rx="3" fill="#faf5ff" stroke="#c084fc" stroke-width="1.2" />
-                <text x="847" y="275" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#6b21a8" text-anchor="middle">Sequence Diagram</text>
+                <rect x="778" y="260" width="136" height="22" rx="3" fill="#faf5ff" stroke="#c084fc" stroke-width="1.2" />
+                <text x="846" y="275" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#6b21a8" text-anchor="middle">Sequence Diagram</text>
             </g>
 
+            <!-- 4. Activity Diagram (Modified from UML 2.0 / Green) -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
-                <rect x="782" y="287" width="130" height="22" rx="3" fill="#f0fdf4" stroke="#86efac" stroke-width="1.2" />
-                <text x="847" y="302" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#15803d" text-anchor="middle">Activity Diagram</text>
+                <rect x="778" y="287" width="136" height="22" rx="3" fill="#f0fdf4" stroke="#86efac" stroke-width="1.2" />
+                <text x="846" y="302" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#15803d" text-anchor="middle">Activity Diagram</text>
             </g>
 
-            <!-- Structure Leaves -->
+            <!-- ----------------------------------------------------- -->
+            <!-- NODES: LEVEL 2 (STRUCTURE LEAVES)                     -->
+            <!-- ----------------------------------------------------- -->
+            <!-- 5. Package Diagram (Same as UML 2.0 / Purple) -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
-                <rect x="782" y="394" width="130" height="22" rx="3" fill="#faf5ff" stroke="#c084fc" stroke-width="1.2" />
-                <text x="847" y="409" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#6b21a8" text-anchor="middle">Package Diagram</text>
+                <rect x="778" y="394" width="136" height="22" rx="3" fill="#faf5ff" stroke="#c084fc" stroke-width="1.2" />
+                <text x="846" y="409" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#6b21a8" text-anchor="middle">Package Diagram</text>
             </g>
 
+            <!-- 6. Block Definition Diagram (Modified from UML 2.0 / Green) -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
-                <rect x="782" y="421" width="130" height="22" rx="3" fill="#f0fdf4" stroke="#86efac" stroke-width="1.2" />
-                <text x="847" y="436" font-family="'Inter', sans-serif" font-size="8.8" font-weight="700" fill="#15803d" text-anchor="middle">Block Definition Diagram</text>
+                <rect x="778" y="421" width="136" height="22" rx="3" fill="#f0fdf4" stroke="#86efac" stroke-width="1.2" />
+                <text x="846" y="436" font-family="'Inter', sans-serif" font-size="8.8" font-weight="700" fill="#15803d" text-anchor="middle">Block Definition Diagram</text>
             </g>
 
+            <!-- 7. Internal Block Diagram (Modified from UML 2.0 / Green) -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
-                <rect x="782" y="448" width="130" height="22" rx="3" fill="#f0fdf4" stroke="#86efac" stroke-width="1.2" />
-                <text x="847" y="463" font-family="'Inter', sans-serif" font-size="8.8" font-weight="700" fill="#15803d" text-anchor="middle">Internal Block Diagram</text>
+                <rect x="778" y="448" width="136" height="22" rx="3" fill="#f0fdf4" stroke="#86efac" stroke-width="1.2" />
+                <text x="846" y="463" font-family="'Inter', sans-serif" font-size="8.8" font-weight="700" fill="#15803d" text-anchor="middle">Internal Block Diagram</text>
             </g>
 
+            <!-- 8. Parametric Diagram (New Diagram Type / Pink) -->
+            <!-- Child of Internal Block Diagram -->
             <g style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
-                <rect x="782" y="484" width="130" height="22" rx="3" fill="#fff1f2" stroke="#fda4af" stroke-width="1.2" />
-                <text x="847" y="499" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#be123c" text-anchor="middle">Parametric Diagram</text>
+                <rect x="778" y="484" width="136" height="22" rx="3" fill="#fff1f2" stroke="#fda4af" stroke-width="1.2" />
+                <text x="846" y="499" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#be123c" text-anchor="middle">Parametric Diagram</text>
             </g>
+        </g>
 
-            <!-- Digital Thread Curved Arrow -->
-            <g id="p45-digital-thread-arrow">
-                <!-- Halo path for extra crispness and zero stroke bleeding -->
-                <path d="M 754 347 C 756 300, 756 240, 748 201" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round"/>
-                <!-- Primary Digital Thread Arrow -->
-                <path d="M 754 347 C 756 300, 756 240, 748 201" fill="none" stroke="#16a34a" stroke-width="3.5" stroke-linecap="round"/>
-                <polygon points="743,207 748,197 753,207" fill="#16a34a"/>
-            </g>
+        <!-- ========================================================= -->
+        <!-- DIGITAL THREAD: ENTIRE SYSML STRUCTURE -> DIGITAL TWIN (DT) -->
+        <!-- Multi-pillar convergence connecting Behavior,             -->
+        <!-- Requirements, and Structure models as a unified conduit    -->
+                <!-- ========================================================= -->
+        <!-- DIGITAL THREAD: ENTIRE SYSML STRUCTURE -> DIGITAL TWIN (DT) -->
+        <!-- Multi-pillar architectural thread connecting Structure,   -->
+        <!-- Requirements, and Behavior models directly into DT         -->
+        <!-- ========================================================= -->
+        <g id="p45-digital-thread-arrow" style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
+            <!-- Background Knockout Halos for zero visual collision -->
+            <!-- Structure -> Requirement Conduit Halo -->
+            <path d="M 725 433 L 725 387" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round"/>
+            <!-- Requirement -> Behavior Conduit Halo -->
+            <path d="M 725 347 L 725 280" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round"/>
+            <!-- Behavior -> DT Ascending Arrow Halo -->
+            <path d="M 725 240 C 725 218, 742 210, 748 199" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round"/>
+
+            <!-- Green Digital Thread Bus (Structure -> Requirement -> Behavior -> DT) -->
+            <!-- 1. Structure to Requirement -->
+            <path d="M 725 433 L 725 387" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round"/>
+            <!-- 2. Requirement to Behavior -->
+            <path d="M 725 347 L 725 280" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round"/>
+            <!-- 3. Behavior to Digital Twin (DT) Curved Arrow -->
+            <path d="M 725 240 C 725 218, 742 210, 748 199" fill="none" stroke="#16a34a" stroke-width="3.5" stroke-linecap="round"/>
+            <polygon points="743,207 748,197 753,207" fill="#16a34a"/>
+
+            <!-- Connection Junction Nodes uniting each architectural pillar -->
+            <circle cx="725" cy="433" r="3.5" fill="#16a34a" stroke="#ffffff" stroke-width="1.2"/>
+            <circle cx="725" cy="387" r="3.5" fill="#16a34a" stroke="#ffffff" stroke-width="1.2"/>
+            <circle cx="725" cy="347" r="3.5" fill="#16a34a" stroke="#ffffff" stroke-width="1.2"/>
+            <circle cx="725" cy="280" r="3.5" fill="#16a34a" stroke="#ffffff" stroke-width="1.2"/>
+            <circle cx="725" cy="240" r="3.5" fill="#16a34a" stroke="#ffffff" stroke-width="1.2"/>
+        </g>
 
             <!-- Legend -->
             <g id="p45-legend" transform="translate(535, 528)">
