@@ -70,7 +70,7 @@ CONTENT: Dict[str, Any] = {
         },
         4.5: {
         "name": "Phase 4.5",
-        "title": "AST",
+        "title": "Authoritative Source of Truth",
         "subtitle": "",
         "description": "",
     },
