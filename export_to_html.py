@@ -1112,14 +1112,14 @@ def generate_html():
 
         <!-- ========================================================= -->
         <!-- SYSML 2.0 DIGITAL THREAD BLOCK ARROW (Matching Reference) -->
-        <!-- Starts from entire structure at bottom, points to LRMS   -->
+        <!-- Starts from center of SysML tree, points to LRMS in POC   -->
         <!-- ========================================================= -->
         <g id="p45-digital-thread-arrow" style="cursor:pointer;" onclick="if(window.openModal) openModal('ast_system_model');">
             <!-- White Knockout Halo for contrast -->
-            <path d="M 926 532 L 946 532 C 952 532, 956 528, 956 522 L 956 144 C 956 138, 952 134, 946 134 L 926 134 L 926 139 L 916 129 L 926 119 L 926 124 L 946 124 C 957 124, 966 133, 966 144 L 966 522 C 966 533, 957 542, 946 542 L 926 542 Z" 
+            <path d="M 926 375 L 946 375 C 952 375, 956 371, 956 365 L 956 144 C 956 138, 952 134, 946 134 L 938 134 L 938 139 L 928 129 L 938 119 L 938 124 L 946 124 C 957 124, 966 133, 966 144 L 966 365 C 966 376, 957 385, 946 385 L 926 385 Z" 
                   fill="#ffffff" stroke="#ffffff" stroke-width="4" stroke-linejoin="round"/>
             <!-- Authentic Green Block Arrow matching user reference -->
-            <path d="M 926 532 L 946 532 C 952 532, 956 528, 956 522 L 956 144 C 956 138, 952 134, 946 134 L 926 134 L 926 139 L 916 129 L 926 119 L 926 124 L 946 124 C 957 124, 966 133, 966 144 L 966 522 C 966 533, 957 542, 946 542 L 926 542 Z" 
+            <path d="M 926 375 L 946 375 C 952 375, 956 371, 956 365 L 956 144 C 956 138, 952 134, 946 134 L 938 134 L 938 139 L 928 129 L 938 119 L 938 124 L 946 124 C 957 124, 966 133, 966 144 L 966 365 C 966 376, 957 385, 946 385 L 926 385 Z" 
                   fill="#86efac" stroke="#15803d" stroke-width="1.5" stroke-linejoin="round"/>
         </g>
 
