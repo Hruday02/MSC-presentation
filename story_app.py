@@ -1216,7 +1216,7 @@ IMAGE_PATH_BLENDER: Optional[str] = str(UPLOADS_DIR / "blender_remesh.jpg") if (
 IMAGE_PATH_AST_SLIDE: Optional[str] = str(UPLOADS_DIR / "ast_system_model.png") if (UPLOADS_DIR / "ast_system_model.png").is_file() else None
 
 # Place VTL (Virtual Technical Library) image here
-IMAGE_PATH_VTL: Optional[str] = None  # e.g. r"C:\path\to\vtl_scantling_record.jpg"
+IMAGE_PATH_VTL: Optional[str] = str(ASSETS_DIR / "images" / "vtl" / "vtl_deck_full_cad.png") if (ASSETS_DIR / "images" / "vtl" / "vtl_deck_full_cad.png").is_file() else None
 
 # Place LRMS (Long Range Maintenance Schedule) & HMS (Hull Maintenance System) images here
 IMAGE_PATH_LRMS: Optional[str] = None  # e.g. r"C:\path\to\lrms_schedule.jpg"

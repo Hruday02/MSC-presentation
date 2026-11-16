@@ -39,6 +39,22 @@ def generate_html():
                             img_data["hms"] = img_data[k]
                 except Exception as ex:
                     print(f"Notice reading uploaded {cand}: {ex}")
+    # Also load all images from assets/images/vtl/
+    vtl_dir = Path(__file__).parent / "assets" / "images" / "vtl"
+    if vtl_dir.is_dir():
+        for cand in vtl_dir.iterdir():
+            if cand.is_file() and cand.suffix.lower() in (".png", ".jpg", ".jpeg", ".webp", ".svg"):
+                k = cand.stem.lower()
+                try:
+                    ext = cand.suffix.lower().replace(".", "")
+                    mime = "image/svg+xml" if ext == "svg" else "image/png" if ext == "png" else "image/webp" if ext == "webp" else "image/jpeg"
+                    with open(cand, "rb") as fl:
+                        b64 = base64.b64encode(fl.read()).decode("utf-8")
+                        img_data[k] = f"data:{mime};base64,{b64}"
+                except Exception as ex:
+                    print(f"Notice reading vtl image {cand}: {ex}")
+    if not img_data.get("vtl"):
+        img_data["vtl"] = img_data.get("vtl_deck_full_cad", "")
 
     html_content = f'''<!DOCTYPE html>
 <html lang="en">
@@ -671,7 +687,42 @@ def generate_html():
             border-radius: 8px;
             border: 1px solid #1e293b;
         }}
-    </style>
+            /* VTL Prototype Modal Navigation & Badges */
+        .vtl-nav-btn {{
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-family: 'Barlow Semi Condensed', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 1.5px solid #334155;
+            background: #1e293b;
+            color: #cbd5e1;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            white-space: nowrap;
+        }}
+        .vtl-nav-btn:hover {{
+            border-color: #38bdf8;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }}
+        .vtl-nav-btn.active {{
+            background: #0284c7;
+            color: #ffffff;
+            border-color: #38bdf8;
+            box-shadow: 0 0 12px rgba(2, 132, 199, 0.45);
+        }}
+        .vtl-tag-pill {{
+            font-size: 10.5px;
+            font-family: monospace;
+            font-weight: 700;
+            color: #c084fc;
+            background: #1e1b4b;
+            border: 1px solid #4338ca;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }}
+</style>
 </head>
 <body>
 
@@ -1155,7 +1206,16 @@ const IMAGE_AST_SLIDE = "{img_data.get('ast_system_model', '')}";
 const IMAGE_BLENDER = "{img_data.get('blender_remesh', '') or img_data.get('blender', '')}";
 
 // Place VTL (Virtual Technical Library) image here
-const IMAGE_VTL = "{img_data.get('vtl', '')}";
+// VTL Prototype Blueprint & Decomposition Layer Images
+const IMAGE_VTL = "{img_data.get('vtl_deck_full_cad', '') or img_data.get('vtl', '')}";
+const IMAGE_VTL_CAD = "{img_data.get('vtl_deck_full_cad', '') or img_data.get('vtl', '')}";
+const IMAGE_VTL_SCAN = "{img_data.get('vtl_deck_scanned_blueprint', '')}";
+const IMAGE_VTL_GEOMETRY = "{img_data.get('vtl_geometry_piping_layer', '')}";
+const IMAGE_VTL_TEXT = "{img_data.get('vtl_semantic_text_layer', '')}";
+const IMAGE_VTL_ALIGNMENT = "{img_data.get('vtl_alignment_datum_axes', '')}";
+const IMAGE_VTL_BINARY = "{img_data.get('vtl_binary_edge_mask', '')}";
+const IMAGE_VTL_MASK = "{img_data.get('vtl_segmentation_detection_mask', '')}";
+
 
 // Place LRMS (Long Range Maintenance Schedule) image here
 const IMAGE_LRMS = "{img_data.get('lrms', '') or img_data.get('samm', '')}";
@@ -2251,71 +2311,81 @@ function openModal(nodeId) {{
                 </div>
             `;
         }} else if (nodeId === "vtl") {{
-            superTitle.textContent = "TECHNICAL DATABASE · SCANTLING & CLASS RECORDS";
+            superTitle.textContent = "TECHNICAL DATABASE · 2D-TO-3D SEMANTIC BLUEPRINT PARSER";
             superTitle.style.color = "#34d399";
             titleText.textContent = "VTL Prototype: Virtual Technical Library";
-            subtitle.textContent = "DNV-GL Class Registry · Scantling Baseline Plans · Steel Degradation Models · Compartment Frame 38";
+            subtitle.textContent = "Plan No. 1 Deck (Frames 155–180) · CAD Layer Decomposition · Semantic OCR & Piping Extraction";
             badge.style.display = "inline-block";
             badge.style.backgroundColor = "#064e3b";
             badge.style.color = "#34d399";
             badge.style.border = "1.5px solid #10b981";
-            badge.textContent = "🟢 CLASS REGISTRY COMPLIANT &middot; DNV-GL CERTIFIED";
+            badge.textContent = "🟢 7 CAD LAYERS PARSED · SEMANTIC PIPING EXTRACTED";
 
             body.innerHTML = `
-                <div style="display:flex; flex-direction:column; width:100%; color:#f8fafc;">
+                <div style="display:flex; flex-direction:column; width:100%; color:#f8fafc; gap:0;">
+                    <!-- Top Action / Dossier Bar -->
                     <div style="background:#1e293b; padding:12px 24px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; flex-wrap:wrap; gap:12px;">
-                        <div>
-                            <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11.5px; font-weight:800; letter-spacing:1px; color:#94a3b8;">VTL SPECIFICATION DOSSIER: </span>
-                            <strong style="color:#38bdf8; font-family:'Barlow Semi Condensed',sans-serif; font-size:13px;">DNV-GL SHIP RULES PT.3 CH.3</strong>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11.5px; font-weight:800; letter-spacing:1px; color:#94a3b8;">VESSEL RECORD:</span>
+                            <strong style="color:#38bdf8; font-family:'Barlow Semi Condensed',sans-serif; font-size:13.5px;">PLAN NO. 1 DECK (FWD SECTION · FRAMES 155–180)</strong>
                         </div>
-                        <div style="font-family:monospace; font-size:11.5px; color:#34d399; background:#020617; padding:4px 12px; border-radius:6px; border:1px solid #334155;">
-                            DOC ID: VTL-MSC-TNK-B3-REV4
-                        </div>
-                    </div>
-                    <div style="position:relative; min-height:460px; background:#020617; display:flex; align-items:center; justify-content:center; padding:24px;">
-                        <!-- Scantling Blueprint Panel -->
-                        <div style="width:100%; max-width:820px; border:1.5px solid #334155; border-radius:12px; background:#0b1120; padding:24px; display:flex; flex-direction:column; gap:16px;">
-                            <div style="border-bottom:1px solid #1e293b; padding-bottom:12px; display:flex; justify-content:space-between; align-items:flex-end;">
-                                <div>
-                                    <span style="font-size:11px; color:#38bdf8; font-family:'Barlow Semi Condensed',sans-serif; font-weight:800; letter-spacing:1px;">STRUCTURAL SCANTLING SPECIFICATION</span>
-                                    <h3 style="font-size:20px; font-family:'Barlow Semi Condensed',sans-serif; font-weight:800; color:#f8fafc; margin-top:2px;">Cargo Tank Compartment B-3 (Frame 36–42)</h3>
-                                </div>
-                                <span style="font-size:12px; color:#94a3b8;">Classification: <strong>DNV-GL NV DH36</strong></span>
-                            </div>
-
-                            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px;">
-                                <div style="background:#0f172a; padding:12px; border-radius:8px; border:1px solid #1e293b;">
-                                    <span style="font-size:11px; color:#94a3b8;">NOMINAL SCANTLING THICKNESS</span>
-                                    <div style="font-size:18px; font-weight:800; color:#38bdf8; font-family:'Barlow Semi Condensed',sans-serif; margin-top:2px;">18.0 mm</div>
-                                    <span style="font-size:11px; color:#64748b;">Design as-built plan thickness</span>
-                                </div>
-                                <div style="background:#0f172a; padding:12px; border-radius:8px; border:1px solid #1e293b;">
-                                    <span style="font-size:11px; color:#94a3b8;">CORROSION DIMINUTION LIMIT</span>
-                                    <div style="font-size:18px; font-weight:800; color:#f59e0b; font-family:'Barlow Semi Condensed',sans-serif; margin-top:2px;">15.5 mm (-2.5 mm Max)</div>
-                                    <span style="font-size:11px; color:#64748b;">DNV-GL mandatory steel renewal limit</span>
-                                </div>
-                                <div style="background:#0f172a; padding:12px; border-radius:8px; border:1px solid #1e293b;">
-                                    <span style="font-size:11px; color:#94a3b8;">PROTECTIVE COATING SYSTEM</span>
-                                    <div style="font-size:18px; font-weight:800; color:#34d399; font-family:'Barlow Semi Condensed',sans-serif; margin-top:2px;">2 &times; 160 &mu;m Pure Epoxy</div>
-                                    <span style="font-size:11px; color:#64748b;">IMO PSPC Compliant Marine Barrier</span>
-                                </div>
-                            </div>
-
-                            <div style="background:#0f172a; border-radius:8px; padding:14px; border:1px solid #1e293b; display:flex; flex-direction:column; gap:8px;">
-                                <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:12px; font-weight:800; color:#94a3b8; letter-spacing:0.8px;">DIGITAL TWIN INTEGRATION ROLE</span>
-                                <p style="font-size:12.5px; color:#cbd5e1; margin:0; line-height:1.5;">
-                                    The VTL provides the formal baseline CAD geometry against which LiDAR Delaunay surface reconstructions (SAC) are continuously compared. 
-                                    When surface loss exceeds 1.8mm at Frame 38, VTL flags the condition and feeds technical structural compliance records directly to the Digital Twin and HMS.
-                                </p>
-                            </div>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span style="font-family:monospace; font-size:11px; color:#34d399; background:#020617; padding:4px 10px; border-radius:6px; border:1px solid #334155;">VTL-GA-DECK1-REV2</span>
+                            <span style="font-family:monospace; font-size:11px; color:#93c5fd; background:#020617; padding:4px 10px; border-radius:6px; border:1px solid #334155;">SCALE: 1:50</span>
                         </div>
                     </div>
-                    <div style="background:#0f172a; padding:14px 24px; border-top:1px solid #334155; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
-                        <span style="color:#94a3b8; font-size:12.5px;">CAD Registry: <strong>STEP / IGES / IFC Marine Standard</strong> &middot; Survey Cycle: <strong>5-Year Special Survey</strong></span>
-                        <span style="color:#34d399; font-family:'Barlow Semi Condensed',sans-serif; font-size:13px; font-weight:800;">Synchronized to Digital Twin CAD Core</span>
+
+                    <!-- Interactive Layer Switcher Bar -->
+                    <div style="background:#0f172a; padding:10px 24px; border-bottom:1px solid #1e293b; display:flex; gap:8px; overflow-x:auto; align-items:center; flex-wrap:wrap;">
+                        <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; color:#64748b; letter-spacing:1px; margin-right:4px;">INSPECTION VIEW:</span>
+                        <button class="vtl-nav-btn active" id="btn-vtl-cad" onclick="switchVtlView('cad')">📑 Master CAD Plan</button>
+                        <button class="vtl-nav-btn" id="btn-vtl-geometry" onclick="switchVtlView('geometry')">🧱 Geometry &amp; Piping (Text Stripped)</button>
+                        <button class="vtl-nav-btn" id="btn-vtl-text" onclick="switchVtlView('text')">🏷️ Semantic Text &amp; OCR</button>
+                        <button class="vtl-nav-btn" id="btn-vtl-pipeline" onclick="switchVtlView('pipeline')">🔬 4-Stage Decomposition Pipeline</button>
+                        <button class="vtl-nav-btn" id="btn-vtl-alignment" onclick="switchVtlView('alignment')">📏 Datum &amp; Centerline</button>
+                        <button class="vtl-nav-btn" id="btn-vtl-scan" onclick="switchVtlView('scan')">📜 Raw Scanned Blueprint</button>
+                        <button class="vtl-nav-btn" id="btn-vtl-vision" onclick="switchVtlView('vision')">👁️ Vision Feature Masks</button>
+                    </div>
+
+                    <!-- Main Viewport Area -->
+                    <div id="vtl-viewport-container" style="background:#020617; padding:20px; min-height:480px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px;">
+                        <!-- Injected View Content -->
+                    </div>
+
+                    <!-- Technical Metrics & Digital Twin Integration Bar -->
+                    <div style="background:#0b1120; border-top:1px solid #1e293b; padding:18px 24px; display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:14px;">
+                        <div style="background:#0f172a; padding:12px 14px; border-radius:8px; border:1px solid #1e293b;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-size:11px; color:#94a3b8; font-weight:700;">STRUCTURAL COMPARTMENTATION</span>
+                                <span style="font-size:10px; color:#38bdf8; background:#0369a1; padding:2px 6px; border-radius:4px; font-weight:800;">DNV-GL EXTRACTED</span>
+                            </div>
+                            <div style="font-size:15px; font-weight:800; color:#f8fafc; font-family:'Barlow Semi Condensed',sans-serif; margin-top:4px;">Plan No. 1 Deck · Frames 155–180</div>
+                            <p style="font-size:11.5px; color:#94a3b8; margin:4px 0 0 0; line-height:1.4;">Winch Room, Stores Hatch, Battery Locker, Cooler Access Space, and Centerline Passage isolated for 3D extrusion.</p>
+                        </div>
+
+                        <div style="background:#0f172a; padding:12px 14px; border-radius:8px; border:1px solid #1e293b;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-size:11px; color:#94a3b8; font-weight:700;">MECHANICAL &amp; PIPING SYSTEMS</span>
+                                <span style="font-size:10px; color:#34d399; background:#064e3b; padding:2px 6px; border-radius:4px; font-weight:800;">ISOLATED</span>
+                            </div>
+                            <div style="font-size:15px; font-weight:800; color:#34d399; font-family:'Barlow Semi Condensed',sans-serif; margin-top:4px;">3/8" Cooling Fresh Water (CFW)</div>
+                            <p style="font-size:11.5px; color:#94a3b8; margin:4px 0 0 0; line-height:1.4;">Direct utility path routed to Existing Sink and Emergency Eyewash Station (Ref No. 6) flagged for maintenance telemetry.</p>
+                        </div>
+
+                        <div style="background:#0f172a; padding:12px 14px; border-radius:8px; border:1px solid #1e293b;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-size:11px; color:#94a3b8; font-weight:700;">DIGITAL TWIN INTEGRATION ROLE</span>
+                                <span style="font-size:10px; color:#f59e0b; background:#78350f; padding:2px 6px; border-radius:4px; font-weight:800;">SEMANTIC VTL</span>
+                            </div>
+                            <div style="font-size:15px; font-weight:800; color:#f59e0b; font-family:'Barlow Semi Condensed',sans-serif; margin-top:4px;">2D GA to 3D Scantling Baseline</div>
+                            <p style="font-size:11.5px; color:#94a3b8; margin:4px 0 0 0; line-height:1.4;">Automated CAD layer separation links legacy 2D drawings into the AST Digital Twin, enabling continuous geometric diffing with live LiDAR scans.</p>
+                        </div>
                     </div>
                 </div>
             `;
+            if (typeof switchVtlView === "function") {{
+                switchVtlView('cad');
+            }}
         }} else if (nodeId === "samm" || nodeId === "lrms") {{
             superTitle.textContent = "FLEET DECISION LAYER · MAINTENANCE OPTIMIZATION";
             superTitle.style.color = "#38bdf8";
@@ -2623,6 +2693,215 @@ window.addEventListener('keydown', (e) => {{
 // Startup
 initDiagram();
 goToPhase(1);
+
+window.switchVtlView = function(mode) {{
+    const container = document.getElementById("vtl-viewport-container");
+    if (!container) return;
+
+    document.querySelectorAll(".vtl-nav-btn").forEach(btn => btn.classList.remove("active"));
+    const activeBtn = document.getElementById("btn-vtl-" + mode);
+    if (activeBtn) activeBtn.classList.add("active");
+
+    if (mode === "cad") {{
+        container.innerHTML = `
+            <div style="width:100%; max-width:960px; background:#0b1120; border:1.5px solid #334155; border-radius:12px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 8px 24px rgba(0,0,0,0.4);">
+                <div style="background:#1e293b; padding:10px 18px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span style="font-size:11px; font-weight:800; color:#38bdf8; font-family:'Barlow Semi Condensed',sans-serif; letter-spacing:0.8px;">MASTER CAD GENERAL ARRANGEMENT</span>
+                        <span style="font-size:10px; background:#0284c7; color:#ffffff; padding:2px 6px; border-radius:4px; font-weight:700;">VECTOR RASTER</span>
+                    </div>
+                    <span style="font-size:11px; color:#94a3b8;">Plan No. 1 Deck · Complete Engineering Drawing</span>
+                </div>
+                <div style="padding:16px; background:#ffffff; display:flex; justify-content:center; align-items:center;">
+                    <img src="${{IMAGE_VTL_CAD}}" alt="Master CAD Deck Plan" style="width:100%; max-height:480px; object-fit:contain; display:block;" />
+                </div>
+                <div style="background:#0f172a; padding:10px 18px; border-top:1px solid #1e293b; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; font-size:11.5px; color:#94a3b8;">
+                    <span>Includes: Compartment Bulkheads · Hatches · Stairs · 3/8" CFW Piping System · Room Titles</span>
+                    <span style="color:#34d399; font-weight:700;">✓ Ingested into VTL Knowledge Graph</span>
+                </div>
+            </div>
+        `;
+    }} else if (mode === "geometry") {{
+        container.innerHTML = `
+            <div style="width:100%; max-width:960px; display:flex; flex-direction:column; gap:12px;">
+                <div style="background:#0b1120; border:1.5px solid #0284c7; border-radius:12px; overflow:hidden; box-shadow:0 8px 24px rgba(0,0,0,0.4);">
+                    <div style="background:#0369a1; padding:10px 18px; display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size:11px; font-weight:800; color:#ffffff; font-family:'Barlow Semi Condensed',sans-serif; letter-spacing:0.8px;">LAYER 1: STRUCTURAL BULKHEADS &amp; PIPING GEOMETRY (ALL TEXT STRIPPED)</span>
+                        <span style="font-size:10px; background:#0c4a6e; color:#bae6fd; padding:2px 6px; border-radius:4px; font-weight:700;">3D CAD EXTRUSION READY</span>
+                    </div>
+                    <div style="padding:16px; background:#ffffff; display:flex; justify-content:center; align-items:center;">
+                        <img src="${{IMAGE_VTL_GEOMETRY}}" alt="Structural &amp; Piping Geometry Layer" style="width:100%; max-height:440px; object-fit:contain; display:block;" />
+                    </div>
+                    <div style="background:#0f172a; padding:12px 18px; border-top:1px solid #1e293b; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                        <p style="margin:0; font-size:11.5px; color:#cbd5e1; line-height:1.45;">
+                            <strong>Algorithmic Extraction:</strong> All room labels, dimension text, and callout arrows have been removed via morphological filtering. The remaining closed boundary loops represent structural steel bulkheads and continuous 3/8" CFW utility lines ready for automated 3D mesh reconstruction.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        `;
+    }} else if (mode === "text") {{
+        container.innerHTML = `
+            <div style="width:100%; max-width:960px; display:flex; flex-direction:column; gap:12px;">
+                <div style="background:#0b1120; border:1.5px solid #8b5cf6; border-radius:12px; overflow:hidden; box-shadow:0 8px 24px rgba(0,0,0,0.4);">
+                    <div style="background:#6d28d9; padding:10px 18px; display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size:11px; font-weight:800; color:#ffffff; font-family:'Barlow Semi Condensed',sans-serif; letter-spacing:0.8px;">LAYER 2: SEMANTIC TEXT &amp; OCR ANNOTATIONS (GEOMETRY STRIPPED)</span>
+                        <span style="font-size:10px; background:#4c1d95; color:#e9d5ff; padding:2px 6px; border-radius:4px; font-weight:700;">SEMANTIC ENTITY GRAPH</span>
+                    </div>
+                    <div style="padding:16px; background:#ffffff; display:flex; justify-content:center; align-items:center;">
+                        <img src="${{IMAGE_VTL_TEXT}}" alt="Semantic Text &amp; OCR Layer" style="width:100%; max-height:440px; object-fit:contain; display:block;" />
+                    </div>
+                    <div style="background:#0f172a; padding:12px 18px; border-top:1px solid #1e293b; display:flex; flex-direction:column; gap:8px;">
+                        <span style="font-size:11px; font-weight:800; color:#a78bfa; font-family:'Barlow Semi Condensed',sans-serif;">PARSED METADATA ENTITIES (14 EXTRACTED NODES):</span>
+                        <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                            <span class="vtl-tag-pill">BOLSTAVE, PLATE &amp; TIMBER STORE</span>
+                            <span class="vtl-tag-pill">WINCH GENERATOR ROOM</span>
+                            <span class="vtl-tag-pill">BATTERY ROOM</span>
+                            <span class="vtl-tag-pill">BATTERY CHARGER ROOM</span>
+                            <span class="vtl-tag-pill">R.A.S. GEAR STORE</span>
+                            <span class="vtl-tag-pill">STORES HATCH</span>
+                            <span class="vtl-tag-pill">COOLER ACCESS SPACE</span>
+                            <span class="vtl-tag-pill">GARAGE</span>
+                            <span class="vtl-tag-pill">EXST 3/8" CFW SYS</span>
+                            <span class="vtl-tag-pill">EYEWASH, SEE REF NO. 6</span>
+                            <span class="vtl-tag-pill">CL OF SHIP</span>
+                            <span class="vtl-tag-pill">PLAN NO. 1 DECK FWD</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }} else if (mode === "pipeline") {{
+        container.innerHTML = `
+            <div style="width:100%; max-width:980px; display:flex; flex-direction:column; gap:16px;">
+                <div style="background:#1e293b; padding:10px 18px; border-radius:8px; border:1px solid #334155; display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:12px; font-weight:800; color:#38bdf8; letter-spacing:0.8px;">4-STAGE COMPUTER VISION &amp; CAD DECOMPOSITION WORKFLOW</span>
+                    <span style="font-size:11px; color:#34d399; font-weight:700;">VTL AUTOMATED INGESTION</span>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+                    <!-- Step 1 -->
+                    <div style="background:#0b1120; border:1px solid #334155; border-radius:10px; overflow:hidden;">
+                        <div style="background:#1e293b; padding:8px 12px; display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-size:11px; font-weight:800; color:#94a3b8; font-family:'Barlow Semi Condensed',sans-serif;">1. RAW SCANNED BLUEPRINT</span>
+                            <span style="font-size:9.5px; background:#0f172a; color:#cbd5e1; padding:2px 6px; border-radius:4px;">ARCHIVE SOURCE</span>
+                        </div>
+                        <div style="background:#ffffff; padding:8px; display:flex; justify-content:center; align-items:center;">
+                            <img src="${{IMAGE_VTL_SCAN}}" alt="Raw Scanned Blueprint" style="width:100%; max-height:190px; object-fit:contain;" />
+                        </div>
+                        <div style="padding:8px 12px; font-size:10.5px; color:#94a3b8; background:#0f172a; border-top:1px solid #1e293b;">Digitized raster scan from vessel technical library</div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div style="background:#0b1120; border:1px solid #334155; border-radius:10px; overflow:hidden;">
+                        <div style="background:#1e293b; padding:8px 12px; display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-size:11px; font-weight:800; color:#38bdf8; font-family:'Barlow Semi Condensed',sans-serif;">2. CLEAN CAD VECTOR MASTER</span>
+                            <span style="font-size:9.5px; background:#0369a1; color:#ffffff; padding:2px 6px; border-radius:4px;">DIGITAL BASELINE</span>
+                        </div>
+                        <div style="background:#ffffff; padding:8px; display:flex; justify-content:center; align-items:center;">
+                            <img src="${{IMAGE_VTL_CAD}}" alt="Master CAD Deck Plan" style="width:100%; max-height:190px; object-fit:contain;" />
+                        </div>
+                        <div style="padding:8px 12px; font-size:10.5px; color:#94a3b8; background:#0f172a; border-top:1px solid #1e293b;">Binarized, de-noised CAD general arrangement drawing</div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div style="background:#0b1120; border:1px solid #0284c7; border-radius:10px; overflow:hidden;">
+                        <div style="background:#0369a1; padding:8px 12px; display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-size:11px; font-weight:800; color:#ffffff; font-family:'Barlow Semi Condensed',sans-serif;">3. ISOLATED GEOMETRY &amp; PIPING</span>
+                            <span style="font-size:9.5px; background:#0c4a6e; color:#bae6fd; padding:2px 6px; border-radius:4px;">CAD MESH FEED</span>
+                        </div>
+                        <div style="background:#ffffff; padding:8px; display:flex; justify-content:center; align-items:center;">
+                            <img src="${{IMAGE_VTL_GEOMETRY}}" alt="Isolated Geometry" style="width:100%; max-height:190px; object-fit:contain;" />
+                        </div>
+                        <div style="padding:8px 12px; font-size:10.5px; color:#94a3b8; background:#0f172a; border-top:1px solid #1e293b;">Text-filtered structural walls and 3/8" CFW pipe vectors</div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div style="background:#0b1120; border:1px solid #8b5cf6; border-radius:10px; overflow:hidden;">
+                        <div style="background:#6d28d9; padding:8px 12px; display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-size:11px; font-weight:800; color:#ffffff; font-family:'Barlow Semi Condensed',sans-serif;">4. SEMANTIC OCR &amp; ROOM NODES</span>
+                            <span style="font-size:9.5px; background:#4c1d95; color:#e9d5ff; padding:2px 6px; border-radius:4px;">SPATIAL GRAPH</span>
+                        </div>
+                        <div style="background:#ffffff; padding:8px; display:flex; justify-content:center; align-items:center;">
+                            <img src="${{IMAGE_VTL_TEXT}}" alt="Semantic Text OCR" style="width:100%; max-height:190px; object-fit:contain;" />
+                        </div>
+                        <div style="padding:8px 12px; font-size:10.5px; color:#94a3b8; background:#0f172a; border-top:1px solid #1e293b;">Isolated metadata strings mapped to digital twin coordinate system</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }} else if (mode === "alignment") {{
+        container.innerHTML = `
+            <div style="width:100%; max-width:960px; display:flex; flex-direction:column; gap:12px;">
+                <div style="background:#0b1120; border:1.5px solid #10b981; border-radius:12px; overflow:hidden; box-shadow:0 8px 24px rgba(0,0,0,0.4);">
+                    <div style="background:#065f46; padding:10px 18px; display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size:11px; font-weight:800; color:#ffffff; font-family:'Barlow Semi Condensed',sans-serif; letter-spacing:0.8px;">LAYER 3: CENTERLINE &amp; DATUM ALIGNMENT AXES</span>
+                        <span style="font-size:10px; background:#022c22; color:#a7f3d0; padding:2px 6px; border-radius:4px; font-weight:700;">COORDINATE ANCHOR</span>
+                    </div>
+                    <div style="padding:16px; background:#ffffff; display:flex; justify-content:center; align-items:center;">
+                        <img src="${{IMAGE_VTL_ALIGNMENT}}" alt="Centerline &amp; Alignment Datum Axes" style="width:100%; max-height:440px; object-fit:contain; display:block;" />
+                    </div>
+                    <div style="background:#0f172a; padding:12px 18px; border-top:1px solid #1e293b; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                        <p style="margin:0; font-size:11.5px; color:#cbd5e1; line-height:1.45;">
+                            <strong>Coordinate Calibration:</strong> Isolates the ship's center line (CL OF SHIP), frame tick stations (155, 160, 170, 175, 180), and forward direction (FWD). This layer establishes the spatial datum against which LiDAR point clouds (SAC) and ultrasound scantling probes are geo-referenced.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        `;
+    }} else if (mode === "scan") {{
+        container.innerHTML = `
+            <div style="width:100%; max-width:960px; display:flex; flex-direction:column; gap:12px;">
+                <div style="background:#0b1120; border:1.5px solid #64748b; border-radius:12px; overflow:hidden; box-shadow:0 8px 24px rgba(0,0,0,0.4);">
+                    <div style="background:#334155; padding:10px 18px; display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size:11px; font-weight:800; color:#ffffff; font-family:'Barlow Semi Condensed',sans-serif; letter-spacing:0.8px;">HISTORICAL SOURCE ARTIFACT: DIGITIZED SCANNED BLUEPRINT</span>
+                        <span style="font-size:10px; background:#0f172a; color:#e2e8f0; padding:2px 6px; border-radius:4px; font-weight:700;">ARCHIVAL SCAN</span>
+                    </div>
+                    <div style="padding:16px; background:#ffffff; display:flex; justify-content:center; align-items:center;">
+                        <img src="${{IMAGE_VTL_SCAN}}" alt="Digitized Scanned Blueprint" style="width:100%; max-height:440px; object-fit:contain; display:block;" />
+                    </div>
+                    <div style="background:#0f172a; padding:12px 18px; border-top:1px solid #1e293b; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                        <p style="margin:0; font-size:11.5px; color:#cbd5e1; line-height:1.45;">
+                            <strong>Source Ingestion:</strong> Authentic scanned General Arrangement drawing from ship technical files. Demonstrates the typical legacy format that the VTL engine ingests, cleans, and separates into structured data.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        `;
+    }} else if (mode === "vision") {{
+        container.innerHTML = `
+            <div style="width:100%; max-width:960px; display:flex; flex-direction:column; gap:14px;">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+                    <div style="background:#0b1120; border:1px solid #334155; border-radius:10px; overflow:hidden;">
+                        <div style="background:#1e293b; padding:8px 14px; display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-size:11px; font-weight:800; color:#38bdf8; font-family:'Barlow Semi Condensed',sans-serif;">BINARY EDGE DETECTION MASK</span>
+                            <span style="font-size:9.5px; background:#0284c7; color:#ffffff; padding:2px 6px; border-radius:4px;">EDGE FILTER</span>
+                        </div>
+                        <div style="background:#ffffff; padding:12px; display:flex; justify-content:center; align-items:center;">
+                            <img src="${{IMAGE_VTL_BINARY}}" alt="Binary Edge Mask" style="width:100%; max-height:260px; object-fit:contain;" />
+                        </div>
+                        <div style="padding:10px 14px; font-size:11px; color:#94a3b8; background:#0f172a; border-top:1px solid #1e293b;">
+                            Morphological gradient &amp; thresholding filter isolating boundary vectors.
+                        </div>
+                    </div>
+
+                    <div style="background:#0b1120; border:1px solid #334155; border-radius:10px; overflow:hidden;">
+                        <div style="background:#1e293b; padding:8px 14px; display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-size:11px; font-weight:800; color:#34d399; font-family:'Barlow Semi Condensed',sans-serif;">SEGMENTATION DETECTION MASK</span>
+                            <span style="font-size:9.5px; background:#065f46; color:#ffffff; padding:2px 6px; border-radius:4px;">FEATURE MASK</span>
+                        </div>
+                        <div style="background:#ffffff; padding:12px; display:flex; justify-content:center; align-items:center;">
+                            <img src="${{IMAGE_VTL_MASK}}" alt="Segmentation Mask" style="width:100%; max-height:260px; object-fit:contain;" />
+                        </div>
+                        <div style="padding:10px 14px; font-size:11px; color:#94a3b8; background:#0f172a; border-top:1px solid #1e293b;">
+                            Compartment contour clustering and equipment bounding-box detection.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }}
+}};
+
 </script>
 
 </body>
