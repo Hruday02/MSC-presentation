@@ -1437,8 +1437,8 @@ const PHASES = {
         name: "Phase 4.5",
         tabTitle: "AST",
         title: "Authoritative Source of Truth",
-        subtitle: "",
-        description: ""
+        subtitle: "MBSE Architecture & SysML 2.0 Digital Thread",
+        description: "The Authoritative Source of Truth (AST) acts as the central semantic backbone. It binds physical sensor telemetry and digital twin models into a formal SysML 2.0 model-based digital thread, connecting operational states directly to fleet maintenance planning (LRMS/HMS) and classification requirements."
     }
 };
 
@@ -1877,9 +1877,11 @@ function renderNotes() {
             </div>
             ${P.description ? `<p class="notes-desc">${P.description}</p>` : ''}
             <div>
-                <div style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; color:#64748b; letter-spacing:1px; margin-bottom:6px;">ACTIVE NODES IN THIS PHASE (${visibleIds.length})</div>
+                <div style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; color:#64748b; letter-spacing:1px; margin-bottom:6px;">
+                    ${currentPhase === 4.5 ? 'SYSTEM ARCHITECTURE MODEL' : `ACTIVE NODES IN THIS PHASE (${visibleIds.length})`}
+                </div>
                 <div class="pill-group">
-                    ${visibleIds.length > 0 ? visibleIds.map(id => `<button class="node-pill" onclick="selectNode('${id}'); openModal('${id}');">${SVG_NODES[id].name}</button>`).join("") : (currentPhase === 4.5 ? '<span style="color:#2563eb; font-size:12px; font-weight:700; background:#eff6ff; border:1px solid #bfdbfe; padding:4px 10px; border-radius:6px;">Authoritative Source of Truth &middot; 3 Tiers &amp; SysML Digital Thread</span>' : '<span style="color:#94a3b8; font-size:12px; font-style:italic;">None</span>')}
+                    ${visibleIds.length > 0 ? visibleIds.map(id => `<button class="node-pill" onclick="selectNode('${id}'); openModal('${id}');">${SVG_NODES[id].name}</button>`).join("") : (currentPhase === 4.5 ? '<button class="node-pill" style="background:#eff6ff; border-color:#93c5fd; color:#1d4ed8; font-weight:800; width:100%; text-align:center; padding:7px 12px; cursor:pointer;" onclick="openModal(&quot;ast_system_model&quot;)">🏛️ Authoritative Source of Truth &middot; 3 Tiers &amp; SysML 2.0</button>' : '<span style="color:#94a3b8; font-size:12px; font-style:italic;">None</span>')}
                 </div>
             </div>
 
@@ -1943,6 +1945,82 @@ function renderNotes() {
                     🌐 Open Interactive Dual-Asset Simulation
                 </button>
             </div>` : ""}
+
+            ${currentPhase === 4.5 ? `
+            <div style="margin-top:14px; display:flex; flex-direction:column; gap:12px;">
+
+                <!-- Card 1: 3-Tier Enterprise Persistence Architecture -->
+                <div style="background:#eff6ff; border:1.5px solid #3b82f6; border-radius:10px; padding:12px 14px; display:flex; flex-direction:column; gap:8px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; color:#1d4ed8; letter-spacing:0.8px;">AST PERSISTENCE ARCHITECTURE</span>
+                        <span style="font-size:10px; font-weight:800; color:#1d4ed8; background:#dbeafe; padding:2px 7px; border-radius:4px;">3 TIERS</span>
+                    </div>
+                    
+                    <!-- Tier 1: Ontology -->
+                    <div style="background:#ffffff; border-left:3.5px solid #ea580c; padding:8px 10px; border-radius:0 6px 6px 0; border:1px solid #e2e8f0; border-left-width:3.5px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <strong style="color:#c2410c; font-size:12px;">1. Ontology · Semantic Model</strong>
+                            <span style="font-size:9.5px; background:#fff7ed; color:#c2410c; padding:1px 5px; border-radius:3px; font-weight:700;">WHAT EXISTS</span>
+                        </div>
+                        <p style="font-size:11px; color:#334155; margin:4px 0 0 0; line-height:1.4;">
+                            Encodes ballast system entities, watertight boundaries, and physical interdependencies into a formal semantic graph. Answers how system relationships, failure mechanisms, and decision objectives interconnect.
+                        </p>
+                    </div>
+
+                    <!-- Tier 2: Taxonomy -->
+                    <div style="background:#ffffff; border-left:3.5px solid #0284c7; padding:8px 10px; border-radius:0 6px 6px 0; border:1px solid #e2e8f0; border-left-width:3.5px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <strong style="color:#0369a1; font-size:12px;">2. Taxonomy · Hierarchical Typing</strong>
+                            <span style="font-size:9.5px; background:#f0f9ff; color:#0369a1; padding:1px 5px; border-radius:3px; font-weight:700;">CLASSIFICATION</span>
+                        </div>
+                        <p style="font-size:11px; color:#334155; margin:4px 0 0 0; line-height:1.4;">
+                            Classifies components into typed inheritance classes (bulkheads, stiffeners, coating systems, degradation types). Enables structured reasoning across levels of engineering abstraction.
+                        </p>
+                    </div>
+
+                    <!-- Tier 3: Schema -->
+                    <div style="background:#ffffff; border-left:3.5px solid #0d9488; padding:8px 10px; border-radius:0 6px 6px 0; border:1px solid #e2e8f0; border-left-width:3.5px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <strong style="color:#0f766e; font-size:12px;">3. Schema · Relational &amp; Traceable</strong>
+                            <span style="font-size:9.5px; background:#f0fdfa; color:#0f766e; padding:1px 5px; border-radius:3px; font-weight:700;">DATA STRUCTURE</span>
+                        </div>
+                        <p style="font-size:11px; color:#334155; margin:4px 0 0 0; line-height:1.4;">
+                            Translates ontology and taxonomy into structured, queryable data stores linked to live telemetry and class certification rules. Establishes bi-directional traceability between observed states and design limits.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 2: SysML 2.0 Digital Thread & Alignment -->
+                <div style="background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:10px; padding:12px 14px; display:flex; flex-direction:column; gap:8px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; color:#334155; letter-spacing:0.8px;">SYSML 2.0 DIGITAL THREAD</span>
+                        <span style="font-size:10px; font-weight:800; color:#047857; background:#dcfce7; padding:2px 7px; border-radius:4px;">MBSE INTEGRATION</span>
+                    </div>
+                    <p style="font-size:11.5px; color:#475569; margin:0; line-height:1.45;">
+                        The digital thread links the SysML 2.0 system hierarchy directly to the runtime architecture and the <strong>Long Range Maintenance Schedule (LRMS)</strong>:
+                    </p>
+                    <div style="display:grid; grid-template-columns:1fr; gap:6px;">
+                        <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:6px; padding:7px 10px;">
+                            <strong style="font-size:11px; color:#1e293b;">📐 Structure &amp; Behavior Traceability:</strong>
+                            <span style="font-size:11px; color:#64748b; display:block; margin-top:2px;">
+                                Internal Block Diagrams (IBD) and State Machine models govern how sensor-detected wastage (LiDAR/SAC) transitions the asset into maintenance actions.
+                            </span>
+                        </div>
+                        <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:6px; padding:7px 10px;">
+                            <strong style="font-size:11px; color:#15803d;">🔄 Closed-Loop Fleet Action:</strong>
+                            <span style="font-size:11px; color:#64748b; display:block; margin-top:2px;">
+                                Observed sensor deviations trigger automated CBM work packs in LRMS rather than ending in static 3D visualization.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Button to Open Full Slide Modal -->
+                <button class="inspect-action-btn" style="background:#1d4ed8; border-color:#1d4ed8; padding:10px 14px; font-size:12.5px;" onclick="openModal(&apos;ast_system_model&apos;)">
+                    🏛️ Inspect Full AST Architectural Slide
+                </button>
+            </div>
+            ` : ""}
             </div>
             ${nav}`;
     } else {

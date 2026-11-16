@@ -72,8 +72,8 @@ CONTENT: Dict[str, Any] = {
         "name": "Phase 4.5",
         "tab_title": "AST",
         "title": "Authoritative Source of Truth",
-        "subtitle": "",
-        "description": "",
+        "subtitle": "MBSE Architecture & SysML 2.0 Digital Thread",
+        "description": "The Authoritative Source of Truth (AST) acts as the central semantic backbone. It binds physical sensor telemetry and digital twin models into a formal SysML 2.0 model-based digital thread, connecting operational states directly to fleet maintenance planning (LRMS/HMS) and classification requirements.",
     },
     },
 
