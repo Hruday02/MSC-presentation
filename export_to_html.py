@@ -119,17 +119,6 @@ def generate_html():
             box-shadow: 0 1px 3px rgba(0,0,0,0.03);
             flex-shrink: 0;
         }}
-        .header-left {{
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }}
-        .header-right {{
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }}
         .eyebrow {{
             font-family: 'Barlow Semi Condensed', sans-serif;
             font-size: clamp(10px, 0.9vw, 12px);
@@ -145,40 +134,6 @@ def generate_html():
             color: #0f172a;
             line-height: 1.15;
             margin-top: 1px;
-        }}
-
-        /* Projector / Fullscreen Toggle Button */
-        .fs-toggle-btn {{
-            appearance: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: clamp(6px, 0.9vh, 9px) clamp(10px, 1vw, 15px);
-            border-radius: 10px;
-            font-family: 'Barlow Semi Condensed', sans-serif;
-            font-size: clamp(12px, 1vw, 13.5px);
-            font-weight: 700;
-            cursor: pointer;
-            border: 1.5px solid #cbd5e1;
-            background: #ffffff;
-            color: #334155;
-            transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
-            white-space: nowrap;
-        }}
-        .fs-toggle-btn:hover {{
-            border-color: #2563eb;
-            color: #2563eb;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
-        }}
-        .fs-toggle-btn:active {{
-            transform: scale(0.97);
-        }}
-        body.is-fullscreen .fs-toggle-btn {{
-            background: #eff6ff;
-            border-color: #2563eb;
-            color: #1d4ed8;
-            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
         }}
 
         /* Phase Navigation Buttons */
@@ -299,10 +254,6 @@ def generate_html():
                 font-size: 16px;
                 padding: 13px 18px;
             }}
-            .fs-toggle-btn {{
-                padding: 11px 18px;
-                font-size: 15px;
-            }}
         }}
 
         /* Responsive Layout for Low Height Displays (e.g. 768p / 800p projector) */
@@ -328,10 +279,6 @@ def generate_html():
                 font-size: 9px;
             }}
             .phase-tab-btn .p-title {{
-                font-size: 12px;
-            }}
-            .fs-toggle-btn {{
-                padding: 4px 8px;
                 font-size: 12px;
             }}
             .notes-panel {{
@@ -957,16 +904,11 @@ def generate_html():
 
 <!-- Header -->
 <header>
-    <div class="header-left">
+    <div>
         <div class="eyebrow">MSC BALLAST TANK DIGITAL TWIN &middot; PROOF OF CONCEPT</div>
         <h1>From separate projects to one digital twin</h1>
     </div>
-    <div class="header-right">
-        <div class="phase-tabs" id="phase-tabs"></div>
-        <button id="btn-fullscreen-toggle" class="fs-toggle-btn" onclick="toggleFullscreen();" title="Toggle Fullscreen Projector Mode (Shortcut: F)">
-            <span id="fs-icon">⛶</span> <span id="fs-text">Projector Mode</span>
-        </button>
-    </div>
+    <div class="phase-tabs" id="phase-tabs"></div>
 </header>
 
 <!-- Main Grid -->
@@ -2916,18 +2858,7 @@ function renderSimSvg() {{
 }}
 
 /* Keyboard Navigation (Arrow Keys) */
-// Screen Ratio Auto-Resize & Fullscreen Projector Controller
-function toggleFullscreen() {{
-    if (!document.fullscreenElement) {{
-        document.documentElement.requestFullscreen().catch(err => {{
-            console.log("Fullscreen request was prevented:", err);
-        }});
-    }} else {{
-        if (document.exitFullscreen) {{
-            document.exitFullscreen();
-        }}
-    }}
-}}
+// Screen Ratio Auto-Resize Controller (Responsive Projector Engine)
 
 function adaptToScreenRatio() {{
     const w = window.innerWidth;
@@ -2958,28 +2889,13 @@ function adaptToScreenRatio() {{
 
 window.addEventListener("resize", adaptToScreenRatio);
 window.addEventListener("DOMContentLoaded", adaptToScreenRatio);
-window.addEventListener("fullscreenchange", () => {{
-    const isFs = !!document.fullscreenElement;
-    document.body.classList.toggle("is-fullscreen", isFs);
-    const fsIcon = document.getElementById("fs-icon");
-    const fsText = document.getElementById("fs-text");
-    if (fsIcon && fsText) {{
-        fsIcon.textContent = isFs ? "🗗" : "⛶";
-        fsText.textContent = isFs ? "Exit Fullscreen" : "Projector Mode";
-    }}
-    adaptToScreenRatio();
-}});
+window.addEventListener("fullscreenchange", adaptToScreenRatio);
 
 addEventListener('keydown', (e) => {{
     if (e.target.closest && e.target.closest("button, [role=button], input")) return;
     const curIdx = PHASE_ORDER.indexOf(currentPhase);
     if (e.key === 'ArrowLeft' && curIdx > 0) goToPhase(PHASE_ORDER[curIdx - 1]);
     if (e.key === 'ArrowRight' && curIdx < PHASE_ORDER.length - 1) goToPhase(PHASE_ORDER[curIdx + 1]);
-    if ((e.key === 'f' || e.key === 'F') && !e.ctrlKey && !e.altKey && !e.metaKey) {{
-        const modal = document.getElementById("modal-overlay");
-        if (!modal || !modal.classList.contains("active")) {{
-            toggleFullscreen();
-        }}
     }}
     if (e.key === 'Escape') {{
         document.getElementById("modal-overlay").classList.remove("active");
