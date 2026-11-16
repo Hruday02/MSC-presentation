@@ -818,7 +818,7 @@ def generate_html():
             max-height: none; height: 100%;
             min-height: 0; flex: 1; height: 100%;
         }}
-        .modal-body img {{
+        .modal-body img:not(#vtl-inspect-img) {{
             max-width: 100%;
             max-height: calc(88vh - 130px);
             object-fit: contain;
@@ -865,10 +865,10 @@ def generate_html():
         }}
             /* VTL Prototype Modal Navigation & Badges */
         .vtl-nav-btn {{
-            padding: 6px 14px;
+            padding: 6px 13px;
             border-radius: 8px;
             font-family: 'Barlow Semi Condensed', sans-serif;
-            font-size: 12px;
+            font-size: 11.5px;
             font-weight: 700;
             cursor: pointer;
             border: 1.5px solid #334155;
@@ -887,6 +887,44 @@ def generate_html():
             color: #ffffff;
             border-color: #38bdf8;
             box-shadow: 0 0 12px rgba(2, 132, 199, 0.45);
+        }}
+        .vtl-tool-btn {{
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-family: 'Barlow Semi Condensed', sans-serif;
+            font-size: 11.5px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 1px solid #334155;
+            background: #1e293b;
+            color: #cbd5e1;
+            transition: all 0.15s ease;
+            user-select: none;
+        }}
+        .vtl-tool-btn:hover {{
+            border-color: #38bdf8;
+            color: #ffffff;
+            background: #0369a1;
+        }}
+        .vtl-tool-btn.active-zoom {{
+            background: #0284c7;
+            color: #ffffff;
+            border-color: #38bdf8;
+            box-shadow: 0 0 10px rgba(2, 132, 199, 0.5);
+        }}
+        .vtl-tool-btn.icon-btn {{
+            font-size: 13.5px;
+            line-height: 1;
+            padding: 3px 8px;
+            font-weight: 800;
+        }}
+        .vtl-pipeline-card {{
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }}
+        .vtl-pipeline-card:hover {{
+            transform: translateY(-2px);
+            border-color: #38bdf8 !important;
+            box-shadow: 0 8px 24px rgba(2, 132, 199, 0.35);
         }}
         .vtl-tag-pill {{
             font-size: 10.5px;
@@ -1318,7 +1356,7 @@ def generate_html():
             <circle cx="280" cy="10" r="4" fill="#22c55e"/>
             <text x="292" y="14" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#15803d">Modified from UML 2.0</text>
         </g>
-    </g>    </g>
+    </g>
             </svg>
             <div class="hint">Tap a node for details &middot; Arrow keys change phase</div>
         </div>
@@ -1357,7 +1395,7 @@ def generate_html():
                 <button class="modal-close" id="btn-modal-close" style="min-height:38px; padding:6px 16px; border-radius:8px; border:1.5px solid #475569; background:#1e293b; color:#ffffff; font-size:13px; font-weight:800; cursor:pointer;">&times; Close</button>
             </div>
         </div>
-        <div class="modal-body" id="modal-body-container" style="padding:0; background:#020617; overflow-y:auto; max-height:calc(92vh - 80px);"></div>
+        <div class="modal-body" id="modal-body-container" style="padding:0; background:#020617; overflow:hidden; flex:1; min-height:0; display:flex; flex-direction:column;"></div>
     </div>
 </div>
 
@@ -2501,63 +2539,91 @@ function openModal(nodeId) {{
             badge.textContent = "🟢 7 CAD LAYERS PARSED · SEMANTIC PIPING EXTRACTED";
 
             body.innerHTML = `
-                <div style="display:flex; flex-direction:column; width:100%; height:100%; flex:1; min-height:0; color:#f8fafc; gap:0;">
-                    <!-- Top Action / Dossier Bar -->
-                    <div style="background:#1e293b; padding:12px 24px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; flex-wrap:wrap; gap:12px;">
-                        <div style="display:flex; align-items:center; gap:10px;">
-                            <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11.5px; font-weight:800; letter-spacing:1px; color:#94a3b8;">VESSEL RECORD:</span>
-                            <strong style="color:#38bdf8; font-family:'Barlow Semi Condensed',sans-serif; font-size:13.5px;">PLAN NO. 1 DECK (FWD SECTION · FRAMES 155–180)</strong>
+                <div style="display:flex; flex-direction:column; width:100%; height:100%; flex:1; min-height:0; color:#f8fafc; overflow:hidden;">
+                    <!-- Top Control Strip: Inspection Tabs + CAD Zoom Toolbar -->
+                    <div style="background:#0f172a; padding:8px 16px; border-bottom:1px solid #1e293b; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; flex-shrink:0;">
+                        <div style="display:flex; gap:6px; align-items:center; overflow-x:auto; flex-wrap:nowrap; max-width:68%;">
+                            <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; color:#64748b; letter-spacing:1px; margin-right:4px; white-space:nowrap;">INSPECTION VIEW:</span>
+                            <button class="vtl-nav-btn active" id="btn-vtl-cad" onclick="switchVtlView('cad')">📑 Master CAD Plan</button>
+                            <button class="vtl-nav-btn" id="btn-vtl-geometry" onclick="switchVtlView('geometry')">🧱 Geometry &amp; Piping</button>
+                            <button class="vtl-nav-btn" id="btn-vtl-text" onclick="switchVtlView('text')">🏷️ Semantic Text &amp; OCR</button>
+                            <button class="vtl-nav-btn" id="btn-vtl-pipeline" onclick="switchVtlView('pipeline')">🔬 4-Stage Pipeline</button>
+                            <button class="vtl-nav-btn" id="btn-vtl-alignment" onclick="switchVtlView('alignment')">📏 Datum &amp; Centerline</button>
+                            <button class="vtl-nav-btn" id="btn-vtl-scan" onclick="switchVtlView('scan')">📜 Raw Blueprint</button>
+                            <button class="vtl-nav-btn" id="btn-vtl-vision" onclick="switchVtlView('vision')">👁️ Vision Feature Masks</button>
                         </div>
-                        <div style="display:flex; align-items:center; gap:8px;">
-                            <span style="font-family:monospace; font-size:11px; color:#34d399; background:#020617; padding:4px 10px; border-radius:6px; border:1px solid #334155;">VTL-GA-DECK1-REV2</span>
-                            <span style="font-family:monospace; font-size:11px; color:#93c5fd; background:#020617; padding:4px 10px; border-radius:6px; border:1px solid #334155;">SCALE: 1:50</span>
+                        
+                        <!-- Interactive Zoom & Workstation Tools -->
+                        <div id="vtl-zoom-toolbar" style="display:flex; align-items:center; gap:5px; flex-shrink:0;">
+                            <span style="font-size:11px; font-weight:700; color:#94a3b8; font-family:'Barlow Semi Condensed',sans-serif;">ZOOM:</span>
+                            <button class="vtl-tool-btn active-zoom" id="vtl-btn-zoom-fit" onclick="setVtlZoom(1.0)" title="Fit whole blueprint in view">Fit</button>
+                            <button class="vtl-tool-btn" id="vtl-btn-zoom-140" onclick="setVtlZoom(1.4)" title="140% Large View">140%</button>
+                            <button class="vtl-tool-btn" id="vtl-btn-zoom-200" onclick="setVtlZoom(2.0)" title="200% Deep Zoom into Text &amp; Piping">200%</button>
+                            <button class="vtl-tool-btn icon-btn" onclick="zoomVtlStep(0.25)" title="Zoom in">+</button>
+                            <button class="vtl-tool-btn icon-btn" onclick="zoomVtlStep(-0.25)" title="Zoom out">&minus;</button>
+                            <button class="vtl-tool-btn" onclick="resetVtlZoom()" title="Reset view">↺</button>
+                            <button class="vtl-tool-btn" id="btn-vtl-sidebar-toggle" onclick="toggleVtlSidebar()" title="Toggle Full Canvas / Specifications Panel">⛶ Full Canvas</button>
                         </div>
                     </div>
 
-                    <!-- Interactive Layer Switcher Bar -->
-                    <div style="background:#0f172a; padding:10px 24px; border-bottom:1px solid #1e293b; display:flex; gap:8px; overflow-x:auto; align-items:center; flex-wrap:wrap;">
-                        <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; color:#64748b; letter-spacing:1px; margin-right:4px;">INSPECTION VIEW:</span>
-                        <button class="vtl-nav-btn active" id="btn-vtl-cad" onclick="switchVtlView('cad')">📑 Master CAD Plan</button>
-                        <button class="vtl-nav-btn" id="btn-vtl-geometry" onclick="switchVtlView('geometry')">🧱 Geometry &amp; Piping (Text Stripped)</button>
-                        <button class="vtl-nav-btn" id="btn-vtl-text" onclick="switchVtlView('text')">🏷️ Semantic Text &amp; OCR</button>
-                        <button class="vtl-nav-btn" id="btn-vtl-pipeline" onclick="switchVtlView('pipeline')">🔬 4-Stage Decomposition Pipeline</button>
-                        <button class="vtl-nav-btn" id="btn-vtl-alignment" onclick="switchVtlView('alignment')">📏 Datum &amp; Centerline</button>
-                        <button class="vtl-nav-btn" id="btn-vtl-scan" onclick="switchVtlView('scan')">📜 Raw Scanned Blueprint</button>
-                        <button class="vtl-nav-btn" id="btn-vtl-vision" onclick="switchVtlView('vision')">👁️ Vision Feature Masks</button>
-                    </div>
-
-                    <!-- Main Viewport Area -->
-                    <div id="vtl-viewport-container" style="background:#020617; padding:clamp(8px, 1.2vh, 16px); flex:1; min-height:0; display:flex; flex-direction:column; align-items:stretch; justify-content:center; overflow-y:auto;">
-                        <!-- Injected View Content -->
-                    </div>
-
-                    <!-- Technical Metrics & Digital Twin Integration Bar -->
-                    <div style="background:#0b1120; border-top:1px solid #1e293b; padding:18px 24px; display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:14px;">
-                        <div style="background:#0f172a; padding:12px 14px; border-radius:8px; border:1px solid #1e293b;">
-                            <div style="display:flex; justify-content:space-between; align-items:center;">
-                                <span style="font-size:11px; color:#94a3b8; font-weight:700;">STRUCTURAL COMPARTMENTATION</span>
-                                <span style="font-size:10px; color:#38bdf8; background:#0369a1; padding:2px 6px; border-radius:4px; font-weight:800;">DNV-GL EXTRACTED</span>
-                            </div>
-                            <div style="font-size:15px; font-weight:800; color:#f8fafc; font-family:'Barlow Semi Condensed',sans-serif; margin-top:4px;">Plan No. 1 Deck · Frames 155–180</div>
-                            <p style="font-size:11.5px; color:#94a3b8; margin:4px 0 0 0; line-height:1.4;">Winch Room, Stores Hatch, Battery Locker, Cooler Access Space, and Centerline Passage isolated for 3D extrusion.</p>
+                    <!-- Split Workstation: Hero Canvas + Extracted Telemetry Sidebar -->
+                    <div style="flex:1; min-height:0; display:flex; flex-direction:row; overflow:hidden; background:#020617;">
+                        
+                        <!-- Hero Blueprint Inspection Canvas -->
+                        <div id="vtl-viewport-container" style="flex:1; min-height:0; display:flex; flex-direction:column; overflow:hidden; position:relative; background:#050914;">
+                            <!-- Injected View Content -->
                         </div>
 
-                        <div style="background:#0f172a; padding:12px 14px; border-radius:8px; border:1px solid #1e293b;">
-                            <div style="display:flex; justify-content:space-between; align-items:center;">
-                                <span style="font-size:11px; color:#94a3b8; font-weight:700;">MECHANICAL &amp; PIPING SYSTEMS</span>
-                                <span style="font-size:10px; color:#34d399; background:#064e3b; padding:2px 6px; border-radius:4px; font-weight:800;">ISOLATED</span>
+                        <!-- Technical Dossier & Telemetry Sidebar -->
+                        <div id="vtl-side-panel" style="width:380px; min-width:320px; max-width:440px; background:#0b1120; border-left:1.5px solid #1e293b; display:flex; flex-direction:column; overflow-y:auto; padding:16px; gap:12px; flex-shrink:0; transition:all 0.25s ease;">
+                            
+                            <!-- Vessel Spec Card -->
+                            <div style="background:#0f172a; padding:10px 14px; border-radius:8px; border:1px solid #334155; display:flex; justify-content:space-between; align-items:center;">
+                                <div>
+                                    <span style="font-size:10px; color:#94a3b8; font-weight:800; letter-spacing:0.8px; display:block;">VESSEL RECORD</span>
+                                    <strong style="color:#38bdf8; font-size:12.5px; font-family:'Barlow Semi Condensed',sans-serif;">PLAN NO. 1 DECK (FWD 155–180)</strong>
+                                </div>
+                                <div style="display:flex; flex-direction:column; align-items:flex-end; gap:3px;">
+                                    <span style="font-family:monospace; font-size:10.5px; color:#34d399; background:#020617; padding:2px 7px; border-radius:4px; border:1px solid #334155;">GA-REV2</span>
+                                    <span style="font-family:monospace; font-size:10px; color:#93c5fd; background:#020617; padding:2px 7px; border-radius:4px; border:1px solid #334155;">SCALE 1:50</span>
+                                </div>
                             </div>
-                            <div style="font-size:15px; font-weight:800; color:#34d399; font-family:'Barlow Semi Condensed',sans-serif; margin-top:4px;">3/8" Cooling Fresh Water (CFW)</div>
-                            <p style="font-size:11.5px; color:#94a3b8; margin:4px 0 0 0; line-height:1.4;">Direct utility path routed to Existing Sink and Emergency Eyewash Station (Ref No. 6) flagged for maintenance telemetry.</p>
-                        </div>
 
-                        <div style="background:#0f172a; padding:12px 14px; border-radius:8px; border:1px solid #1e293b;">
-                            <div style="display:flex; justify-content:space-between; align-items:center;">
-                                <span style="font-size:11px; color:#94a3b8; font-weight:700;">DIGITAL TWIN INTEGRATION ROLE</span>
-                                <span style="font-size:10px; color:#f59e0b; background:#78350f; padding:2px 6px; border-radius:4px; font-weight:800;">SEMANTIC VTL</span>
+                            <!-- Dynamic Active Layer Telemetry Card -->
+                            <div id="vtl-dynamic-sidebar-info" style="background:#0f172a; padding:12px 14px; border-radius:8px; border:1.5px solid #0284c7;">
+                                <!-- Injected by switchVtlView -->
                             </div>
-                            <div style="font-size:15px; font-weight:800; color:#f59e0b; font-family:'Barlow Semi Condensed',sans-serif; margin-top:4px;">2D GA to 3D Scantling Baseline</div>
-                            <p style="font-size:11.5px; color:#94a3b8; margin:4px 0 0 0; line-height:1.4;">Automated CAD layer separation links legacy 2D drawings into the AST Digital Twin, enabling continuous geometric diffing with live LiDAR scans.</p>
+
+                            <!-- Structural Compartmentation Card -->
+                            <div style="background:#0f172a; padding:12px 14px; border-radius:8px; border:1px solid #1e293b;">
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <span style="font-size:11px; color:#94a3b8; font-weight:700;">STRUCTURAL COMPARTMENTATION</span>
+                                    <span style="font-size:10px; color:#38bdf8; background:#0369a1; padding:2px 6px; border-radius:4px; font-weight:800;">DNV-GL EXTRACTED</span>
+                                </div>
+                                <div style="font-size:14px; font-weight:800; color:#f8fafc; font-family:'Barlow Semi Condensed',sans-serif; margin-top:4px;">Frames 155–180 Bulkheads</div>
+                                <p style="font-size:11.5px; color:#94a3b8; margin:4px 0 0 0; line-height:1.4;">Winch Room, Stores Hatch, Battery Locker, Cooler Access Space, and Centerline Passage isolated for 3D extrusion.</p>
+                            </div>
+
+                            <!-- Mechanical & Piping Systems Card -->
+                            <div style="background:#0f172a; padding:12px 14px; border-radius:8px; border:1px solid #1e293b;">
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <span style="font-size:11px; color:#94a3b8; font-weight:700;">MECHANICAL &amp; PIPING SYSTEMS</span>
+                                    <span style="font-size:10px; color:#34d399; background:#064e3b; padding:2px 6px; border-radius:4px; font-weight:800;">ISOLATED</span>
+                                </div>
+                                <div style="font-size:14px; font-weight:800; color:#34d399; font-family:'Barlow Semi Condensed',sans-serif; margin-top:4px;">3/8&Prime; Cooling Fresh Water (CFW)</div>
+                                <p style="font-size:11.5px; color:#94a3b8; margin:4px 0 0 0; line-height:1.4;">Direct utility path routed to Existing Sink and Emergency Eyewash Station (Ref No. 6) flagged for maintenance telemetry.</p>
+                            </div>
+
+                            <!-- Digital Twin Integration Card -->
+                            <div style="background:#0f172a; padding:12px 14px; border-radius:8px; border:1px solid #1e293b;">
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <span style="font-size:11px; color:#94a3b8; font-weight:700;">DIGITAL TWIN INTEGRATION ROLE</span>
+                                    <span style="font-size:10px; color:#f59e0b; background:#78350f; padding:2px 6px; border-radius:4px; font-weight:800;">SEMANTIC VTL</span>
+                                </div>
+                                <div style="font-size:14px; font-weight:800; color:#f59e0b; font-family:'Barlow Semi Condensed',sans-serif; margin-top:4px;">2D GA to 3D Scantling Baseline</div>
+                                <p style="font-size:11.5px; color:#94a3b8; margin:4px 0 0 0; line-height:1.4;">Automated CAD layer separation links legacy 2D drawings into the AST Digital Twin, enabling continuous geometric diffing with live LiDAR scans.</p>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -2725,6 +2791,7 @@ function openModal(nodeId) {{
 
 document.getElementById("btn-modal-close").addEventListener("click", () => {{
     document.getElementById("modal-overlay").classList.remove("active");
+    if (typeof resetVtlZoom === "function") resetVtlZoom();
 }});
 document.getElementById("modal-overlay").addEventListener("click", (e) => {{
     if (e.target.id === "modal-overlay") document.getElementById("modal-overlay").classList.remove("active");
@@ -2906,188 +2973,380 @@ addEventListener('keydown', (e) => {{
 initDiagram();
 goToPhase(1);
 
+let vtlZoomLevel = 1.0;
+let vtlPanX = 0;
+let vtlPanY = 0;
+let vtlIsPanning = false;
+let vtlStartX = 0;
+let vtlStartY = 0;
+let vtlSidebarCollapsed = false;
+
+window.updateVtlTransform = function() {{
+    const wrapper = document.getElementById("vtl-sheet-wrapper");
+    const indicator = document.getElementById("vtl-zoom-indicator");
+    if (wrapper) {{
+        wrapper.style.transform = "translate(" + vtlPanX + "px, " + vtlPanY + "px) scale(" + vtlZoomLevel + ")";
+    }}
+    if (indicator) {{
+        indicator.textContent = Math.round(vtlZoomLevel * 100) + "%";
+    }}
+    document.querySelectorAll(".vtl-tool-btn").forEach(btn => btn.classList.remove("active-zoom"));
+    if (Math.abs(vtlZoomLevel - 1.0) < 0.05) {{
+        const b = document.getElementById("vtl-btn-zoom-fit");
+        if (b) b.classList.add("active-zoom");
+    }} else if (Math.abs(vtlZoomLevel - 1.4) < 0.05) {{
+        const b = document.getElementById("vtl-btn-zoom-140");
+        if (b) b.classList.add("active-zoom");
+    }} else if (Math.abs(vtlZoomLevel - 2.0) < 0.05) {{
+        const b = document.getElementById("vtl-btn-zoom-200");
+        if (b) b.classList.add("active-zoom");
+    }}
+    const board = document.getElementById("vtl-canvas-board");
+    if (board) {{
+        board.style.cursor = vtlZoomLevel > 1.05 ? (vtlIsPanning ? "grabbing" : "grab") : "zoom-in";
+    }}
+}};
+
+window.setVtlZoom = function(level) {{
+    vtlZoomLevel = Math.max(0.6, Math.min(4.0, level));
+    if (vtlZoomLevel <= 1.0) {{
+        vtlPanX = 0;
+        vtlPanY = 0;
+    }}
+    window.updateVtlTransform();
+}};
+
+window.zoomVtlStep = function(delta) {{
+    window.setVtlZoom(vtlZoomLevel + delta);
+}};
+
+window.resetVtlZoom = function() {{
+    vtlZoomLevel = 1.0;
+    vtlPanX = 0;
+    vtlPanY = 0;
+    window.updateVtlTransform();
+}};
+
+window.toggleVtlZoomDbl = function(e) {{
+    if (vtlZoomLevel > 1.1) {{
+        window.resetVtlZoom();
+    }} else {{
+        window.setVtlZoom(1.8);
+    }}
+}};
+
+window.onVtlWheel = function(e) {{
+    e.preventDefault();
+    const delta = e.deltaY < 0 ? 0.2 : -0.2;
+    window.setVtlZoom(vtlZoomLevel + delta);
+}};
+
+window.onVtlMouseDown = function(e) {{
+    if (vtlZoomLevel <= 1.0) {{
+        window.setVtlZoom(1.6);
+        return;
+    }}
+    vtlIsPanning = true;
+    vtlStartX = e.clientX - vtlPanX;
+    vtlStartY = e.clientY - vtlPanY;
+    const board = document.getElementById("vtl-canvas-board");
+    if (board) board.style.cursor = "grabbing";
+}};
+
+window.onVtlMouseMove = function(e) {{
+    if (!vtlIsPanning) return;
+    vtlPanX = e.clientX - vtlStartX;
+    vtlPanY = e.clientY - vtlStartY;
+    window.updateVtlTransform();
+}};
+
+window.onVtlMouseUp = function() {{
+    vtlIsPanning = false;
+    const board = document.getElementById("vtl-canvas-board");
+    if (board) board.style.cursor = vtlZoomLevel > 1.05 ? "grab" : "zoom-in";
+}};
+
+window.toggleVtlSidebar = function() {{
+    const panel = document.getElementById("vtl-side-panel");
+    const btn = document.getElementById("btn-vtl-sidebar-toggle");
+    if (!panel) return;
+    vtlSidebarCollapsed = !vtlSidebarCollapsed;
+    if (vtlSidebarCollapsed) {{
+        panel.style.display = "none";
+        if (btn) {{
+            btn.textContent = "📋 Show Specs";
+            btn.classList.add("active-zoom");
+        }}
+    }} else {{
+        panel.style.display = "flex";
+        if (btn) {{
+            btn.textContent = "⛶ Full Canvas";
+            btn.classList.remove("active-zoom");
+        }}
+    }}
+}};
+
 window.switchVtlView = function(mode) {{
     const container = document.getElementById("vtl-viewport-container");
+    const sideInfo = document.getElementById("vtl-dynamic-sidebar-info");
     if (!container) return;
 
     document.querySelectorAll(".vtl-nav-btn").forEach(btn => btn.classList.remove("active"));
     const activeBtn = document.getElementById("btn-vtl-" + mode);
     if (activeBtn) activeBtn.classList.add("active");
 
-    if (mode === "cad") {{
-        container.innerHTML = `
-            <div style="width:100%; height:100%; flex:1; min-height:0; background:#0b1120; border:1.5px solid #334155; border-radius:12px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 8px 24px rgba(0,0,0,0.4);">
-                <div style="background:#1e293b; padding:8px 18px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; flex-shrink:0;">
+    vtlZoomLevel = 1.0;
+    vtlPanX = 0;
+    vtlPanY = 0;
+
+    function renderHeroCanvas(title, tagText, tagBg, tagColor, imgSrc, altText, footerText) {{
+        return `
+            <div style="width:100%; height:100%; flex:1; min-height:0; display:flex; flex-direction:column; overflow:hidden;">
+                <!-- Minimal Canvas Header Strip -->
+                <div style="background:#0b1120; padding:6px 16px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; flex-shrink:0;">
                     <div style="display:flex; align-items:center; gap:8px;">
-                        <span style="font-size:12px; font-weight:800; color:#38bdf8; font-family:'Barlow Semi Condensed',sans-serif; letter-spacing:0.8px;">MASTER CAD GENERAL ARRANGEMENT</span>
-                        <span style="font-size:10px; background:#0284c7; color:#ffffff; padding:2px 7px; border-radius:4px; font-weight:700;">VECTOR RASTER &middot; 1:50 SCALE</span>
+                        <span style="font-size:12px; font-weight:800; color:#38bdf8; font-family:'Barlow Semi Condensed',sans-serif; letter-spacing:0.8px;">${{title}}</span>
+                        <span style="font-size:9.5px; background:${{tagBg}}; color:${{tagColor}}; padding:2px 7px; border-radius:4px; font-weight:700;">${{tagText}}</span>
                     </div>
-                    <span style="font-size:12px; color:#94a3b8;">Plan No. 1 Deck &middot; High Resolution Engineering Drawing</span>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span id="vtl-zoom-indicator" style="font-size:11px; font-family:monospace; color:#34d399; background:#020617; padding:2px 8px; border-radius:4px; border:1px solid #334155;">100%</span>
+                        <span style="font-size:11px; color:#64748b;">(Click or Scroll to Zoom &middot; Drag to Pan)</span>
+                    </div>
                 </div>
-                <div style="flex:1; min-height:0; height:clamp(520px, 68vh, 1100px); padding:clamp(8px, 1.5vh, 16px); background:#ffffff; display:flex; justify-content:center; align-items:center; overflow:hidden;">
-                    <img src="${{IMAGE_VTL_CAD}}" alt="Master CAD Deck Plan" style="width:100%; height:100%; max-height:100%; object-fit:contain; display:block;" />
+
+                <!-- Deep Drafting Canvas with Subtle Grid -->
+                <div id="vtl-canvas-board" onwheel="onVtlWheel(event)" onmousedown="onVtlMouseDown(event)" onmousemove="onVtlMouseMove(event)" onmouseup="onVtlMouseUp(event)" ondblclick="toggleVtlZoomDbl(event)"
+                     style="flex:1; min-height:0; width:100%; height:100%; background:#050914; background-image:radial-gradient(rgba(56, 189, 248, 0.12) 1px, transparent 1px); background-size:24px 24px; display:flex; justify-content:center; align-items:center; overflow:hidden; position:relative; cursor:zoom-in;">
+                    
+                    <div id="vtl-sheet-wrapper" style="transform-origin:center center; transition:transform 0.08s ease-out; display:flex; align-items:center; justify-content:center; max-width:98%; max-height:98%; width:100%; height:100%; user-select:none;">
+                        <img id="vtl-inspect-img" src="${{imgSrc}}" alt="${{altText}}" draggable="false"
+                             style="display:block; max-width:96%; max-height:96%; width:auto; height:auto; object-fit:contain; background:#ffffff; padding:12px; border-radius:8px; box-shadow:0 16px 48px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.12); pointer-events:auto;" />
+                    </div>
                 </div>
-                <div style="background:#0f172a; padding:8px 18px; border-top:1px solid #1e293b; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; font-size:12px; color:#94a3b8; flex-shrink:0;">
-                    <span>Includes: Compartment Bulkheads &bull; Hatches &bull; Stairs &bull; 3/8" CFW Piping System &bull; Room Titles</span>
+
+                <!-- Minimal Canvas Footer Strip -->
+                <div style="background:#0b1120; padding:6px 16px; border-top:1px solid #1e293b; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; font-size:11.5px; color:#94a3b8; flex-shrink:0;">
+                    <span>${{footerText}}</span>
                     <span style="color:#34d399; font-weight:700;">&bull; Ingested into VTL Knowledge Graph</span>
                 </div>
             </div>
         `;
+    }}
+
+    if (mode === "cad") {{
+        container.innerHTML = renderHeroCanvas(
+            "MASTER CAD GENERAL ARRANGEMENT (PLAN NO. 1 DECK)",
+            "VECTOR RASTER &middot; 1:50 SCALE",
+            "#0284c7",
+            "#ffffff",
+            IMAGE_VTL_CAD,
+            "Master CAD Deck Plan",
+            "Includes: Compartment Bulkheads &bull; Hatches &bull; Stairs &bull; 3/8&Prime; CFW Piping System &bull; Room Titles &bull; Frames 155–180"
+        );
+        if (sideInfo) {{
+            sideInfo.style.borderColor = "#0284c7";
+            sideInfo.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:10.5px; color:#38bdf8; font-weight:800; letter-spacing:0.8px;">ACTIVE LAYER</span>
+                    <span style="font-size:9.5px; background:#0369a1; color:#ffffff; padding:2px 6px; border-radius:4px; font-weight:800;">MASTER BASELINE</span>
+                </div>
+                <div style="font-size:13.5px; font-weight:800; color:#ffffff; font-family:'Barlow Semi Condensed',sans-serif; margin-top:4px;">Master 2D General Arrangement</div>
+                <p style="font-size:11px; color:#cbd5e1; margin:4px 0 0 0; line-height:1.45;">
+                    Primary engineering deck plan ingested from ship records. Serves as ground truth geometry for structural boundaries, watertight bulkheads, and machinery access compartments.
+                </p>
+            `;
+        }}
     }} else if (mode === "geometry") {{
-        container.innerHTML = `
-            <div style="width:100%; height:100%; flex:1; min-height:0; display:flex; flex-direction:column; background:#0b1120; border:1.5px solid #0284c7; border-radius:12px; overflow:hidden; box-shadow:0 8px 24px rgba(0,0,0,0.4);">
-                <div style="background:#0369a1; padding:8px 18px; display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
-                    <span style="font-size:12px; font-weight:800; color:#ffffff; font-family:'Barlow Semi Condensed',sans-serif; letter-spacing:0.8px;">LAYER 1: STRUCTURAL BULKHEADS &amp; PIPING GEOMETRY (ALL TEXT STRIPPED)</span>
-                    <span style="font-size:10px; background:#0c4a6e; color:#bae6fd; padding:2px 7px; border-radius:4px; font-weight:700;">3D CAD EXTRUSION READY</span>
+        container.innerHTML = renderHeroCanvas(
+            "LAYER 1: STRUCTURAL BULKHEADS &amp; PIPING GEOMETRY",
+            "3D CAD EXTRUSION READY",
+            "#0369a1",
+            "#bae6fd",
+            IMAGE_VTL_GEOMETRY,
+            "Structural Bulkheads &amp; Piping Geometry Layer",
+            "Extracted: Watertight Steel Bulkheads &bull; 3/8&Prime; CFW Supply Line &bull; Access Openings &bull; Frames 155–180"
+        );
+        if (sideInfo) {{
+            sideInfo.style.borderColor = "#0284c7";
+            sideInfo.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:10.5px; color:#38bdf8; font-weight:800; letter-spacing:0.8px;">LAYER 1: GEOMETRY ISOLATION</span>
+                    <span style="font-size:9.5px; background:#0c4a6e; color:#bae6fd; padding:2px 6px; border-radius:4px; font-weight:800;">3D CAD READY</span>
                 </div>
-                <div style="flex:1; min-height:0; height:clamp(520px, 66vh, 1050px); padding:clamp(8px, 1.5vh, 16px); background:#ffffff; display:flex; justify-content:center; align-items:center; overflow:hidden;">
-                    <img src="${{IMAGE_VTL_GEOMETRY}}" alt="Structural &amp; Piping Geometry Layer" style="width:100%; height:100%; max-height:100%; object-fit:contain; display:block;" />
-                </div>
-                <div style="background:#0f172a; padding:10px 18px; border-top:1px solid #1e293b; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; flex-shrink:0;">
-                    <p style="margin:0; font-size:12px; color:#cbd5e1; line-height:1.45;">
-                        <strong>Algorithmic Extraction:</strong> All room labels, dimension text, and callout arrows have been removed via morphological filtering. The remaining closed boundary loops represent structural steel bulkheads and continuous 3/8" CFW utility lines ready for automated 3D mesh reconstruction.
-                    </p>
-                </div>
-            </div>
-        `;
+                <div style="font-size:13.5px; font-weight:800; color:#38bdf8; font-family:'Barlow Semi Condensed',sans-serif; margin-top:4px;">Vector Boundary Loops Extracted</div>
+                <p style="font-size:11px; color:#cbd5e1; margin:4px 0 0 0; line-height:1.45;">
+                    All room labels, dimension text, and callout arrows removed via morphological filtering. The remaining closed boundary loops represent structural steel bulkheads and continuous 3/8&Prime; CFW utility lines ready for automated 3D mesh reconstruction.
+                </p>
+            `;
+        }}
     }} else if (mode === "text") {{
-        container.innerHTML = `
-            <div style="width:100%; height:100%; flex:1; min-height:0; display:flex; flex-direction:column; background:#0b1120; border:1.5px solid #8b5cf6; border-radius:12px; overflow:hidden; box-shadow:0 8px 24px rgba(0,0,0,0.4);">
-                <div style="background:#6d28d9; padding:8px 18px; display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
-                    <span style="font-size:12px; font-weight:800; color:#ffffff; font-family:'Barlow Semi Condensed',sans-serif; letter-spacing:0.8px;">LAYER 2: SEMANTIC TEXT &amp; OCR ANNOTATIONS (GEOMETRY STRIPPED)</span>
-                    <span style="font-size:10px; background:#4c1d95; color:#e9d5ff; padding:2px 7px; border-radius:4px; font-weight:700;">SEMANTIC ENTITY GRAPH</span>
+        container.innerHTML = renderHeroCanvas(
+            "LAYER 2: SEMANTIC TEXT &amp; OCR ANNOTATIONS",
+            "14 METADATA ENTITIES EXTRACTED",
+            "#6d28d9",
+            "#e9d5ff",
+            IMAGE_VTL_TEXT,
+            "Semantic Text &amp; OCR Layer",
+            "Parsed Entities: Compartment Designations &bull; Equipment References &bull; Utility Sizing &bull; Centerline Markings"
+        );
+        if (sideInfo) {{
+            sideInfo.style.borderColor = "#8b5cf6";
+            sideInfo.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:10.5px; color:#c084fc; font-weight:800; letter-spacing:0.8px;">LAYER 2: SEMANTIC GRAPH</span>
+                    <span style="font-size:9.5px; background:#4c1d95; color:#e9d5ff; padding:2px 6px; border-radius:4px; font-weight:800;">14 ENTITY NODES</span>
                 </div>
-                <div style="flex:1; min-height:0; height:clamp(500px, 62vh, 1000px); padding:clamp(8px, 1.5vh, 16px); background:#ffffff; display:flex; justify-content:center; align-items:center; overflow:hidden;">
-                    <img src="${{IMAGE_VTL_TEXT}}" alt="Semantic Text &amp; OCR Layer" style="width:100%; height:100%; max-height:100%; object-fit:contain; display:block;" />
+                <div style="font-size:13.5px; font-weight:800; color:#c084fc; font-family:'Barlow Semi Condensed',sans-serif; margin-top:4px;">Extracted Compartment &amp; Equipment Nodes:</div>
+                <div style="display:flex; flex-wrap:wrap; gap:5px; margin-top:8px;">
+                    <span class="vtl-tag-pill">BOLSTAVE, PLATE &amp; TIMBER STORE</span>
+                    <span class="vtl-tag-pill">WINCH GENERATOR ROOM</span>
+                    <span class="vtl-tag-pill">BATTERY ROOM</span>
+                    <span class="vtl-tag-pill">BATTERY CHARGER ROOM</span>
+                    <span class="vtl-tag-pill">R.A.S. GEAR STORE</span>
+                    <span class="vtl-tag-pill">STORES HATCH</span>
+                    <span class="vtl-tag-pill">COOLER ACCESS SPACE</span>
+                    <span class="vtl-tag-pill">GARAGE</span>
+                    <span class="vtl-tag-pill">EXST 3/8&Prime; CFW SYS</span>
+                    <span class="vtl-tag-pill">EYEWASH, SEE REF NO. 6</span>
+                    <span class="vtl-tag-pill">CL OF SHIP</span>
+                    <span class="vtl-tag-pill">PLAN NO. 1 DECK FWD</span>
                 </div>
-                <div style="background:#0f172a; padding:10px 18px; border-top:1px solid #1e293b; display:flex; flex-direction:column; gap:6px; flex-shrink:0;">
-                    <span style="font-size:11.5px; font-weight:800; color:#a78bfa; font-family:'Barlow Semi Condensed',sans-serif;">PARSED METADATA ENTITIES (14 EXTRACTED NODES):</span>
-                    <div style="display:flex; flex-wrap:wrap; gap:6px;">
-                        <span class="vtl-tag-pill">BOLSTAVE, PLATE &amp; TIMBER STORE</span>
-                        <span class="vtl-tag-pill">WINCH GENERATOR ROOM</span>
-                        <span class="vtl-tag-pill">BATTERY ROOM</span>
-                        <span class="vtl-tag-pill">BATTERY CHARGER ROOM</span>
-                        <span class="vtl-tag-pill">R.A.S. GEAR STORE</span>
-                        <span class="vtl-tag-pill">STORES HATCH</span>
-                        <span class="vtl-tag-pill">COOLER ACCESS SPACE</span>
-                        <span class="vtl-tag-pill">GARAGE</span>
-                        <span class="vtl-tag-pill">EXST 3/8" CFW SYS</span>
-                        <span class="vtl-tag-pill">EYEWASH, SEE REF NO. 6</span>
-                        <span class="vtl-tag-pill">CL OF SHIP</span>
-                        <span class="vtl-tag-pill">PLAN NO. 1 DECK FWD</span>
-                    </div>
-                </div>
-            </div>
-        `;
+            `;
+        }}
     }} else if (mode === "pipeline") {{
         container.innerHTML = `
-            <div style="width:100%; height:100%; flex:1; min-height:0; display:flex; flex-direction:column; gap:10px;">
-                <div style="background:#1e293b; padding:8px 18px; border-radius:8px; border:1px solid #334155; display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
+            <div style="width:100%; height:100%; flex:1; min-height:0; display:flex; flex-direction:column; padding:10px; gap:10px; overflow-y:auto; background:#050914;">
+                <div style="background:#0f172a; padding:8px 16px; border-radius:8px; border:1px solid #334155; display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
                     <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:12.5px; font-weight:800; color:#38bdf8; letter-spacing:0.8px;">4-STAGE COMPUTER VISION &amp; CAD DECOMPOSITION WORKFLOW</span>
-                    <span style="font-size:11px; color:#34d399; font-weight:700;">VTL AUTOMATED INGESTION</span>
+                    <span style="font-size:11px; color:#34d399; font-weight:700;">Click any card to inspect in full-resolution hero view</span>
                 </div>
-                <div style="flex:1; min-height:0; display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <div style="flex:1; min-height:0; display:grid; grid-template-columns:1fr 1fr; gap:10px;">
                     <!-- Step 1 -->
-                    <div style="background:#0b1120; border:1px solid #334155; border-radius:10px; overflow:hidden; display:flex; flex-direction:column;">
-                        <div style="background:#1e293b; padding:6px 12px; display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
+                    <div onclick="switchVtlView('scan')" style="background:#0b1120; border:1.5px solid #334155; border-radius:8px; overflow:hidden; display:flex; flex-direction:column; cursor:pointer;" class="vtl-pipeline-card">
+                        <div style="background:#1e293b; padding:6px 12px; display:flex; justify-content:space-between; align-items:center;">
                             <span style="font-size:11.5px; font-weight:800; color:#94a3b8; font-family:'Barlow Semi Condensed',sans-serif;">1. RAW SCANNED BLUEPRINT</span>
-                            <span style="font-size:9.5px; background:#0f172a; color:#cbd5e1; padding:2px 6px; border-radius:4px;">ARCHIVE SOURCE</span>
+                            <span style="font-size:9.5px; background:#020617; color:#94a3b8; padding:2px 6px; border-radius:4px;">ARCHIVE SOURCE</span>
                         </div>
-                        <div style="flex:1; min-height:0; height:clamp(220px, 30vh, 440px); background:#ffffff; padding:8px; display:flex; justify-content:center; align-items:center;">
-                            <img src="${{IMAGE_VTL_SCAN}}" alt="Raw Scanned Blueprint" style="width:100%; height:100%; object-fit:contain;" />
+                        <div style="flex:1; min-height:0; background:#ffffff; padding:6px; display:flex; justify-content:center; align-items:center;">
+                            <img src="${{IMAGE_VTL_SCAN}}" alt="Raw Scanned Blueprint" style="max-width:100%; max-height:100%; object-fit:contain;" />
                         </div>
                     </div>
                     <!-- Step 2 -->
-                    <div style="background:#0b1120; border:1.5px solid #0284c7; border-radius:10px; overflow:hidden; display:flex; flex-direction:column;">
-                        <div style="background:#0369a1; padding:6px 12px; display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
+                    <div onclick="switchVtlView('cad')" style="background:#0b1120; border:1.5px solid #0284c7; border-radius:8px; overflow:hidden; display:flex; flex-direction:column; cursor:pointer;" class="vtl-pipeline-card">
+                        <div style="background:#0369a1; padding:6px 12px; display:flex; justify-content:space-between; align-items:center;">
                             <span style="font-size:11.5px; font-weight:800; color:#ffffff; font-family:'Barlow Semi Condensed',sans-serif;">2. CLEAN VECTOR RECONSTRUCTION</span>
                             <span style="font-size:9.5px; background:#0c4a6e; color:#bae6fd; padding:2px 6px; border-radius:4px;">DIGITIZED CAD</span>
                         </div>
-                        <div style="flex:1; min-height:0; height:clamp(220px, 30vh, 440px); background:#ffffff; padding:8px; display:flex; justify-content:center; align-items:center;">
-                            <img src="${{IMAGE_VTL_CAD}}" alt="Master CAD Deck Plan" style="width:100%; height:100%; object-fit:contain;" />
+                        <div style="flex:1; min-height:0; background:#ffffff; padding:6px; display:flex; justify-content:center; align-items:center;">
+                            <img src="${{IMAGE_VTL_CAD}}" alt="Master CAD Deck Plan" style="max-width:100%; max-height:100%; object-fit:contain;" />
                         </div>
                     </div>
                     <!-- Step 3 -->
-                    <div style="background:#0b1120; border:1.5px solid #10b981; border-radius:10px; overflow:hidden; display:flex; flex-direction:column;">
-                        <div style="background:#065f46; padding:6px 12px; display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
+                    <div onclick="switchVtlView('geometry')" style="background:#0b1120; border:1.5px solid #10b981; border-radius:8px; overflow:hidden; display:flex; flex-direction:column; cursor:pointer;" class="vtl-pipeline-card">
+                        <div style="background:#065f46; padding:6px 12px; display:flex; justify-content:space-between; align-items:center;">
                             <span style="font-size:11.5px; font-weight:800; color:#ffffff; font-family:'Barlow Semi Condensed',sans-serif;">3. ISOLATED GEOMETRY &amp; PIPING</span>
                             <span style="font-size:9.5px; background:#064e3b; color:#a7f3d0; padding:2px 6px; border-radius:4px;">3D BASELINE</span>
                         </div>
-                        <div style="flex:1; min-height:0; height:clamp(220px, 30vh, 440px); background:#ffffff; padding:8px; display:flex; justify-content:center; align-items:center;">
-                            <img src="${{IMAGE_VTL_GEOMETRY}}" alt="Isolated Geometry" style="width:100%; height:100%; object-fit:contain;" />
+                        <div style="flex:1; min-height:0; background:#ffffff; padding:6px; display:flex; justify-content:center; align-items:center;">
+                            <img src="${{IMAGE_VTL_GEOMETRY}}" alt="Isolated Geometry" style="max-width:100%; max-height:100%; object-fit:contain;" />
                         </div>
                     </div>
                     <!-- Step 4 -->
-                    <div style="background:#0b1120; border:1.5px solid #8b5cf6; border-radius:10px; overflow:hidden; display:flex; flex-direction:column;">
-                        <div style="background:#6d28d9; padding:6px 12px; display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
+                    <div onclick="switchVtlView('text')" style="background:#0b1120; border:1.5px solid #8b5cf6; border-radius:8px; overflow:hidden; display:flex; flex-direction:column; cursor:pointer;" class="vtl-pipeline-card">
+                        <div style="background:#6d28d9; padding:6px 12px; display:flex; justify-content:space-between; align-items:center;">
                             <span style="font-size:11.5px; font-weight:800; color:#ffffff; font-family:'Barlow Semi Condensed',sans-serif;">4. EXTRACTED SEMANTIC LABELS &amp; OCR</span>
-                            <span style="font-size:9.5px; background:#4c1d95; color:#e9d5ff; padding:2px 6px; border-radius:4px;">METADATA</span>
+                            <span style="font-size:9.5px; background:#4c1d95; color:#e9d5ff; padding:2px 6px; border-radius:4px;">METADATA GRAPH</span>
                         </div>
-                        <div style="flex:1; min-height:0; height:clamp(220px, 30vh, 440px); background:#ffffff; padding:8px; display:flex; justify-content:center; align-items:center;">
-                            <img src="${{IMAGE_VTL_TEXT}}" alt="Semantic Text OCR" style="width:100%; height:100%; object-fit:contain;" />
+                        <div style="flex:1; min-height:0; background:#ffffff; padding:6px; display:flex; justify-content:center; align-items:center;">
+                            <img src="${{IMAGE_VTL_TEXT}}" alt="Semantic Text OCR" style="max-width:100%; max-height:100%; object-fit:contain;" />
                         </div>
                     </div>
                 </div>
             </div>
         `;
+        if (sideInfo) {{
+            sideInfo.style.borderColor = "#10b981";
+            sideInfo.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:10.5px; color:#38bdf8; font-weight:800; letter-spacing:0.8px;">PIPELINE ARCHITECTURE</span>
+                    <span style="font-size:9.5px; background:#065f46; color:#a7f3d0; padding:2px 6px; border-radius:4px; font-weight:800;">AUTOMATED CV</span>
+                </div>
+                <div style="font-size:13.5px; font-weight:800; color:#34d399; font-family:'Barlow Semi Condensed',sans-serif; margin-top:4px;">End-to-End VTL Ingestion Pipeline</div>
+                <p style="font-size:11px; color:#cbd5e1; margin:4px 0 0 0; line-height:1.45;">
+                    Converts unstructured raster scans into twin-ready relational geometry: 1) Archive raster denoising, 2) Vector skeletonization, 3) Morphological layer splitting into pure bulkheads/piping, and 4) OCR knowledge graph ingestion.
+                </p>
+            `;
+        }}
     }} else if (mode === "alignment") {{
-        container.innerHTML = `
-            <div style="width:100%; height:100%; flex:1; min-height:0; display:flex; flex-direction:column; background:#0b1120; border:1.5px solid #10b981; border-radius:12px; overflow:hidden; box-shadow:0 8px 24px rgba(0,0,0,0.4);">
-                <div style="background:#065f46; padding:8px 18px; display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
-                    <span style="font-size:12px; font-weight:800; color:#ffffff; font-family:'Barlow Semi Condensed',sans-serif; letter-spacing:0.8px;">LAYER 3: VESSEL CENTERLINE, DATUM AXES &amp; DIMENSION EXTENTS</span>
-                    <span style="font-size:10px; background:#064e3b; color:#a7f3d0; padding:2px 7px; border-radius:4px; font-weight:700;">WORLD COORDINATES</span>
+        container.innerHTML = renderHeroCanvas(
+            "LAYER 3: VESSEL CENTERLINE, DATUM AXES &amp; EXTENTS",
+            "WORLD COORDINATES &middot; GEO-REFERENCED",
+            "#065f46",
+            "#a7f3d0",
+            IMAGE_VTL_ALIGNMENT,
+            "Centerline &amp; Alignment Datum Axes",
+            "Geometric Referencing: Longitudinal Centerline (CL) &bull; Frame Ticks 155–180 &bull; Structural Alignment Reference"
+        );
+        if (sideInfo) {{
+            sideInfo.style.borderColor = "#10b981";
+            sideInfo.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:10.5px; color:#34d399; font-weight:800; letter-spacing:0.8px;">LAYER 3: SPATIAL DATUM</span>
+                    <span style="font-size:9.5px; background:#064e3b; color:#a7f3d0; padding:2px 6px; border-radius:4px; font-weight:800;">GEO-REFERENCED</span>
                 </div>
-                <div style="flex:1; min-height:0; height:clamp(520px, 66vh, 1050px); padding:clamp(8px, 1.5vh, 16px); background:#ffffff; display:flex; justify-content:center; align-items:center; overflow:hidden;">
-                    <img src="${{IMAGE_VTL_ALIGNMENT}}" alt="Centerline &amp; Alignment Datum Axes" style="width:100%; height:100%; max-height:100%; object-fit:contain; display:block;" />
-                </div>
-                <div style="background:#0f172a; padding:10px 18px; border-top:1px solid #1e293b; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; flex-shrink:0;">
-                    <p style="margin:0; font-size:12px; color:#cbd5e1; line-height:1.45;">
-                        <strong>Geometric Referencing:</strong> Isolates the vessel longitudinal Centerline (CL), frame spacing tick marks (Frames 155 through 180), and room boundary dimensions for automated spatial alignment with the live LiDAR point cloud.
-                    </p>
-                </div>
-            </div>
-        `;
+                <div style="font-size:13.5px; font-weight:800; color:#34d399; font-family:'Barlow Semi Condensed',sans-serif; margin-top:4px;">Longitudinal Centerline &amp; Frame Index</div>
+                <p style="font-size:11px; color:#cbd5e1; margin:4px 0 0 0; line-height:1.45;">
+                    Isolates the vessel longitudinal Centerline (CL), frame spacing tick marks (Frames 155 through 180), and room boundary dimensions for automated spatial alignment with the live LiDAR point cloud.
+                </p>
+            `;
+        }}
     }} else if (mode === "scan") {{
-        container.innerHTML = `
-            <div style="width:100%; height:100%; flex:1; min-height:0; display:flex; flex-direction:column; background:#0b1120; border:1.5px solid #334155; border-radius:12px; overflow:hidden; box-shadow:0 8px 24px rgba(0,0,0,0.4);">
-                <div style="background:#334155; padding:8px 18px; display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
-                    <span style="font-size:12px; font-weight:800; color:#ffffff; font-family:'Barlow Semi Condensed',sans-serif; letter-spacing:0.8px;">HISTORICAL SOURCE ARTIFACT: DIGITIZED SCANNED BLUEPRINT</span>
-                    <span style="font-size:10px; background:#0f172a; color:#e2e8f0; padding:2px 7px; border-radius:4px; font-weight:700;">ARCHIVAL SCAN</span>
+        container.innerHTML = renderHeroCanvas(
+            "HISTORICAL SOURCE ARTIFACT: DIGITIZED SCANNED BLUEPRINT",
+            "ARCHIVAL MICROFILM SCAN",
+            "#334155",
+            "#f1f5f9",
+            IMAGE_VTL_SCAN,
+            "Digitized Scanned Blueprint",
+            "Source Ingestion: Authentic scanned General Arrangement drawing from ship technical files &bull; Ground Truth Legacy GA"
+        );
+        if (sideInfo) {{
+            sideInfo.style.borderColor = "#64748b";
+            sideInfo.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:10.5px; color:#94a3b8; font-weight:800; letter-spacing:0.8px;">SOURCE ARTIFACT</span>
+                    <span style="font-size:9.5px; background:#1e293b; color:#cbd5e1; padding:2px 6px; border-radius:4px; font-weight:800;">LEGACY GA</span>
                 </div>
-                <div style="flex:1; min-height:0; height:clamp(520px, 66vh, 1050px); padding:clamp(8px, 1.5vh, 16px); background:#ffffff; display:flex; justify-content:center; align-items:center; overflow:hidden;">
-                    <img src="${{IMAGE_VTL_SCAN}}" alt="Digitized Scanned Blueprint" style="width:100%; height:100%; max-height:100%; object-fit:contain; display:block;" />
-                </div>
-                <div style="background:#0f172a; padding:10px 18px; border-top:1px solid #1e293b; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; flex-shrink:0;">
-                    <p style="margin:0; font-size:12px; color:#cbd5e1; line-height:1.45;">
-                        <strong>Source Ingestion:</strong> Authentic scanned General Arrangement drawing from ship technical files. Demonstrates the typical legacy format that the VTL engine ingests, cleans, and separates into structured data.
-                    </p>
-                </div>
-            </div>
-        `;
+                <div style="font-size:13.5px; font-weight:800; color:#f8fafc; font-family:'Barlow Semi Condensed',sans-serif; margin-top:4px;">Archival Engineering Microfilm</div>
+                <p style="font-size:11px; color:#cbd5e1; margin:4px 0 0 0; line-height:1.45;">
+                    Authentic scanned General Arrangement drawing from ship technical files. Demonstrates the typical legacy format that the VTL engine ingests, cleans, and separates into structured data.
+                </p>
+            `;
+        }}
     }} else if (mode === "vision") {{
         container.innerHTML = `
-            <div style="width:100%; height:100%; flex:1; min-height:0; display:flex; flex-direction:column; gap:10px;">
-                <div style="flex:1; min-height:0; display:grid; grid-template-columns:1fr 1fr; gap:14px;">
-                    <div style="background:#0b1120; border:1px solid #334155; border-radius:10px; overflow:hidden; display:flex; flex-direction:column;">
-                        <div style="background:#1e293b; padding:8px 14px; display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
-                            <span style="font-size:11.5px; font-weight:800; color:#38bdf8; font-family:'Barlow Semi Condensed',sans-serif;">BINARY EDGE DETECTION MASK</span>
-                            <span style="font-size:9.5px; background:#0284c7; color:#ffffff; padding:2px 6px; border-radius:4px;">EDGE FILTER</span>
+            <div style="width:100%; height:100%; flex:1; min-height:0; display:flex; flex-direction:column; padding:10px; gap:10px; overflow-y:auto; background:#050914;">
+                <div style="flex:1; min-height:0; display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                    <div style="background:#0b1120; border:1.5px solid #0284c7; border-radius:10px; overflow:hidden; display:flex; flex-direction:column;">
+                        <div style="background:#0369a1; padding:8px 14px; display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
+                            <span style="font-size:11.5px; font-weight:800; color:#ffffff; font-family:'Barlow Semi Condensed',sans-serif;">BINARY EDGE DETECTION MASK</span>
+                            <span style="font-size:9.5px; background:#0c4a6e; color:#bae6fd; padding:2px 6px; border-radius:4px; font-weight:700;">EDGE FILTER</span>
                         </div>
-                        <div style="flex:1; min-height:0; height:clamp(440px, 58vh, 850px); background:#ffffff; padding:10px; display:flex; justify-content:center; align-items:center;">
-                            <img src="${{IMAGE_VTL_BINARY}}" alt="Binary Edge Mask" style="width:100%; height:100%; max-height:100%; object-fit:contain;" />
+                        <div style="flex:1; min-height:0; background:#ffffff; padding:10px; display:flex; justify-content:center; align-items:center;">
+                            <img src="${{IMAGE_VTL_BINARY}}" alt="Binary Edge Mask" style="max-width:100%; max-height:100%; object-fit:contain;" />
                         </div>
                         <div style="padding:8px 14px; font-size:11.5px; color:#94a3b8; background:#0f172a; border-top:1px solid #1e293b; flex-shrink:0;">
                             Morphological gradient &amp; thresholding filter isolating boundary vectors.
                         </div>
                     </div>
 
-                    <div style="background:#0b1120; border:1px solid #334155; border-radius:10px; overflow:hidden; display:flex; flex-direction:column;">
-                        <div style="background:#1e293b; padding:8px 14px; display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
-                            <span style="font-size:11.5px; font-weight:800; color:#34d399; font-family:'Barlow Semi Condensed',sans-serif;">SEGMENTATION DETECTION MASK</span>
-                            <span style="font-size:9.5px; background:#065f46; color:#ffffff; padding:2px 6px; border-radius:4px;">FEATURE MASK</span>
+                    <div style="background:#0b1120; border:1.5px solid #10b981; border-radius:10px; overflow:hidden; display:flex; flex-direction:column;">
+                        <div style="background:#065f46; padding:8px 14px; display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
+                            <span style="font-size:11.5px; font-weight:800; color:#ffffff; font-family:'Barlow Semi Condensed',sans-serif;">SEGMENTATION DETECTION MASK</span>
+                            <span style="font-size:9.5px; background:#064e3b; color:#a7f3d0; padding:2px 6px; border-radius:4px; font-weight:700;">FEATURE MASK</span>
                         </div>
-                        <div style="flex:1; min-height:0; height:clamp(440px, 58vh, 850px); background:#ffffff; padding:10px; display:flex; justify-content:center; align-items:center;">
-                            <img src="${{IMAGE_VTL_MASK}}" alt="Segmentation Mask" style="width:100%; height:100%; max-height:100%; object-fit:contain;" />
+                        <div style="flex:1; min-height:0; background:#ffffff; padding:10px; display:flex; justify-content:center; align-items:center;">
+                            <img src="${{IMAGE_VTL_MASK}}" alt="Segmentation Mask" style="max-width:100%; max-height:100%; object-fit:contain;" />
                         </div>
                         <div style="padding:8px 14px; font-size:11.5px; color:#94a3b8; background:#0f172a; border-top:1px solid #1e293b; flex-shrink:0;">
                             Compartment contour clustering and equipment bounding-box detection.
@@ -3096,7 +3355,21 @@ window.switchVtlView = function(mode) {{
                 </div>
             </div>
         `;
+        if (sideInfo) {{
+            sideInfo.style.borderColor = "#0284c7";
+            sideInfo.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:10.5px; color:#38bdf8; font-weight:800; letter-spacing:0.8px;">COMPUTER VISION</span>
+                    <span style="font-size:9.5px; background:#0369a1; color:#ffffff; padding:2px 6px; border-radius:4px; font-weight:800;">DUAL MASKS</span>
+                </div>
+                <div style="font-size:13.5px; font-weight:800; color:#38bdf8; font-family:'Barlow Semi Condensed',sans-serif; margin-top:4px;">Morphological Masks &amp; Segmentation</div>
+                <p style="font-size:11px; color:#cbd5e1; margin:4px 0 0 0; line-height:1.45;">
+                    Binary edge gradient filters isolate continuous boundary contours, while semantic segmentation masks identify discrete compartment envelopes, door cutouts, and piping runs.
+                </p>
+            `;
+        }}
     }}
+    window.updateVtlTransform();
 }};
 
 </script>
