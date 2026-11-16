@@ -2540,30 +2540,16 @@ function openModal(nodeId) {{
 
             body.innerHTML = `
                 <div style="display:flex; flex-direction:column; width:100%; height:100%; flex:1; min-height:0; color:#f8fafc; overflow:hidden;">
-                    <!-- Top Control Strip: Inspection Tabs + CAD Zoom Toolbar -->
-                    <div style="background:#0f172a; padding:8px 16px; border-bottom:1px solid #1e293b; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; flex-shrink:0;">
-                        <div style="display:flex; gap:6px; align-items:center; overflow-x:auto; flex-wrap:nowrap; max-width:68%;">
-                            <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; color:#64748b; letter-spacing:1px; margin-right:4px; white-space:nowrap;">INSPECTION VIEW:</span>
-                            <button class="vtl-nav-btn active" id="btn-vtl-cad" onclick="switchVtlView('cad')">📑 Master CAD Plan</button>
-                            <button class="vtl-nav-btn" id="btn-vtl-geometry" onclick="switchVtlView('geometry')">🧱 Geometry &amp; Piping</button>
-                            <button class="vtl-nav-btn" id="btn-vtl-text" onclick="switchVtlView('text')">🏷️ Semantic Text &amp; OCR</button>
-                            <button class="vtl-nav-btn" id="btn-vtl-pipeline" onclick="switchVtlView('pipeline')">🔬 4-Stage Pipeline</button>
-                            <button class="vtl-nav-btn" id="btn-vtl-alignment" onclick="switchVtlView('alignment')">📏 Datum &amp; Centerline</button>
-                            <button class="vtl-nav-btn" id="btn-vtl-scan" onclick="switchVtlView('scan')">📜 Raw Blueprint</button>
-                            <button class="vtl-nav-btn" id="btn-vtl-vision" onclick="switchVtlView('vision')">👁️ Vision Feature Masks</button>
-                        </div>
-                        
-                        <!-- Interactive Zoom & Workstation Tools -->
-                        <div id="vtl-zoom-toolbar" style="display:flex; align-items:center; gap:5px; flex-shrink:0;">
-                            <span style="font-size:11px; font-weight:700; color:#94a3b8; font-family:'Barlow Semi Condensed',sans-serif;">ZOOM:</span>
-                            <button class="vtl-tool-btn active-zoom" id="vtl-btn-zoom-fit" onclick="setVtlZoom(1.0)" title="Fit whole blueprint in view">Fit</button>
-                            <button class="vtl-tool-btn" id="vtl-btn-zoom-140" onclick="setVtlZoom(1.4)" title="140% Large View">140%</button>
-                            <button class="vtl-tool-btn" id="vtl-btn-zoom-200" onclick="setVtlZoom(2.0)" title="200% Deep Zoom into Text &amp; Piping">200%</button>
-                            <button class="vtl-tool-btn icon-btn" onclick="zoomVtlStep(0.25)" title="Zoom in">+</button>
-                            <button class="vtl-tool-btn icon-btn" onclick="zoomVtlStep(-0.25)" title="Zoom out">&minus;</button>
-                            <button class="vtl-tool-btn" onclick="resetVtlZoom()" title="Reset view">↺</button>
-                            <button class="vtl-tool-btn" id="btn-vtl-sidebar-toggle" onclick="toggleVtlSidebar()" title="Toggle Full Canvas / Specifications Panel">⛶ Full Canvas</button>
-                        </div>
+                    <!-- Top Control Strip: Inspection Tabs -->
+                    <div style="background:#0f172a; padding:8px 18px; border-bottom:1px solid #1e293b; display:flex; gap:8px; overflow-x:auto; align-items:center; flex-wrap:wrap; flex-shrink:0;">
+                        <span style="font-family:'Barlow Semi Condensed',sans-serif; font-size:11px; font-weight:800; color:#64748b; letter-spacing:1px; margin-right:4px; white-space:nowrap;">INSPECTION VIEW:</span>
+                        <button class="vtl-nav-btn active" id="btn-vtl-cad" onclick="switchVtlView('cad')">📑 Master CAD Plan</button>
+                        <button class="vtl-nav-btn" id="btn-vtl-geometry" onclick="switchVtlView('geometry')">🧱 Geometry &amp; Piping</button>
+                        <button class="vtl-nav-btn" id="btn-vtl-text" onclick="switchVtlView('text')">🏷️ Semantic Text &amp; OCR</button>
+                        <button class="vtl-nav-btn" id="btn-vtl-pipeline" onclick="switchVtlView('pipeline')">🔬 4-Stage Pipeline</button>
+                        <button class="vtl-nav-btn" id="btn-vtl-alignment" onclick="switchVtlView('alignment')">📏 Datum &amp; Centerline</button>
+                        <button class="vtl-nav-btn" id="btn-vtl-scan" onclick="switchVtlView('scan')">📜 Raw Blueprint</button>
+                        <button class="vtl-nav-btn" id="btn-vtl-vision" onclick="switchVtlView('vision')">👁️ Vision Feature Masks</button>
                     </div>
 
                     <!-- Split Workstation: Hero Canvas + Extracted Telemetry Sidebar -->
@@ -2979,31 +2965,15 @@ let vtlPanY = 0;
 let vtlIsPanning = false;
 let vtlStartX = 0;
 let vtlStartY = 0;
-let vtlSidebarCollapsed = false;
 
 window.updateVtlTransform = function() {{
     const wrapper = document.getElementById("vtl-sheet-wrapper");
-    const indicator = document.getElementById("vtl-zoom-indicator");
     if (wrapper) {{
         wrapper.style.transform = "translate(" + vtlPanX + "px, " + vtlPanY + "px) scale(" + vtlZoomLevel + ")";
     }}
-    if (indicator) {{
-        indicator.textContent = Math.round(vtlZoomLevel * 100) + "%";
-    }}
-    document.querySelectorAll(".vtl-tool-btn").forEach(btn => btn.classList.remove("active-zoom"));
-    if (Math.abs(vtlZoomLevel - 1.0) < 0.05) {{
-        const b = document.getElementById("vtl-btn-zoom-fit");
-        if (b) b.classList.add("active-zoom");
-    }} else if (Math.abs(vtlZoomLevel - 1.4) < 0.05) {{
-        const b = document.getElementById("vtl-btn-zoom-140");
-        if (b) b.classList.add("active-zoom");
-    }} else if (Math.abs(vtlZoomLevel - 2.0) < 0.05) {{
-        const b = document.getElementById("vtl-btn-zoom-200");
-        if (b) b.classList.add("active-zoom");
-    }}
     const board = document.getElementById("vtl-canvas-board");
     if (board) {{
-        board.style.cursor = vtlZoomLevel > 1.05 ? (vtlIsPanning ? "grabbing" : "grab") : "zoom-in";
+        board.style.cursor = vtlZoomLevel > 1.05 ? (vtlIsPanning ? "grabbing" : "grab") : "default";
     }}
 }};
 
@@ -3014,10 +2984,6 @@ window.setVtlZoom = function(level) {{
         vtlPanY = 0;
     }}
     window.updateVtlTransform();
-}};
-
-window.zoomVtlStep = function(delta) {{
-    window.setVtlZoom(vtlZoomLevel + delta);
 }};
 
 window.resetVtlZoom = function() {{
@@ -3037,15 +3003,12 @@ window.toggleVtlZoomDbl = function(e) {{
 
 window.onVtlWheel = function(e) {{
     e.preventDefault();
-    const delta = e.deltaY < 0 ? 0.2 : -0.2;
+    const delta = e.deltaY < 0 ? 0.18 : -0.18;
     window.setVtlZoom(vtlZoomLevel + delta);
 }};
 
 window.onVtlMouseDown = function(e) {{
-    if (vtlZoomLevel <= 1.0) {{
-        window.setVtlZoom(1.6);
-        return;
-    }}
+    if (vtlZoomLevel <= 1.02) return;
     vtlIsPanning = true;
     vtlStartX = e.clientX - vtlPanX;
     vtlStartY = e.clientY - vtlPanY;
@@ -3063,27 +3026,7 @@ window.onVtlMouseMove = function(e) {{
 window.onVtlMouseUp = function() {{
     vtlIsPanning = false;
     const board = document.getElementById("vtl-canvas-board");
-    if (board) board.style.cursor = vtlZoomLevel > 1.05 ? "grab" : "zoom-in";
-}};
-
-window.toggleVtlSidebar = function() {{
-    const panel = document.getElementById("vtl-side-panel");
-    const btn = document.getElementById("btn-vtl-sidebar-toggle");
-    if (!panel) return;
-    vtlSidebarCollapsed = !vtlSidebarCollapsed;
-    if (vtlSidebarCollapsed) {{
-        panel.style.display = "none";
-        if (btn) {{
-            btn.textContent = "📋 Show Specs";
-            btn.classList.add("active-zoom");
-        }}
-    }} else {{
-        panel.style.display = "flex";
-        if (btn) {{
-            btn.textContent = "⛶ Full Canvas";
-            btn.classList.remove("active-zoom");
-        }}
-    }}
+    if (board) board.style.cursor = vtlZoomLevel > 1.05 ? "grab" : "default";
 }};
 
 window.switchVtlView = function(mode) {{
@@ -3103,20 +3046,17 @@ window.switchVtlView = function(mode) {{
         return `
             <div style="width:100%; height:100%; flex:1; min-height:0; display:flex; flex-direction:column; overflow:hidden;">
                 <!-- Minimal Canvas Header Strip -->
-                <div style="background:#0b1120; padding:6px 16px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; flex-shrink:0;">
+                <div style="background:#0b1120; padding:7px 18px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; flex-shrink:0;">
                     <div style="display:flex; align-items:center; gap:8px;">
                         <span style="font-size:12px; font-weight:800; color:#38bdf8; font-family:'Barlow Semi Condensed',sans-serif; letter-spacing:0.8px;">${{title}}</span>
                         <span style="font-size:9.5px; background:${{tagBg}}; color:${{tagColor}}; padding:2px 7px; border-radius:4px; font-weight:700;">${{tagText}}</span>
                     </div>
-                    <div style="display:flex; align-items:center; gap:8px;">
-                        <span id="vtl-zoom-indicator" style="font-size:11px; font-family:monospace; color:#34d399; background:#020617; padding:2px 8px; border-radius:4px; border:1px solid #334155;">100%</span>
-                        <span style="font-size:11px; color:#64748b;">(Click or Scroll to Zoom &middot; Drag to Pan)</span>
-                    </div>
+                    <span style="font-size:11.5px; color:#64748b;">Plan No. 1 Deck &middot; High Resolution Engineering Drawing</span>
                 </div>
 
                 <!-- Deep Drafting Canvas with Subtle Grid -->
                 <div id="vtl-canvas-board" onwheel="onVtlWheel(event)" onmousedown="onVtlMouseDown(event)" onmousemove="onVtlMouseMove(event)" onmouseup="onVtlMouseUp(event)" ondblclick="toggleVtlZoomDbl(event)"
-                     style="flex:1; min-height:0; width:100%; height:100%; background:#050914; background-image:radial-gradient(rgba(56, 189, 248, 0.12) 1px, transparent 1px); background-size:24px 24px; display:flex; justify-content:center; align-items:center; overflow:hidden; position:relative; cursor:zoom-in;">
+                     style="flex:1; min-height:0; width:100%; height:100%; background:#050914; background-image:radial-gradient(rgba(56, 189, 248, 0.12) 1px, transparent 1px); background-size:24px 24px; display:flex; justify-content:center; align-items:center; overflow:hidden; position:relative; cursor:default;">
                     
                     <div id="vtl-sheet-wrapper" style="transform-origin:center center; transition:transform 0.08s ease-out; display:flex; align-items:center; justify-content:center; max-width:98%; max-height:98%; width:100%; height:100%; user-select:none;">
                         <img id="vtl-inspect-img" src="${{imgSrc}}" alt="${{altText}}" draggable="false"
