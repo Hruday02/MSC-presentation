@@ -3226,8 +3226,10 @@ def create_layout() -> html.Div:
                     html.Div(
                         id="modal-card",
                         style={
-                            "width": "100%",
-                            "maxWidth": "1340px",
+                            "width": "min(97vw, 1800px)",
+                            "maxWidth": "1800px",
+                            "height": "min(95vh, 95dvh)",
+                            "maxHeight": "95vh",
                             "backgroundColor": "#0b1329",
                             "borderRadius": "20px",
                             "border": "1.5px solid #334155",
@@ -3235,7 +3237,6 @@ def create_layout() -> html.Div:
                             "overflow": "hidden",
                             "display": "flex",
                             "flexDirection": "column",
-                            "maxHeight": "92vh",
                         },
                         children=[
                             # Static Header
