@@ -2838,7 +2838,6 @@ addEventListener('keydown', (e) => {
     const curIdx = PHASE_ORDER.indexOf(currentPhase);
     if (e.key === 'ArrowLeft' && curIdx > 0) goToPhase(PHASE_ORDER[curIdx - 1]);
     if (e.key === 'ArrowRight' && curIdx < PHASE_ORDER.length - 1) goToPhase(PHASE_ORDER[curIdx + 1]);
-    }
     if (e.key === 'Escape') {
         document.getElementById("modal-overlay").classList.remove("active");
         if (selectedNode) selectNode(null);
