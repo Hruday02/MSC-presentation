@@ -77,31 +77,62 @@ def generate_html():
             color: #0f172a;
             -webkit-font-smoothing: antialiased;
             user-select: none;
-            padding: 24px 32px 36px 32px;
-            max-width: 1640px;
+            padding: clamp(10px, 1.4vh, 20px) clamp(14px, 1.6vw, 30px);
+            max-width: 2560px;
+            width: 100%;
             margin: 0 auto;
+            height: 100vh;
+            height: 100dvh;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            gap: 18px;
+            gap: clamp(8px, 1.2vh, 16px);
+            overflow-x: hidden;
+            box-sizing: border-box;
+        }}
+
+        /* Fullscreen & Presentation Viewport Adaptation */
+        @media (min-height: 580px) and (min-width: 960px) {{
+            body {{
+                overflow-y: hidden;
+            }}
+        }}
+        @media (max-height: 579px), (max-width: 959px) {{
+            body {{
+                height: auto;
+                min-height: 100vh;
+                overflow-y: auto;
+            }}
         }}
 
         /* App Header */
         header {{
             display: flex;
-            justifyContent: space-between;
+            justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 16px;
+            gap: clamp(8px, 1vw, 16px);
             background: #ffffff;
-            padding: 20px 24px;
+            padding: clamp(8px, 1.2vh, 16px) clamp(14px, 1.5vw, 22px);
             border-radius: 14px;
             border: 1px solid #e2e8f0;
             box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+            flex-shrink: 0;
+        }}
+        .header-left {{
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }}
+        .header-right {{
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
         }}
         .eyebrow {{
             font-family: 'Barlow Semi Condensed', sans-serif;
-            font-size: 11px;
+            font-size: clamp(10px, 0.9vw, 12px);
             font-weight: 800;
             letter-spacing: 1.2px;
             text-transform: uppercase;
@@ -109,17 +140,51 @@ def generate_html():
         }}
         h1 {{
             font-family: 'Barlow Semi Condensed', sans-serif;
-            font-size: clamp(26px, 2.5vw, 34px);
+            font-size: clamp(22px, 2.2vw, 34px);
             font-weight: 800;
             color: #0f172a;
             line-height: 1.15;
-            margin-top: 2px;
+            margin-top: 1px;
+        }}
+
+        /* Projector / Fullscreen Toggle Button */
+        .fs-toggle-btn {{
+            appearance: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: clamp(6px, 0.9vh, 9px) clamp(10px, 1vw, 15px);
+            border-radius: 10px;
+            font-family: 'Barlow Semi Condensed', sans-serif;
+            font-size: clamp(12px, 1vw, 13.5px);
+            font-weight: 700;
+            cursor: pointer;
+            border: 1.5px solid #cbd5e1;
+            background: #ffffff;
+            color: #334155;
+            transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+            white-space: nowrap;
+        }}
+        .fs-toggle-btn:hover {{
+            border-color: #2563eb;
+            color: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+        }}
+        .fs-toggle-btn:active {{
+            transform: scale(0.97);
+        }}
+        body.is-fullscreen .fs-toggle-btn {{
+            background: #eff6ff;
+            border-color: #2563eb;
+            color: #1d4ed8;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
         }}
 
         /* Phase Navigation Buttons */
         .phase-tabs {{
             display: flex;
-            gap: 8px;
+            gap: clamp(4px, 0.6vw, 8px);
             flex-wrap: wrap;
         }}
         .phase-tab-btn {{
@@ -128,7 +193,7 @@ def generate_html():
             background: #ffffff;
             color: #334155;
             border-radius: 10px;
-            padding: 8px 16px;
+            padding: clamp(6px, 0.9vh, 9px) clamp(10px, 1vw, 16px);
             cursor: pointer;
             text-align: left;
             display: flex;
@@ -138,7 +203,7 @@ def generate_html():
         }}
         .phase-tab-btn .p-num {{
             font-family: 'Barlow Semi Condensed', sans-serif;
-            font-size: 11px;
+            font-size: clamp(9.5px, 0.8vw, 11px);
             font-weight: 800;
             letter-spacing: 1px;
             text-transform: uppercase;
@@ -146,7 +211,7 @@ def generate_html():
         }}
         .phase-tab-btn .p-title {{
             font-family: 'Barlow Semi Condensed', sans-serif;
-            font-size: 15px;
+            font-size: clamp(13px, 1vw, 15px);
             font-weight: 700;
             color: #0f172a;
         }}
@@ -166,12 +231,142 @@ def generate_html():
         /* Main Workspace Grid */
         main {{
             display: grid;
-            grid-template-columns: minmax(0, 1fr) 420px;
-            gap: 20px;
+            grid-template-columns: minmax(0, 1fr) clamp(290px, 23vw, 420px);
+            gap: clamp(10px, 1.3vw, 20px);
             flex: 1;
+            min-height: 0;
+            height: 100%;
         }}
-        @media (max-width: 1080px) {{
-            main {{ grid-template-columns: 1fr; }}
+
+        /* Responsive Layout for Squarish / 4:3 Projector Screens */
+        @media (max-aspect-ratio: 1.45/1) and (min-width: 960px) {{
+            main {{
+                grid-template-columns: minmax(0, 1fr) clamp(250px, 26vw, 310px);
+                gap: 12px;
+            }}
+            .notes-panel {{
+                padding: 14px;
+            }}
+            .notes-title {{
+                font-size: clamp(19px, 1.8vw, 22px);
+            }}
+            .notes-desc {{
+                font-size: 13px;
+                padding: 10px;
+            }}
+        }}
+
+        /* Responsive Layout for Ultrawide 21:9 Screens */
+        @media (min-aspect-ratio: 2/1) {{
+            main {{
+                grid-template-columns: minmax(0, 1fr) clamp(350px, 20vw, 460px);
+                gap: 24px;
+            }}
+        }}
+
+        /* Responsive Layout for 4K / Large Auditorium Projectors */
+        @media (min-width: 2200px), (min-height: 1200px) {{
+            body {{
+                padding: 24px 44px;
+                gap: 20px;
+            }}
+            h1 {{
+                font-size: 40px;
+            }}
+            .eyebrow {{
+                font-size: 13px;
+            }}
+            .phase-tab-btn {{
+                padding: 11px 18px;
+            }}
+            .phase-tab-btn .p-title {{
+                font-size: 17px;
+            }}
+            .phase-tab-btn .p-num {{
+                font-size: 12px;
+            }}
+            .notes-title {{
+                font-size: 30px;
+            }}
+            .notes-desc {{
+                font-size: 15.5px;
+            }}
+            .node-pill {{
+                font-size: 13.5px;
+                padding: 8px 14px;
+            }}
+            .nav-btn {{
+                font-size: 16px;
+                padding: 13px 18px;
+            }}
+            .fs-toggle-btn {{
+                padding: 11px 18px;
+                font-size: 15px;
+            }}
+        }}
+
+        /* Responsive Layout for Low Height Displays (e.g. 768p / 800p projector) */
+        @media (max-height: 720px) {{
+            body {{
+                padding: 8px 14px;
+                gap: 7px;
+            }}
+            header {{
+                padding: 6px 14px;
+                gap: 8px;
+            }}
+            h1 {{
+                font-size: 20px;
+            }}
+            .eyebrow {{
+                font-size: 9.5px;
+            }}
+            .phase-tab-btn {{
+                padding: 4px 8px;
+            }}
+            .phase-tab-btn .p-num {{
+                font-size: 9px;
+            }}
+            .phase-tab-btn .p-title {{
+                font-size: 12px;
+            }}
+            .fs-toggle-btn {{
+                padding: 4px 8px;
+                font-size: 12px;
+            }}
+            .notes-panel {{
+                padding: 10px 12px;
+            }}
+            .notes-title {{
+                font-size: 17px;
+            }}
+            .notes-desc {{
+                font-size: 12px;
+                padding: 8px;
+                line-height: 1.4;
+            }}
+            .nav-btn {{
+                padding: 8px 10px;
+                font-size: 12.5px;
+            }}
+            .inspect-action-btn {{
+                padding: 8px 12px;
+                font-size: 12.5px;
+            }}
+        }}
+
+        @media (max-width: 959px) {{
+            main {{
+                grid-template-columns: 1fr;
+                height: auto;
+            }}
+            .stage {{
+                height: 520px !important;
+            }}
+            .notes-panel {{
+                height: auto !important;
+                overflow: visible !important;
+            }}
         }}
 
         /* Stage & Drafting Sheet Aesthetics */
@@ -181,19 +376,33 @@ def generate_html():
             border: 1px solid #e2e8f0;
             border-radius: 14px;
             overflow: hidden;
-            height: 620px;
+            height: 100%;
+            min-height: 0;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
             background-image: 
                 radial-gradient(#cbd5e1 1.1px, transparent 1.1px),
                 linear-gradient(to right, rgba(226, 232, 240, 0.6) 1px, transparent 1px),
                 linear-gradient(to bottom, rgba(226, 232, 240, 0.6) 1px, transparent 1px);
             background-size: 25px 25px, 25px 25px, 25px 25px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+        }}
+        #svg-diagram-mount {{
+            width: 100%;
+            height: 100%;
+            flex: 1;
+            min-height: 0;
+            position: relative;
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }}
         .stage svg {{
             width: 100%;
             height: 100%;
+            max-width: 100%;
+            max-height: 100%;
             display: block;
             touch-action: manipulation;
         }}
@@ -402,12 +611,37 @@ def generate_html():
             background: #ffffff;
             border: 1px solid #e2e8f0;
             border-radius: 14px;
-            padding: 24px;
+            padding: clamp(12px, 1.6vh, 22px);
             display: flex;
             flex-direction: column;
-            gap: 16px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
+            height: 100%;
+            min-height: 0;
+            overflow: hidden;
+        }}
+        .notes-scroll-area {{
+            flex: 1;
+            min-height: 0;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(8px, 1.2vh, 14px);
+            padding-right: 4px;
+        }}
+        .notes-scroll-area::-webkit-scrollbar {{
+            width: 5px;
+        }}
+        .notes-scroll-area::-webkit-scrollbar-thumb {{
+            background: #cbd5e1;
+            border-radius: 4px;
+        }}
+        .footer-nav {{
+            flex-shrink: 0;
+            margin-top: auto;
+            display: flex;
+            gap: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #f1f5f9;
         }}
         .notes-tag {{
             font-family: 'Barlow Semi Condensed', sans-serif;
@@ -478,12 +712,7 @@ def generate_html():
             box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
         }}
 
-        .footer-nav {{
-            margin-top: auto;
-            display: flex;
-            gap: 10px;
-            padding-top: 10px;
-        }}
+        
         .nav-btn {{
             flex: 1;
             padding: 11px 14px;
@@ -532,7 +761,7 @@ def generate_html():
             border: 1.5px solid #334155;
             border-radius: 16px;
             width: 100%;
-            max-width: 1280px;
+            max-width: min(94vw, 1500px);
             max-height: 94vh;
             display: flex;
             flex-direction: column;
@@ -640,7 +869,7 @@ def generate_html():
             background: #020617;
             overflow-y: auto;
             max-height: calc(94vh - 75px);
-            min-height: 480px;
+            min-height: min(480px, 60vh);
         }}
         .modal-body img {{
             max-width: 100%;
@@ -728,11 +957,16 @@ def generate_html():
 
 <!-- Header -->
 <header>
-    <div>
+    <div class="header-left">
         <div class="eyebrow">MSC BALLAST TANK DIGITAL TWIN &middot; PROOF OF CONCEPT</div>
         <h1>From separate projects to one digital twin</h1>
     </div>
-    <div class="phase-tabs" id="phase-tabs"></div>
+    <div class="header-right">
+        <div class="phase-tabs" id="phase-tabs"></div>
+        <button id="btn-fullscreen-toggle" class="fs-toggle-btn" onclick="toggleFullscreen();" title="Toggle Fullscreen Projector Mode (Shortcut: F)">
+            <span id="fs-icon">⛶</span> <span id="fs-text">Projector Mode</span>
+        </button>
+    </div>
 </header>
 
 <!-- Main Grid -->
@@ -1714,8 +1948,9 @@ function renderNotes() {{
     if (!selectedNode) {{
         const visibleIds = Object.keys(SVG_LAYOUT[currentPhase] || {{}});
         box.innerHTML = `
-            <div>
-                <div class="notes-tag">${{P.name.toUpperCase()}}</div>
+            <div class="notes-scroll-area">
+                <div>
+                    <div class="notes-tag">${{P.name.toUpperCase()}}</div>
                 <h2 class="notes-title">${{P.title}}${{P.subtitle ? ' &middot; ' + P.subtitle : ''}}</h2>
             </div>
             ${{P.description ? `<p class="notes-desc">${{P.description}}</p>` : ''}}
@@ -1786,8 +2021,8 @@ function renderNotes() {{
                     🌐 Open Interactive Dual-Asset Simulation
                 </button>
             </div>` : ""}}
-
-                        ${{nav}}`;
+            </div>
+            ${{nav}}`;
     }} else {{
         const n = SVG_NODES[selectedNode];
         let previewImg = SENSOR_IMAGES[selectedNode];
@@ -1850,8 +2085,9 @@ function renderNotes() {{
             </div>`;
 
         box.innerHTML = `
-            <div>
-                <div class="notes-tag">PHASE ${{currentPhase}} &middot; ${{n.group.toUpperCase()}}</div>
+            <div class="notes-scroll-area">
+                <div>
+                    <div class="notes-tag">PHASE ${{currentPhase}} &middot; ${{n.group.toUpperCase()}}</div>
                 <h2 class="notes-title">${{n.name}}</h2>
             </div>
 
@@ -1876,6 +2112,7 @@ function renderNotes() {{
             <button class="node-pill" style="margin-top:10px; align-self:flex-start;" onclick="selectNode(null)">
                 &larr; Back to Phase Overview
             </button>
+            </div>
             ${{nav}}`;
     }}
 
@@ -2679,11 +2916,71 @@ function renderSimSvg() {{
 }}
 
 /* Keyboard Navigation (Arrow Keys) */
-window.addEventListener('keydown', (e) => {{
+// Screen Ratio Auto-Resize & Fullscreen Projector Controller
+function toggleFullscreen() {{
+    if (!document.fullscreenElement) {{
+        document.documentElement.requestFullscreen().catch(err => {{
+            console.log("Fullscreen request was prevented:", err);
+        }});
+    }} else {{
+        if (document.exitFullscreen) {{
+            document.exitFullscreen();
+        }}
+    }}
+}}
+
+function adaptToScreenRatio() {{
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const ratio = w / h;
+    const root = document.documentElement;
+
+    if (ratio >= 1.75) {{
+        root.dataset.screenRatio = "ultrawide";
+    }} else if (ratio >= 1.5) {{
+        root.dataset.screenRatio = "widescreen";
+    }} else if (ratio >= 1.2) {{
+        root.dataset.screenRatio = "standard";
+    }} else {{
+        root.dataset.screenRatio = "portrait";
+    }}
+
+    if (w >= 2200 || h >= 1250) {{
+        root.dataset.screenScale = "4k";
+    }} else if (w >= 1600) {{
+        root.dataset.screenScale = "large";
+    }} else if (w <= 1100 || h <= 720) {{
+        root.dataset.screenScale = "compact";
+    }} else {{
+        root.dataset.screenScale = "normal";
+    }}
+}}
+
+window.addEventListener("resize", adaptToScreenRatio);
+window.addEventListener("DOMContentLoaded", adaptToScreenRatio);
+window.addEventListener("fullscreenchange", () => {{
+    const isFs = !!document.fullscreenElement;
+    document.body.classList.toggle("is-fullscreen", isFs);
+    const fsIcon = document.getElementById("fs-icon");
+    const fsText = document.getElementById("fs-text");
+    if (fsIcon && fsText) {{
+        fsIcon.textContent = isFs ? "🗗" : "⛶";
+        fsText.textContent = isFs ? "Exit Fullscreen" : "Projector Mode";
+    }}
+    adaptToScreenRatio();
+}});
+
+addEventListener('keydown', (e) => {{
     if (e.target.closest && e.target.closest("button, [role=button], input")) return;
     const curIdx = PHASE_ORDER.indexOf(currentPhase);
     if (e.key === 'ArrowLeft' && curIdx > 0) goToPhase(PHASE_ORDER[curIdx - 1]);
     if (e.key === 'ArrowRight' && curIdx < PHASE_ORDER.length - 1) goToPhase(PHASE_ORDER[curIdx + 1]);
+    if ((e.key === 'f' || e.key === 'F') && !e.ctrlKey && !e.altKey && !e.metaKey) {{
+        const modal = document.getElementById("modal-overlay");
+        if (!modal || !modal.classList.contains("active")) {{
+            toggleFullscreen();
+        }}
+    }}
     if (e.key === 'Escape') {{
         document.getElementById("modal-overlay").classList.remove("active");
         if (selectedNode) selectNode(null);

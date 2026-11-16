@@ -1926,7 +1926,11 @@ app.index_string = """
                 border: 1px solid #e2e8f0;
                 border-radius: 14px;
                 overflow: hidden;
-                height: 620px;
+                height: 100%;
+                min-height: 520px;
+                flex: 1;
+                display: flex;
+                flex-direction: column;
                 background-image: 
                     radial-gradient(#cbd5e1 1.1px, transparent 1.1px),
                     linear-gradient(to right, rgba(226, 232, 240, 0.6) 1px, transparent 1px),
@@ -3183,12 +3187,13 @@ def create_layout() -> html.Div:
     """Build the root Dash application layout."""
     return html.Div(
         style={
-            "maxWidth": "1640px",
+            "maxWidth": "2560px",
+            "width": "100%",
             "margin": "0 auto",
-            "padding": "24px 32px 36px 32px",
+            "padding": "clamp(10px, 1.4vh, 20px) clamp(14px, 1.6vw, 30px)",
             "display": "flex",
             "flexDirection": "column",
-            "gap": "18px",
+            "gap": "clamp(8px, 1.2vh, 16px)",
             "minHeight": "100vh",
         },
         children=[
