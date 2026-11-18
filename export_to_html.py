@@ -1152,7 +1152,7 @@ def generate_html():
             </g>
 
             <!-- RGB/Video -->
-            <g style="cursor:pointer;" onclick="if(window.openModal) openModal('rgb');">
+            <g style="cursor:pointer;" onclick="if(window.selectNode) selectNode('rgb');">
                 <rect x="828" y="58" width="88" height="34" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1.6" />
                 <text x="872" y="79" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">RGB/Video</text>
             </g>
@@ -1664,7 +1664,9 @@ function initDiagram() {{
         ng.addEventListener("click", (evt) => {{
             evt.stopPropagation();
             selectNode(id);
-            openModal(id);
+            if (id !== "rgb") {{
+                openModal(id);
+            }}
         }});
         nodeEls[id] = ng;
     }}
@@ -2048,7 +2050,7 @@ function renderNotes() {{
                         ONLINE
                     </span>
                 </div>
-                <div style="padding:18px 16px; background:#020617; display:flex; flex-direction:column; gap:10px; cursor:pointer;" onclick="openModal('${{selectedNode}}')" title="Click to view full technical specification">
+                <div style="padding:18px 16px; background:#020617; display:flex; flex-direction:column; gap:10px; ${{selectedNode !== 'rgb' ? 'cursor:pointer;' : ''}}" ${{selectedNode !== 'rgb' ? `onclick="openModal('${{selectedNode}}')" title="Click to view full technical specification"` : ''}}>
                     <div style="font-family:'Barlow Semi Condensed',sans-serif; font-size:16px; font-weight:800; color:#f8fafc;">
                         ${{n.name}}
                     </div>
@@ -2058,10 +2060,15 @@ function renderNotes() {{
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:4px;">
                         ${{n.gives.map(g => `<div style="background:#1e293b; color:#38bdf8; padding:5px 8px; border-radius:6px; font-size:11px; font-weight:700; border:1px solid #334155; text-align:center;">${{g}}</div>`).join("")}}
                     </div>
+                    ${{selectedNode !== "rgb" ? `
                     <div style="margin-top:6px; display:flex; justify-content:space-between; align-items:center; font-size:11px; color:#64748b; border-top:1px solid #1e293b; padding-top:8px;">
                         <span>Protocol: <strong>JSON / WebSocket</strong></span>
                         <span style="color:#38bdf8; font-weight:700;">Open Technical Spec &rarr;</span>
-                    </div>
+                    </div>` : `
+                    <div style="margin-top:6px; display:flex; justify-content:space-between; align-items:center; font-size:11px; color:#64748b; border-top:1px solid #1e293b; padding-top:8px;">
+                        <span>Protocol: <strong>RTSP / H.265 Stream</strong></span>
+                        <span style="color:#10b981; font-weight:700;">🟢 Direct Telemetry Stream</span>
+                    </div>`}}
                 </div>
             </div>`;
 
@@ -2082,9 +2089,10 @@ function renderNotes() {{
                 </div>
             </div>
 
+            ${{selectedNode !== "rgb" ? `
             <button class="inspect-action-btn" onclick="openModal('${{selectedNode}}')">
                 🔍 Open Full-Screen Image Inspector
-            </button>
+            </button>` : ""}}
             ${{(selectedNode === "lidar" || selectedNode === "sac") ? `
             <button class="inspect-action-btn" style="background:#0284c7; border-color:#0284c7; margin-top:8px;" onclick="openPointCloudModal()">
                 ☁️ Inspect 'Point Cloud' Pipeline (LiDAR → SAC)
@@ -2249,7 +2257,7 @@ function openPointCloudModal() {{
 }}
 
 function openModal(nodeId) {{
-    if (!nodeId) return;
+    if (!nodeId || nodeId === "rgb") return;
 
     const modal = document.getElementById("modal-overlay");
     const superTitle = document.getElementById("modal-super-title");

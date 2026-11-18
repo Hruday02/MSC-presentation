@@ -2555,7 +2555,7 @@ app.index_string = """
             </g>
 
             <!-- RGB/Video -->
-            <g style="cursor:pointer;" onclick="if(window.openModal) openModal('rgb');">
+            <g style="cursor:pointer;" onclick="if(window.selectNode) selectNode('rgb');">
                 <rect x="828" y="58" width="88" height="34" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1.6" />
                 <text x="872" y="79" font-family="'Barlow Semi Condensed', sans-serif" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">RGB/Video</text>
             </g>
