@@ -2115,9 +2115,17 @@ function selectNode(id) {{
 
 function openPointCloudModal() {{
     const modal = document.getElementById("modal-overlay");
+    const superTitle = document.getElementById("modal-super-title");
     const title = document.getElementById("modal-title-text");
+    const subtitle = document.getElementById("modal-subtitle");
+    const badge = document.getElementById("modal-header-status-badge");
     const body = document.getElementById("modal-body-container");
+
+    superTitle.textContent = "DATA PIPELINE · 3D GEOMETRY INGESTION";
+    superTitle.style.color = "#0284c7";
     title.textContent = "Point Cloud to Surface Mesh Pipeline (LiDAR ➔ SAC)";
+    subtitle.textContent = "Point cloud surface reconstruction, Poisson octree meshing & watertight manifold verification";
+    badge.style.display = "none";
 
     body.innerHTML = `
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(360px, 1fr)); gap:18px; width:100%; max-height:calc(88vh - 80px); overflow-y:auto; padding:4px; color:#1e293b; box-sizing:border-box;">
@@ -2242,6 +2250,14 @@ function openPointCloudModal() {{
 
 function openModal(nodeId) {{
     if (!nodeId) return;
+
+    const modal = document.getElementById("modal-overlay");
+    const superTitle = document.getElementById("modal-super-title");
+    const titleText = document.getElementById("modal-title-text");
+    const subtitle = document.getElementById("modal-subtitle");
+    const badge = document.getElementById("modal-header-status-badge");
+    const body = document.getElementById("modal-body-container");
+
     if (nodeId === "point_cloud" || nodeId === "point-cloud" || nodeId === "pipeline_lidar_sac") {{
         openPointCloudModal();
         return;
@@ -2281,13 +2297,6 @@ function openModal(nodeId) {{
         modal.classList.add("active");
         return;
     }}
-
-    const modal = document.getElementById("modal-overlay");
-    const superTitle = document.getElementById("modal-super-title");
-    const titleText = document.getElementById("modal-title-text");
-    const subtitle = document.getElementById("modal-subtitle");
-    const badge = document.getElementById("modal-header-status-badge");
-    const body = document.getElementById("modal-body-container");
 
     const isRust = currentScenario === "rust";
     const rustColor = isRust ? "#ef4444" : "#10b981";
@@ -2946,13 +2955,50 @@ window.addEventListener("DOMContentLoaded", adaptToScreenRatio);
 window.addEventListener("fullscreenchange", adaptToScreenRatio);
 
 addEventListener('keydown', (e) => {{
-    if (e.target.closest && e.target.closest("button, [role=button], input")) return;
-    const curIdx = PHASE_ORDER.indexOf(currentPhase);
-    if (e.key === 'ArrowLeft' && curIdx > 0) goToPhase(PHASE_ORDER[curIdx - 1]);
-    if (e.key === 'ArrowRight' && curIdx < PHASE_ORDER.length - 1) goToPhase(PHASE_ORDER[curIdx + 1]);
+    if (e.target.closest && e.target.closest("input, textarea, select")) return;
+
     if (e.key === 'Escape') {{
-        document.getElementById("modal-overlay").classList.remove("active");
+        const modal = document.getElementById("modal-overlay");
+        if (modal && modal.classList.contains("active")) {{
+            modal.classList.remove("active");
+            if (typeof window.resetVtlZoom === "function") window.resetVtlZoom();
+        }}
         if (selectedNode) selectNode(null);
+        return;
+    }}
+
+    const curIdx = PHASE_ORDER.indexOf(currentPhase);
+
+    // Navigate to next phase: Right arrow, PageDown, Space
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ' || e.key === 'Spacebar') {{
+        if (curIdx < PHASE_ORDER.length - 1) {{
+            e.preventDefault();
+            const modal = document.getElementById("modal-overlay");
+            if (modal && modal.classList.contains("active")) {{
+                modal.classList.remove("active");
+                if (typeof window.resetVtlZoom === "function") window.resetVtlZoom();
+            }}
+            if (document.activeElement && typeof document.activeElement.blur === 'function') {{
+                document.activeElement.blur();
+            }}
+            goToPhase(PHASE_ORDER[curIdx + 1]);
+        }}
+    }}
+
+    // Navigate to previous phase: Left arrow, PageUp
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') {{
+        if (curIdx > 0) {{
+            e.preventDefault();
+            const modal = document.getElementById("modal-overlay");
+            if (modal && modal.classList.contains("active")) {{
+                modal.classList.remove("active");
+                if (typeof window.resetVtlZoom === "function") window.resetVtlZoom();
+            }}
+            if (document.activeElement && typeof document.activeElement.blur === 'function') {{
+                document.activeElement.blur();
+            }}
+            goToPhase(PHASE_ORDER[curIdx - 1]);
+        }}
     }}
 }});
 
